@@ -5,26 +5,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Move {
+public class Place {
 
     @Id
-    @Column(name = "move_id")
+    @Column(name = "place_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String transportation;
+    private String name;
 
-    @OneToOne
-    private Place departuredPlace;
-
-    @OneToOne
-    private Place arrivedPlace;
+    @Column(length = 255)
+    private String address;
 }
