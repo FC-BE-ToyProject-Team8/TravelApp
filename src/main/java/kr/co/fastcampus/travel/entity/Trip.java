@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class Trip {
 
     @Id
+    @Column(name = "trip_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
