@@ -2,7 +2,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
         run: |
           mkdir -p src/main/resources
           touch ./src/main/resources/application.yml
-          echo "${{ secrets.DEVELOP_APPLICATION_YML }}" > ./src/main/resources/application.yml
+          echo "${{ secrets.MAIN_APPLICATION_YML }}" > ./src/main/resources/application.yml
           cat ./src/main/resources/application.yml
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
@@ -46,14 +46,14 @@ jobs:
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.MAIN_SSH_PRIVATE_KEY }}
       - name: Add remote server to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.DEVELOP_SERVER_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.MAIN_SERVER_IP }} >> ~/.ssh/known_hosts
       - name: SCP transfer
-        run: scp *.jar ${{ secrets.DEVELOP_SERVER_USERNAME }}@${{ secrets.DEVELOP_SERVER_IP }}:~/cicd
+        run: scp *.jar ${{ secrets.MAIN_SERVER_USERNAME }}@${{ secrets.MAIN_SERVER_IP }}:~/cicd
       - name: Execute remote commands
         run: |
-          ssh -v ${{ secrets.DEVELOP_SERVER_USERNAME }}@${{ secrets.DEVELOP_SERVER_IP }} "sudo fuser -k 80/tcp || true"
-          ssh -v ${{ secrets.DEVELOP_SERVER_USERNAME }}@${{ secrets.DEVELOP_SERVER_IP }} "sudo nohup /usr/bin/java -jar ~/cicd/*.jar  > ~/cicd/nohup.log 2>&1 &"
+          ssh -v ${{ secrets.MAIN_SERVER_USERNAME }}@${{ secrets.MAIN_SERVER_IP }} "sudo fuser -k 80/tcp || true"
+          ssh -v ${{ secrets.MAIN_SERVER_USERNAME }}@${{ secrets.MAIN_SERVER_IP }} "sudo nohup /usr/bin/java -jar ~/cicd/*.jar  > ~/cicd/nohup.log 2>&1 &"
