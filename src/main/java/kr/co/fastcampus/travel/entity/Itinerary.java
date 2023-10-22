@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class Itinerary {
 
     @Id
+    @Column(name = "itinerary_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,14 +32,14 @@ public class Itinerary {
     private Trip trip;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "move_id")
     private Move move;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "lodge_id")
     private Lodge lodge;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "stay_id")
     private Stay stay;
 }
