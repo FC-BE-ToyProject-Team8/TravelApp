@@ -1,0 +1,22 @@
+name: reviewdog
+on:
+  pull_request:
+    branches: [ main, develop ]
+jobs:
+  checkstyle_job:
+    runs-on: ubuntu-latest
+    name: Checkstyle job
+    steps:
+      - name: Reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run check style
+        uses: nikitasavinov/checkstyle-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tool_name: 'testtool'
+          level: error
+          checkstyle_config: ./custom_google_checks.xml
