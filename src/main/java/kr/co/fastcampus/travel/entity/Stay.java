@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class Stay {
 
     @Column(length = 100)
-    private String stayPlaceName;
-    private String stayAddress;
+    private String placeName;
+    private String address;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
 }
