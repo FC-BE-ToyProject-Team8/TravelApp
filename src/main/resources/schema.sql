@@ -7,7 +7,7 @@ CREATE TABLE `Trip` (
     `trip_id` BIGINT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `start_date` DATE NOT NULL,
-    `end_date` DATE NULL,
+    `end_date` DATE NOT NULL,
     `is_foreign` TINYINT(1) NOT NULL,
     PRIMARY KEY (`trip_id`)
 );
