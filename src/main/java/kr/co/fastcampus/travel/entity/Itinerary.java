@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Itinerary {
+public class Itinerary extends BaseEntity {
 
     @Id
     @Column(name = "itinerary_id")

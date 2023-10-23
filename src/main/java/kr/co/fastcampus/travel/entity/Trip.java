@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Trip {
+public class Trip extends BaseEntity {
 
     @Id
     @Column(name = "trip_id")
