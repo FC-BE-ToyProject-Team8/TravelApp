@@ -16,14 +16,24 @@ CREATE TABLE `Trip` (
 CREATE TABLE `Itinerary` (
     `itinerary_id` BIGINT NOT NULL AUTO_INCREMENT,
     `trip_id` BIGINT NOT NULL,
-    `start_date_time` DATETIME NOT NULL,
-    `end_date_time` DATETIME NULL,
-    `move_place_name` VARCHAR(100) NULL,
-    `move_address` VARCHAR(255) NULL,
+    -- Embedded Route columns
+    `transportation` VARCHAR(255) NULL,
+    `departure_place_name` VARCHAR(100) NULL,
+    `departure_address` VARCHAR(255) NULL,
+    `destination_place_name` VARCHAR(100) NULL,
+    `destination_address` VARCHAR(255) NULL,
+    `departure_at` DATETIME NULL,
+    `arrive_at` DATETIME NULL,
+    -- Embedded Lodge columns
     `lodge_place_name` VARCHAR(100) NULL,
     `lodge_address` VARCHAR(255) NULL,
+    `check_in_at` DATETIME NULL,
+    `check_out_at` DATETIME NULL,
+    -- Embedded Stay columns
     `stay_place_name` VARCHAR(100) NULL,
     `stay_address` VARCHAR(255) NULL,
+    `start_at` DATETIME NULL,
+    `end_at` DATETIME NULL,
     PRIMARY KEY (`itinerary_id`),
     FOREIGN KEY (`trip_id`) REFERENCES `Trip`(`trip_id`)
 );
