@@ -35,5 +35,5 @@ CREATE TABLE `Itinerary` (
     `start_at` DATETIME NULL,
     `end_at` DATETIME NULL,
     PRIMARY KEY (`itinerary_id`),
-    FOREIGN KEY (`trip_id`) REFERENCES `Trip`(`trip_id`)
+    FOREIGN KEY (`trip_id`) REFERENCES `Trip`(`trip_id`) ON DELETE CASCADE
 );
