@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Lodge {
 
-    @Column(length = 100)
+    @Column(name = "lodge_place_name", length = 100)
     private String placeName;
+    @Column(name = "lodge_address")
     private String address;
     private LocalDateTime checkInAt;
     private LocalDateTime checkOutAt;
