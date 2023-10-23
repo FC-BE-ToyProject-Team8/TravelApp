@@ -31,15 +31,21 @@ public class Itinerary {
     @ManyToOne
     private Trip trip;
 
-    @OneToOne
-    @JoinColumn(name = "move_id")
-    private Move move;
+    @Column(length = 100)
+    private String movePlaceName;
 
-    @OneToOne
-    @JoinColumn(name = "lodge_id")
-    private Lodge lodge;
+    @Column(length = 100)
+    private String moveAddress;
 
-    @OneToOne
-    @JoinColumn(name = "stay_id")
-    private Stay stay;
+    @Column(length = 100)
+    private String lodgePlaceName;
+
+    @Column(length = 100)
+    private String lodgeAddress;
+
+    @Column(length = 100)
+    private String stayPlaceName;
+
+    @Column(length = 100)
+    private String stayAddress;
 }
