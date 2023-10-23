@@ -1,24 +1,16 @@
 package kr.co.fastcampus.travel.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Embeddable;
+import java.time.LocalDateTime;
 
-@Entity
-@NoArgsConstructor
-@Getter
+@Embeddable
 public class Stay {
 
-    @Id
-    @Column(name = "stay_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    private Place place;
+    @Column(name = "stay_place_name", length = 100)
+    private String placeName;
+    @Column(name = "stay_address")
+    private String address;
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
 }

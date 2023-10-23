@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Trip {
+public class Trip extends BaseEntity {
 
     @Id
     @Column(name = "trip_id")
@@ -28,11 +29,15 @@ public class Trip {
     @Column(nullable = false)
     private LocalDate startDate;
 
+    @Column(nullable = false)
     private LocalDate endDate;
 
     @Column(nullable = false)
     private boolean isForeign;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip")
+    @OneToMany(
+        fetch = FetchType.LAZY, mappedBy = "itinerary_id",
+        cascade = CascadeType.ALL, orphanRemoval = true
+    )
     private List<Itinerary> itineraries;
 }
