@@ -18,6 +18,9 @@ public class BaseResponseBody {
     }
 
     public static BaseResponseBody error(String errorMessage) {
-        return new BaseResponseBody(Status.ERROR, errorMessage);
+        return new BaseResponseBody(
+            Status.ERROR,
+            "예상하지 못한 오류입니다. 관리자에게 문의해주세요: " + errorMessage
+        );
     }
 }

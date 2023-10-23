@@ -14,8 +14,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BaseException.class)
     public ResponseEntity<BaseResponseBody> handleBaseException(BaseException e) {
         return new ResponseEntity<>(
-            BaseResponseBody.error(e.getMessage()),
-            HttpStatus.BAD_REQUEST
+            BaseResponseBody.fail(e.getMessage()),
+            HttpStatus.OK
         );
     }
 
@@ -24,8 +24,18 @@ public class GlobalExceptionHandler {
         MethodArgumentNotValidException e
     ) {
         return new ResponseEntity<>(
-            BaseResponseBody.error(e.getMessage()),
+            BaseResponseBody.fail(e.getMessage()),
             HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<BaseResponseBody> handleUnexpectedException(
+        Exception e
+    ) {
+        return new ResponseEntity<>(
+            BaseResponseBody.error(e.getMessage()),
+            HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 }
