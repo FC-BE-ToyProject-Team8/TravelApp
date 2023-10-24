@@ -40,7 +40,7 @@ class TravelControllerTest {
     @DisplayName("여행과 여정 조회")
     void getTrip() {
         // given
-        String url = "/trips/{id}";
+        String url = "/api/trips/{id}";
         Trip trip = Trip.builder()
             .name("여행")
             .startDate(LocalDate.now())
