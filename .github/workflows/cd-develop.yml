@@ -36,7 +36,7 @@ jobs:
           path: build/libs/*.jar
 
   deploy:
-    needs: build
+    needs: build-develop
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
