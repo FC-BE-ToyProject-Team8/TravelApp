@@ -59,8 +59,8 @@ public class TravelControllerTest {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.id()).isNotNull();
             softly.assertThat(data.name()).isEqualTo("이름");
-            softly.assertThat(data.startDate()).isEqualTo("2010-01-01");
-            softly.assertThat(data.endDate()).isEqualTo("2010-01-02");
+            softly.assertThat(data.startDate().toString()).isEqualTo("2010-01-01");
+            softly.assertThat(data.endDate().toString()).isEqualTo("2010-01-02");
             softly.assertThat(data.isForeign()).isEqualTo(false);
         });
     }
