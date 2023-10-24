@@ -1,13 +1,16 @@
 package kr.co.fastcampus.travel.controller.util;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.LodgeResponse;
 import kr.co.fastcampus.travel.controller.response.RouteResponse;
 import kr.co.fastcampus.travel.controller.response.StayResponse;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Lodge;
 import kr.co.fastcampus.travel.entity.Route;
@@ -30,13 +33,32 @@ public class TravelDtoConverter {
             .build();
     }
 
+    public static TripSummaryResponse toTripSummaryResponse(Trip trip) {
+        return TripSummaryResponse.builder()
+            .id(trip.getId())
+            .name(trip.getName())
+            .startAt(trip.getStartDate())
+            .endAt(trip.getEndDate())
+            .isForeign(trip.isForeign())
+            .build();
+    }
+
+    public static Trip toTrip(TripRequest request) {
+        return Trip.builder()
+            .name(request.name())
+            .startDate(LocalDate.parse(request.startDate()))
+            .endDate(LocalDate.parse(request.endDate()))
+            .isForeign(request.isForeign())
+            .build();
+    }
+
     private static List<ItineraryResponse> getItineraryResponses(Trip trip) {
         return trip.getItineraries().stream()
-            .map(TravelDtoConverter::toItieraryResponse)
+            .map(TravelDtoConverter::toItineraryResponse)
             .collect(Collectors.toList());
     }
 
-    private static ItineraryResponse toItieraryResponse(Itinerary itinerary) {
+    private static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
         return ItineraryResponse.builder()
             .id(itinerary.getId())
             .route(Optional.ofNullable(itinerary.getRoute())
