@@ -36,7 +36,7 @@ public class Trip extends BaseEntity {
     private boolean isForeign;
 
     @OneToMany(
-        fetch = FetchType.LAZY, mappedBy = "itinerary_id",
+        fetch = FetchType.LAZY, mappedBy = "trip",
         cascade = CascadeType.ALL, orphanRemoval = true
     )
     private List<Itinerary> itineraries;
