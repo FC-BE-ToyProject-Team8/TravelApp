@@ -1,8 +1,8 @@
 package kr.co.fastcampus.travel.repository;
 
+import static kr.co.fastcampus.travel.TravelUtils.createTrip;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.entity.Itinerary;
@@ -72,21 +72,19 @@ class TripRepositoryTest {
     @DisplayName("여행 목록 조회")
     void findAll() {
         // given
-        Trip trip = Trip.builder()
-            .name("name1")
-            .startDate(LocalDate.of(2023, 1, 1))
-            .endDate(LocalDate.of(2023, 1, 7))
-            .isForeign(true)
-            .build();
-        tripRepository.save(trip);
+        Trip trip1 = createTrip();
+        Trip trip2 = createTrip();
+        tripRepository.save(trip1);
+        tripRepository.save(trip2);
 
         // when
         List<Trip> trips = tripRepository.findAll();
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(trips.size()).isEqualTo(1);
-            softly.assertThat(trips).contains(trip);
+            softly.assertThat(trips.size()).isEqualTo(2);
+            softly.assertThat(trips).contains(trip1);
+            softly.assertThat(trips).contains(trip2);
         });
     }
 }

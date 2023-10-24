@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.controller;
 
+import static kr.co.fastcampus.travel.TravelUtils.createTrip;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -9,7 +10,6 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
@@ -150,18 +150,8 @@ public class TravelControllerTest {
     @DisplayName("여행 목록 조회")
     void findAll() {
         // given
-        Trip trip1 = Trip.builder()
-            .name("name1")
-            .startDate(LocalDate.of(2023, 1, 1))
-            .endDate(LocalDate.of(2023, 1, 7))
-            .isForeign(true)
-            .build();
-        Trip trip2 = Trip.builder()
-            .name("name2")
-            .startDate(LocalDate.of(2023, 1, 1))
-            .endDate(LocalDate.of(2023, 1, 7))
-            .isForeign(true)
-            .build();
+        Trip trip1 = createTrip();
+        Trip trip2 = createTrip();
         tripRepository.save(trip1);
         tripRepository.save(trip2);
 
