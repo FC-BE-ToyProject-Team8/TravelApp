@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
+import kr.co.fastcampus.travel.controller.request.TripUpdateRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Trip;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +54,16 @@ public class TravelController {
     public ResponseBody<List<TripSummaryResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
         return ResponseBody.ok(toTripSummaryResponses(trips));
+    }
+
+    @PutMapping("/trips/{tripId}")
+    @Operation(summary = "여행 수정")
+    public ResponseBody<TripResponse> editTrip(
+        @PathVariable Long tripId,
+        @Valid @RequestBody TripUpdateRequest request
+    ) {
+        Trip trip = tripService.editTrip(tripId, request);
+        TripResponse response = toTripResponse(trip);
+        return ResponseBody.ok(response);
     }
 }

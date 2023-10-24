@@ -59,4 +59,32 @@ public class Trip extends BaseEntity {
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
     }
+
+    public void updateName(String name) {
+        if (name == null) {
+            return;
+        }
+        this.name = name;
+    }
+
+    public void updateStartDate(String startDate) {
+        if (startDate == null) {
+            return;
+        }
+        this.startDate = LocalDate.parse(startDate);
+    }
+
+    public void updateEndDate(String endDate) {
+        if (endDate == null) {
+            return;
+        }
+        this.endDate = LocalDate.parse(endDate);
+    }
+
+    public void updateIsForeign(Boolean isForeign) {
+        if (isForeign == null) {
+            return;
+        }
+        this.isForeign = isForeign;
+    }
 }
