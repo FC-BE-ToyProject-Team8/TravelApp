@@ -56,10 +56,10 @@ public class TravelControllerTest {
         // when
         ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
             .when()
-            .post(url)
+                .post(url)
             .then().log().all()
             .extract();
 

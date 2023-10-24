@@ -57,4 +57,10 @@ public class TravelController {
                 .toList();
         return ResponseBody.ok(response);
     }
+
+    @GetMapping("/trips/{id}")
+    public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
+        Trip trip = tripService.findTripById(id);
+        return ResponseBody.ok(convertTripToResponse(trip));
+    }
 }
