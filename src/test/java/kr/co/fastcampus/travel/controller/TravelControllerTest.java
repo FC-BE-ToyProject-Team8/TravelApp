@@ -1,6 +1,7 @@
 package kr.co.fastcampus.travel.controller;
 
 import static kr.co.fastcampus.travel.TravelUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelUtils.findAllTrip;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -150,18 +151,11 @@ public class TravelControllerTest {
     @DisplayName("여행 목록 조회")
     void findAll() {
         // given
-        Trip trip1 = createTrip();
-        Trip trip2 = createTrip();
-        tripRepository.save(trip1);
-        tripRepository.save(trip2);
+        Trip trip1 = saveTrip();
+        Trip trip2 = saveTrip();
 
         // when
-        String url = "/api/trips";
-        ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .when().get(url)
-            .then().log().all()
-            .extract();
+        ExtractableResponse<Response> response = findAllTrip();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -175,5 +169,11 @@ public class TravelControllerTest {
             softly.assertThat(data).contains(toTripResponse(trip1));
             softly.assertThat(data).contains(toTripResponse(trip2));
         });
+    }
+
+    private Trip saveTrip() {
+        Trip trip = createTrip();
+        tripRepository.save(trip);
+        return trip;
     }
 }
