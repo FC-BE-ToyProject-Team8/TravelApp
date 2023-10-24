@@ -14,12 +14,12 @@ import kr.co.fastcampus.travel.entity.Route;
 import kr.co.fastcampus.travel.entity.Stay;
 import kr.co.fastcampus.travel.entity.Trip;
 
-public class EntityToResponseConverter {
+public class TravelDtoConverter {
 
-    private EntityToResponseConverter() {
+    private TravelDtoConverter() {
     }
 
-    public static TripResponse convertTripToResponse(Trip trip) {
+    public static TripResponse toTripResponse(Trip trip) {
         return TripResponse.builder()
             .id(trip.getId())
             .name(trip.getName())
@@ -31,26 +31,26 @@ public class EntityToResponseConverter {
 
     private static List<ItineraryResponse> getItineraryResponses(Trip trip) {
         return trip.getItineraries().stream()
-            .map(EntityToResponseConverter::convertItineraryToResponse)
+            .map(TravelDtoConverter::toItieraryResponse)
             .collect(Collectors.toList());
     }
 
-    private static ItineraryResponse convertItineraryToResponse(Itinerary itinerary) {
+    private static ItineraryResponse toItieraryResponse(Itinerary itinerary) {
         return ItineraryResponse.builder()
             .id(itinerary.getId())
             .route(Optional.ofNullable(itinerary.getRoute())
-                .map(EntityToResponseConverter::convertRouteToResponse)
+                .map(TravelDtoConverter::toRouteResponse)
                 .orElse(null))
             .lodge(Optional.ofNullable(itinerary.getLodge())
-                .map(EntityToResponseConverter::convertLodgeToResponse)
+                .map(TravelDtoConverter::toLodgeResponse)
                 .orElse(null))
             .stay(Optional.ofNullable(itinerary.getStay())
-                .map(EntityToResponseConverter::convertStayToResponse)
+                .map(TravelDtoConverter::ToStayResponse)
                 .orElse(null))
             .build();
     }
 
-    private static RouteResponse convertRouteToResponse(Route route) {
+    private static RouteResponse toRouteResponse(Route route) {
         return RouteResponse.builder()
             .transportation(route.getTransportation())
             .departurePlaceName(route.getDeparturePlaceName())
@@ -62,7 +62,7 @@ public class EntityToResponseConverter {
             .build();
     }
 
-    private static LodgeResponse convertLodgeToResponse(Lodge lodge) {
+    private static LodgeResponse toLodgeResponse(Lodge lodge) {
         return LodgeResponse.builder()
             .placeName(lodge.getPlaceName())
             .address(lodge.getAddress())
@@ -71,7 +71,7 @@ public class EntityToResponseConverter {
             .build();
     }
 
-    private static StayResponse convertStayToResponse(Stay stay) {
+    private static StayResponse ToStayResponse(Stay stay) {
         return StayResponse.builder()
             .placeName(stay.getPlaceName())
             .address(stay.getAddress())

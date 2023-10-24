@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.controller;
 
-import static kr.co.fastcampus.travel.controller.util.EntityToResponseConverter.convertTripToResponse;
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
 
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
@@ -22,6 +22,6 @@ public class TravelController {
     @GetMapping("/trips/{id}")
     public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
         Trip trip = tripService.findTripById(id);
-        return ResponseBody.ok(convertTripToResponse(trip));
+        return ResponseBody.ok(toTripResponse(trip));
     }
 }
