@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.controller;
 
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -8,17 +9,18 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import kr.co.fastcampus.travel.controller.request.TripRequest;
-import kr.co.fastcampus.travel.controller.response.TripResponse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
+import kr.co.fastcampus.travel.controller.request.TripRequest;
+import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.TripRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -142,5 +144,41 @@ public class TravelControllerTest {
             () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
             () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
         );
+    }
+
+    @Test
+    @DisplayName("여행 목록 조회")
+    void findAll() {
+        Trip trip1 = Trip.builder()
+            .name("name1")
+            .startDate(LocalDate.of(2023, 1, 1))
+            .endDate(LocalDate.of(2023, 1, 7))
+            .isForeign(true)
+            .build();
+        Trip trip2 = Trip.builder()
+            .name("name2")
+            .startDate(LocalDate.of(2023, 1, 1))
+            .endDate(LocalDate.of(2023, 1, 7))
+            .isForeign(true)
+            .build();
+        tripRepository.save(trip1);
+        tripRepository.save(trip2);
+        // when
+        String url = "/api/trips";
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .when().get(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        List<TripResponse> data = jsonPath.getList("data", TripResponse.class);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(status).isEqualTo("SUCCESS");
+        assertThat(data.size()).isEqualTo(2);
+        assertThat(data).contains(toTripResponse(trip1));
     }
 }
