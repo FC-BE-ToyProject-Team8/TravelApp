@@ -4,7 +4,6 @@ import static kr.co.fastcampus.travel.TravelUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.entity.Itinerary;

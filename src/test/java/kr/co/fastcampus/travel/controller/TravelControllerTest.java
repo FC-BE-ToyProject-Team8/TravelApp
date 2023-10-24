@@ -11,7 +11,6 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDate;
 import java.util.List;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import java.util.stream.IntStream;
