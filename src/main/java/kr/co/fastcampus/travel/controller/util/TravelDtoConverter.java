@@ -11,8 +11,8 @@ public class TravelDtoConverter {
         return TripResponse.builder()
             .id(trip.getId())
             .name(trip.getName())
-            .startDate(trip.getStartDate().toString())
-            .endDate(trip.getEndDate().toString())
+            .startDate(trip.getStartDate())
+            .endDate(trip.getEndDate())
             .isForeign(trip.isForeign())
             .build();
     }
