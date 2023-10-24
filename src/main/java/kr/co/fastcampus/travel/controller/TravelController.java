@@ -59,6 +59,7 @@ public class TravelController {
     }
 
     @GetMapping("/trips/{id}")
+    @Operation(summary = "여정을 포함한 여행 조회")
     public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
         Trip trip = tripService.findTripById(id);
         return ResponseBody.ok(toTripResponse(trip));
