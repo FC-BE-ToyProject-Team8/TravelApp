@@ -103,6 +103,51 @@ public class TravelControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("여행 수정")
+    void editTrip() {
+        // given
+        tripRepository.save(
+            Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
+                .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+                .build()
+        );
+
+        String url = "/api/trips/1";
+        TripRequest request = TripRequest.builder()
+            .name("이름2")
+            .startDate(LocalDate.parse("2011-01-01"))
+            .endDate(LocalDate.parse("2011-01-02"))
+            .isForeign(true)
+            .build();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .put(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        TripResponse data = jsonPath.getObject("data", TripResponse.class);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        assertSoftly((softly) -> {
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.id()).isNotNull();
+            softly.assertThat(data.name()).isEqualTo("이름2");
+            softly.assertThat(data.startAt()).isEqualTo("2011-01-01");
+            softly.assertThat(data.endAt()).isEqualTo("2011-01-02");
+            softly.assertThat(data.isForeign()).isEqualTo(true);
+        });
+    }
+
+    @Test
     @DisplayName("여정 포함 여행 조회")
     void getContainTrip() {
         // given
