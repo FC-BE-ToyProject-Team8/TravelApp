@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class TravelControllerTests {
+public class TravelControllerTest {
 
     @LocalServerPort
     private int port;
