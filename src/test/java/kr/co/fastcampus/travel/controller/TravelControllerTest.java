@@ -11,9 +11,8 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.IntStream;
-import kr.co.fastcampus.travel.controller.response.TripResponse;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
@@ -57,10 +56,10 @@ public class TravelControllerTest {
         // when
         ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
             .when()
-                .post(url)
+            .post(url)
             .then().log().all()
             .extract();
 
