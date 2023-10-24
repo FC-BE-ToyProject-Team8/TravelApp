@@ -10,6 +10,7 @@ import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
+import kr.co.fastcampus.travel.controller.util.TravelDtoConverter;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.service.TripService;
 import lombok.RequiredArgsConstructor;
