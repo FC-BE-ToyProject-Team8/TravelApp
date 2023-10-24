@@ -9,10 +9,10 @@ import org.springframework.data.repository.query.Param;
 public interface TripRepository extends CrudRepository<Trip, Long> {
 
     @Query(
-            "select t "
-                    + "from Trip t "
-                    + "join fetch t.itineraries i "
-                    + "where t.id = :id"
+        "select t "
+            + "from Trip t "
+            + "join fetch t.itineraries i "
+            + "where t.id = :id"
     )
     Optional<Trip> findFetchItineraryById(@Param("id") Long id);
 }
