@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDate;
@@ -49,7 +49,9 @@ class TravelServiceTest {
         List<Trip> findTrips = travelService.findAllTrips();
 
         // then
-        assertThat(findTrips.size()).isEqualTo(2);
-        assertThat(findTrips.get(0).getName()).isEqualTo("name1");
+        assertSoftly(softly -> {
+            softly.assertThat(findTrips.size()).isEqualTo(2);
+            softly.assertThat(findTrips.get(0)).isEqualTo(trip1);
+        });
     }
 }
