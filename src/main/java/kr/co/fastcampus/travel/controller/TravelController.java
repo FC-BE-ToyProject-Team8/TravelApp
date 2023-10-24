@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
-import kr.co.fastcampus.travel.controller.request.TripUpdateRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Trip;
@@ -60,7 +59,7 @@ public class TravelController {
     @Operation(summary = "여행 수정")
     public ResponseBody<TripResponse> editTrip(
         @PathVariable Long tripId,
-        @Valid @RequestBody TripUpdateRequest request
+        @Valid @RequestBody TripRequest request
     ) {
         Trip trip = tripService.editTrip(tripId, request);
         TripResponse response = toTripResponse(trip);

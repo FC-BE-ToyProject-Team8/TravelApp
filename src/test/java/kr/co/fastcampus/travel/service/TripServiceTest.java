@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
-import kr.co.fastcampus.travel.controller.request.TripUpdateRequest;
+import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -93,7 +93,7 @@ class TripServiceTest {
         given(tripRepository.save(any()))
             .willAnswer(invocation -> invocation.getArguments()[0]);
 
-        TripUpdateRequest request = TripUpdateRequest.builder()
+        TripRequest request = TripRequest.builder()
             .name("이름2").startDate("2011-01-01").endDate("2011-01-02").isForeign(true)
             .build();
 
@@ -115,7 +115,7 @@ class TripServiceTest {
         given(tripRepository.findById(notExistingTripId))
             .willReturn(Optional.empty());
 
-        TripUpdateRequest request = TripUpdateRequest.builder().build();
+        TripRequest request = TripRequest.builder().build();
 
         // when, then
         assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request))
