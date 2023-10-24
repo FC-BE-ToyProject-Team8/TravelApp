@@ -37,7 +37,14 @@ public class Trip extends BaseEntity {
 
     @OneToMany(
         fetch = FetchType.LAZY, mappedBy = "trip",
-        cascade = CascadeType.ALL, orphanRemoval = true
+        cascade = CascadeType.PERSIST, orphanRemoval = true
     )
     private List<Itinerary> itineraries;
+
+    public Trip(String name, LocalDate startDate, LocalDate endDate, boolean isForeign) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isForeign = isForeign;
+    }
 }
