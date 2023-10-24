@@ -176,9 +176,11 @@ public class TravelControllerTest {
         String status = jsonPath.getString("status");
         List<TripResponse> data = jsonPath.getList("data", TripResponse.class);
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(status).isEqualTo("SUCCESS");
-        assertThat(data.size()).isEqualTo(2);
-        assertThat(data).contains(toTripResponse(trip1));
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.size()).isEqualTo(2);
+            softly.assertThat(data).contains(toTripResponse(trip1));
+        });
     }
 }
