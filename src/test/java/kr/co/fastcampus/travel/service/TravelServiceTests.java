@@ -57,7 +57,7 @@ public class TravelServiceTests {
 
     @Test
     @DisplayName("여행 수정 Service 존재하지 않는 여행 수정하려하면 예외")
-    void edit_not_existing_trip_then_exception() {
+    void editNotExistingTripThenThrowException() {
         // given
         Long notExistingTripId = 1L;
         given(tripRepository.findById(notExistingTripId))
