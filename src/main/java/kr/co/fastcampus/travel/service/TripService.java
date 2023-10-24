@@ -37,7 +37,7 @@ public class TripService {
     }
 
     public Trip editTrip(Long tripId, TripUpdateRequest request) {
-        Trip trip = tripRepository.findById(tripId).orElseThrow();
+        Trip trip = tripRepository.findById(tripId).orElseThrow(EntityNotFoundException::new);
         trip.updateName(request.name());
         trip.updateStartDate(request.startDate());
         trip.updateEndDate(request.endDate());
