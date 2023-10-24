@@ -27,7 +27,7 @@ class TripRepositoryTest {
             .endDate(LocalDate.now().plusDays(7))
             .build();
 
-        IntStream.range(0,3)
+        IntStream.range(0, 3)
             .forEach(i -> {
                 Itinerary itinerary = Itinerary.builder().build();
                 itinerary.registerTrip(trip);
