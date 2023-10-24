@@ -11,6 +11,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
@@ -151,8 +152,9 @@ public class TravelControllerTest {
     @DisplayName("여행 목록 조회")
     void findAll() {
         // given
-        Trip trip1 = saveTrip();
-        Trip trip2 = saveTrip();
+        List<Trip> saveTrips = IntStream.range(0, 2)
+            .mapToObj(i -> saveTrip())
+            .toList();
 
         // when
         ExtractableResponse<Response> response = findAllTrip();
@@ -166,8 +168,8 @@ public class TravelControllerTest {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.size()).isEqualTo(2);
-            softly.assertThat(data).contains(toTripResponse(trip1));
-            softly.assertThat(data).contains(toTripResponse(trip2));
+            softly.assertThat(data).contains(toTripResponse(saveTrips.get(0)));
+            softly.assertThat(data).contains(toTripResponse(saveTrips.get(1)));
         });
     }
 
