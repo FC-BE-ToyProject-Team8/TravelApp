@@ -12,6 +12,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
+import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
