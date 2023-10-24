@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TravelService {
+public class TripService {
 
     private final TripRepository tripRepository;
 
