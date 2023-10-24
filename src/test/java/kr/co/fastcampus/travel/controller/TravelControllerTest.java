@@ -33,6 +33,9 @@ import org.springframework.http.MediaType;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TravelControllerTest {
 
+    @Autowired
+    private TripRepository tripRepository;
+
     @LocalServerPort
     private int port;
 
@@ -49,19 +52,17 @@ public class TravelControllerTest {
     void addTrip() {
         // given
         String url = "/api/trips";
-        TripRequest request = new TripRequest(
-            "이름", "2010-01-01", "2010-01-02", false
-        );
+        TripRequest request = new TripRequest("이름", "2010-01-01", "2010-01-02", false);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(request)
-            .when()
-            .post(url)
-            .then().log().all()
-            .extract();
+        ExtractableResponse<Response> response =
+            RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when().post(url)
+                .then().log().all()
+                .extract();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -116,27 +117,24 @@ public class TravelControllerTest {
     void getContainTrip() {
         // given
         String url = "/api/trips/{id}";
-        Trip trip = Trip.builder()
-            .name("여행")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(7))
-            .build();
+        Trip trip = Trip.builder().name("여행").startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(7)).build();
 
-        IntStream.range(0, 3)
-            .forEach(i -> {
-                Itinerary itinerary = Itinerary.builder().build();
-                itinerary.registerTrip(trip);
-            });
+        IntStream.range(0, 3).forEach(i -> {
+            Itinerary itinerary = Itinerary.builder().build();
+            itinerary.registerTrip(trip);
+        });
 
         tripRepository.save(trip);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .pathParams("id", trip.getId())
-            .when().get(url)
-            .then().log().all()
-            .extract();
+        ExtractableResponse<Response> response =
+            RestAssured
+                .given().log().all()
+                .pathParams("id", trip.getId())
+                .when().get(url)
+                .then().log().all()
+                .extract();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -144,17 +142,14 @@ public class TravelControllerTest {
         assertAll(
             () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
             () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
-            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
-        );
+            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3));
     }
 
     @Test
     @DisplayName("여행 목록 조회")
     void findAll() {
         // given
-        List<Trip> saveTrips = IntStream.range(0, 2)
-            .mapToObj(i -> saveTrip())
-            .toList();
+        List<Trip> saveTrips = IntStream.range(0, 2).mapToObj(i -> saveTrip()).toList();
 
         // when
         ExtractableResponse<Response> response = findAllTrip();

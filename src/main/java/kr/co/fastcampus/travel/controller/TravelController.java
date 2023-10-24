@@ -51,24 +51,6 @@ public class TravelController {
     @Operation(summary = "여행 목록")
     public ResponseBody<List<TripResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
-        List<TripResponse> response =
-            trips.stream()
-                .map(TravelDtoConverter::toTripResponse)
-                .toList();
-        return ResponseBody.ok(response);
-    }
-
-    @GetMapping("/trips/{id}")
-    @Operation(summary = "여정을 포함한 여행 조회")
-    public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
-        Trip trip = tripService.findTripById(id);
-        return ResponseBody.ok(toTripResponse(trip));
-    }
-
-    @GetMapping("/trips")
-    @Operation(summary = "여행 목록")
-    public ResponseBody<List<TripResponse>> getTripList() {
-        List<Trip> trips = tripService.findAllTrips();
         return ResponseBody.ok(toTripResponses(trips));
     }
 }
