@@ -10,11 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Trip extends BaseEntity {
 
@@ -41,7 +43,13 @@ public class Trip extends BaseEntity {
     )
     private List<Itinerary> itineraries;
 
-    public Trip(String name, LocalDate startDate, LocalDate endDate, boolean isForeign) {
+    @Builder
+    private Trip(
+        String name,
+        LocalDate startDate,
+        LocalDate endDate,
+        boolean isForeign
+    ) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
