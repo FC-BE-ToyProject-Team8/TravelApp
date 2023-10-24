@@ -78,7 +78,7 @@ class TripRepositoryTest {
             .endDate(LocalDate.of(2023, 1, 7))
             .isForeign(true)
             .build();
-        Trip saveTrip = tripRepository.save(trip);
+        tripRepository.save(trip);
 
         // when
         List<Trip> trips = tripRepository.findAll();
@@ -86,7 +86,7 @@ class TripRepositoryTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(trips.size()).isEqualTo(1);
-            softly.assertThat(trips.get(0)).isEqualTo(saveTrip);
+            softly.assertThat(trips).contains(trip);
         });
     }
 }

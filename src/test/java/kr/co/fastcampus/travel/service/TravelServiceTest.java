@@ -51,7 +51,8 @@ class TravelServiceTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(findTrips.size()).isEqualTo(2);
-            softly.assertThat(findTrips.get(0)).isEqualTo(trip1);
+            softly.assertThat(findTrips).contains(trip1);
+            softly.assertThat(findTrips).contains(trip2);
         });
     }
 }

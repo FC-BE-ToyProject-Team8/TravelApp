@@ -149,6 +149,7 @@ public class TravelControllerTest {
     @Test
     @DisplayName("여행 목록 조회")
     void findAll() {
+        // given
         Trip trip1 = Trip.builder()
             .name("name1")
             .startDate(LocalDate.of(2023, 1, 1))
@@ -163,6 +164,7 @@ public class TravelControllerTest {
             .build();
         tripRepository.save(trip1);
         tripRepository.save(trip2);
+
         // when
         String url = "/api/trips";
         ExtractableResponse<Response> response = RestAssured
@@ -181,6 +183,7 @@ public class TravelControllerTest {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.size()).isEqualTo(2);
             softly.assertThat(data).contains(toTripResponse(trip1));
+            softly.assertThat(data).contains(toTripResponse(trip2));
         });
     }
 }

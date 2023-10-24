@@ -102,4 +102,10 @@ public class TravelDtoConverter {
             .endAt(stay.getEndAt())
             .build();
     }
+
+    public static List<TripResponse> toTripResponses(List<Trip> trips) {
+        return trips.stream()
+            .map(TravelDtoConverter::toTripResponse)
+            .toList();
+    }
 }
