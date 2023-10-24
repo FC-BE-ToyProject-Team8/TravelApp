@@ -69,10 +69,6 @@ public class TravelController {
     @Operation(summary = "여행 목록")
     public ResponseBody<List<TripResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
-        List<TripResponse> response =
-            trips.stream()
-                .map(TravelDtoConverter::toTripResponse)
-                .toList();
-        return ResponseBody.ok(response);
+        return ResponseBody.ok(toTripResponses(trips));
     }
 }
