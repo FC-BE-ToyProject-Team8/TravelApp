@@ -47,7 +47,7 @@ class TravelControllerTest {
             .endDate(LocalDate.now().plusDays(7))
             .build();
 
-        IntStream.range(0,3)
+        IntStream.range(0, 3)
             .forEach(i -> {
                 Itinerary itinerary = Itinerary.builder().build();
                 itinerary.registerTrip(trip);
@@ -58,7 +58,7 @@ class TravelControllerTest {
         // when
         ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-                .pathParams("id", trip.getId())
+            .pathParams("id", trip.getId())
             .when().get(url)
             .then().log().all()
             .extract();

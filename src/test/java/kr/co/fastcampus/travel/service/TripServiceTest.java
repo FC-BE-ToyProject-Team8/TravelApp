@@ -40,7 +40,8 @@ class TripServiceTest {
     @DisplayName("여행 + 여정 조회")
     void findTripById_success() {
         // given
-        when(tripRepository.findFetchItineraryById(-1L)).thenReturn(Optional.of(Trip.builder().build()));
+        when(tripRepository.findFetchItineraryById(-1L))
+            .thenReturn(Optional.of(Trip.builder().build()));
 
         // when
         Trip result = tripService.findTripById(-1L);
