@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -84,7 +84,9 @@ class TripRepositoryTest {
         List<Trip> trips = tripRepository.findAll();
 
         // then
-        assertThat(trips.size()).isEqualTo(1);
-        assertThat(trips.get(0)).isEqualTo(saveTrip);
+        assertSoftly(softly -> {
+            softly.assertThat(trips.size()).isEqualTo(1);
+            softly.assertThat(trips.get(0)).isEqualTo(saveTrip);
+        });
     }
 }
