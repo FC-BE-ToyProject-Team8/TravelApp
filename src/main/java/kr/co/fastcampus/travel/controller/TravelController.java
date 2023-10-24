@@ -1,5 +1,31 @@
 package kr.co.fastcampus.travel.controller;
 
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
+
+import io.swagger.v3.oas.annotations.Operation;
+import kr.co.fastcampus.travel.common.response.ResponseBody;
+import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.entity.Trip;
+import kr.co.fastcampus.travel.service.TripService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Slf4j
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class TravelController {
 
+    private final TripService tripService;
+
+    @GetMapping("/trips/{id}")
+    @Operation(summary = "여정을 포함한 여행 조회")
+    public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
+        Trip trip = tripService.findTripById(id);
+        return ResponseBody.ok(toTripResponse(trip));
+    }
 }
