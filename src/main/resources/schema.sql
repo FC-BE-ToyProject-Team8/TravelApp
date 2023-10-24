@@ -9,6 +9,8 @@ CREATE TABLE `Trip` (
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
     `is_foreign` TINYINT(1) NOT NULL,
+    `created_date` TIMESTAMP NULL,
+    `updated_date` TIMESTAMP NULL,
     PRIMARY KEY (`trip_id`)
 );
 
@@ -34,6 +36,8 @@ CREATE TABLE `Itinerary` (
     `stay_address` VARCHAR(255) NULL,
     `start_at` DATETIME NULL,
     `end_at` DATETIME NULL,
+    `created_date` TIMESTAMP NOT NULL,
+    `updated_date` TIMESTAMP NULL,
     PRIMARY KEY (`itinerary_id`),
     FOREIGN KEY (`trip_id`) REFERENCES `Trip`(`trip_id`) ON DELETE CASCADE
 );
