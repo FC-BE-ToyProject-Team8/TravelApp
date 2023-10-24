@@ -45,7 +45,7 @@ public class TravelDtoConverter {
                 .map(TravelDtoConverter::toLodgeResponse)
                 .orElse(null))
             .stay(Optional.ofNullable(itinerary.getStay())
-                .map(TravelDtoConverter::ToStayResponse)
+                .map(TravelDtoConverter::toStayResponse)
                 .orElse(null))
             .build();
     }
@@ -71,7 +71,7 @@ public class TravelDtoConverter {
             .build();
     }
 
-    private static StayResponse ToStayResponse(Stay stay) {
+    private static StayResponse toStayResponse(Stay stay) {
         return StayResponse.builder()
             .placeName(stay.getPlaceName())
             .address(stay.getAddress())
