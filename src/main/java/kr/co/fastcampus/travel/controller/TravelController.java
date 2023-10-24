@@ -11,6 +11,8 @@ import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +34,12 @@ public class TravelController {
         Trip trip = tripService.addTrip(request);
         TripResponse response = toTripResponse(trip);
         return ResponseBody.ok(response);
+    }
+
+    @GetMapping("/trips/{id}")
+    @Operation(summary = "여정을 포함한 여행 조회")
+    public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
+        Trip trip = tripService.findTripById(id);
+        return ResponseBody.ok(toTripResponse(trip));
     }
 }

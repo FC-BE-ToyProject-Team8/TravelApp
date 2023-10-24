@@ -1,22 +1,22 @@
 -- Drop tables if they exist
-DROP TABLE IF EXISTS `Itinerary`;
-DROP TABLE IF EXISTS `Trip`;
+DROP TABLE IF EXISTS `itinerary`;
+DROP TABLE IF EXISTS `trip`;
 
 -- Create Trip table
-CREATE TABLE `Trip` (
-    `trip_id` BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE `trip` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
     `is_foreign` TINYINT(1) NOT NULL,
-    `created_date` TIMESTAMP NULL,
+    `created_date` TIMESTAMP NOT NULL,
     `updated_date` TIMESTAMP NULL,
-    PRIMARY KEY (`trip_id`)
+    PRIMARY KEY (`id`)
 );
 
 -- Create Itinerary table
-CREATE TABLE `Itinerary` (
-    `itinerary_id` BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE `itinerary` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `trip_id` BIGINT NOT NULL,
     -- Embedded Route columns
     `transportation` VARCHAR(255) NULL,
@@ -38,6 +38,6 @@ CREATE TABLE `Itinerary` (
     `end_at` DATETIME NULL,
     `created_date` TIMESTAMP NOT NULL,
     `updated_date` TIMESTAMP NULL,
-    PRIMARY KEY (`itinerary_id`),
-    FOREIGN KEY (`trip_id`) REFERENCES `Trip`(`trip_id`) ON DELETE CASCADE
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`trip_id`) REFERENCES `trip`(`id`) ON DELETE CASCADE
 );

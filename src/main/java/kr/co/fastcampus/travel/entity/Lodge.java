@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,4 +19,17 @@ public class Lodge {
     private String address;
     private LocalDateTime checkInAt;
     private LocalDateTime checkOutAt;
+
+    @Builder
+    private Lodge(
+        String placeName,
+        String address,
+        LocalDateTime checkInAt,
+        LocalDateTime checkOutAt
+    ) {
+        this.placeName = placeName;
+        this.address = address;
+        this.checkInAt = checkInAt;
+        this.checkOutAt = checkOutAt;
+    }
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,7 +22,6 @@ import lombok.NoArgsConstructor;
 public class Trip extends BaseEntity {
 
     @Id
-    @Column(name = "trip_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -41,7 +41,7 @@ public class Trip extends BaseEntity {
         fetch = FetchType.LAZY, mappedBy = "trip",
         cascade = CascadeType.PERSIST, orphanRemoval = true
     )
-    private List<Itinerary> itineraries;
+    private List<Itinerary> itineraries = new ArrayList<>();
 
     @Builder
     private Trip(
@@ -54,5 +54,9 @@ public class Trip extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
+    }
+
+    public void addItinerary(Itinerary itinerary) {
+        itineraries.add(itinerary);
     }
 }
