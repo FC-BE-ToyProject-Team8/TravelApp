@@ -62,4 +62,8 @@ public class Trip extends BaseEntity {
         this.endDate = tripToBeUpdated.getEndDate();
         this.isForeign = tripToBeUpdated.isForeign();
     }
+
+    public void addItinerary(Itinerary itinerary) {
+        itineraries.add(itinerary);
+    }
 }
