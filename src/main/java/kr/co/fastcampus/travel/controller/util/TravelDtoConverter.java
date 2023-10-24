@@ -25,6 +25,7 @@ public class TravelDtoConverter {
             .name(trip.getName())
             .startAt(trip.getStartDate())
             .endAt(trip.getEndDate())
+            .isForeign(trip.isForeign())
             .itineraries(getItineraryResponses(trip))
             .build();
     }
