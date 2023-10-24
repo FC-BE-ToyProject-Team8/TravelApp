@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class TravelServiceTests {
+public class TravelServiceTest {
 
     @InjectMocks
     private TravelService travelService;
