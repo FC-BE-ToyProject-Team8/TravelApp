@@ -10,6 +10,7 @@ import io.restassured.response.Response;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -29,7 +30,8 @@ public class TravelControllerTests {
     }
 
     @Test
-    void 여행_등록() {
+    @DisplayName("여행 등록")
+    void addTrip() {
         // given
         String url = "/api/trips";
         TripRequest request = new TripRequest(
