@@ -2,9 +2,16 @@ package kr.co.fastcampus.travel.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lodge {
 
     @Column(name = "lodge_place_name", length = 100)
@@ -13,4 +20,17 @@ public class Lodge {
     private String address;
     private LocalDateTime checkInAt;
     private LocalDateTime checkOutAt;
+
+    @Builder
+    private Lodge(
+            String placeName,
+            String address,
+            LocalDateTime checkInAt,
+            LocalDateTime checkOutAt
+    ) {
+        this.placeName = placeName;
+        this.address = address;
+        this.checkInAt = checkInAt;
+        this.checkOutAt = checkOutAt;
+    }
 }
