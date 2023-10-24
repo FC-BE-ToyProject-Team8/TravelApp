@@ -10,6 +10,7 @@ import kr.co.fastcampus.travel.controller.response.LodgeResponse;
 import kr.co.fastcampus.travel.controller.response.RouteResponse;
 import kr.co.fastcampus.travel.controller.response.StayResponse;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Lodge;
 import kr.co.fastcampus.travel.entity.Route;
@@ -29,6 +30,16 @@ public class TravelDtoConverter {
             .endAt(trip.getEndDate())
             .isForeign(trip.isForeign())
             .itineraries(getItineraryResponses(trip))
+            .build();
+    }
+
+    public static TripSummaryResponse toTripSummaryResponse(Trip trip) {
+        return TripSummaryResponse.builder()
+            .id(trip.getId())
+            .name(trip.getName())
+            .startAt(trip.getStartDate())
+            .endAt(trip.getEndDate())
+            .isForeign(trip.isForeign())
             .build();
     }
 

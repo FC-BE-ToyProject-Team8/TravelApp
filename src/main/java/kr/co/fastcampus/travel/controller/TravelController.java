@@ -1,12 +1,14 @@
 package kr.co.fastcampus.travel.controller;
 
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.service.TripService;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +30,11 @@ public class TravelController {
 
     @PostMapping("/trips")
     @Operation(summary = "여행 등록")
-    public ResponseBody<TripResponse> addTrip(
+    public ResponseBody<TripSummaryResponse> addTrip(
         @Valid @RequestBody TripRequest request
     ) {
         Trip trip = tripService.addTrip(request);
-        TripResponse response = toTripResponse(trip);
+        TripSummaryResponse response = toTripSummaryResponse(trip);
         return ResponseBody.ok(response);
     }
 
