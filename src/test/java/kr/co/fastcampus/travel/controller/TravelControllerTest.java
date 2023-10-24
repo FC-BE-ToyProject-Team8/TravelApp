@@ -77,8 +77,39 @@ public class TravelControllerTest {
     }
 
     @Test
-    @DisplayName("여행과 여정 조회")
-    void getTrip() {
+    @DisplayName("여정 없는 여행 조회")
+    void getOnlyTrip() {
+        // given
+        String url = "/api/trips/{id}";
+        Trip trip = Trip.builder()
+            .name("여행")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(7))
+            .build();
+
+        tripRepository.save(trip);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .pathParams("id", trip.getId())
+            .when().get(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertAll(
+            () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
+            () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
+            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(0)
+        );
+    }
+
+    @Test
+    @DisplayName("여정 포함 여행 조회")
+    void getContainTrip() {
         // given
         String url = "/api/trips/{id}";
         Trip trip = Trip.builder()
