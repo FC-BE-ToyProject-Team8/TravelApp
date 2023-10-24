@@ -3,29 +3,26 @@ package kr.co.fastcampus.travel.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.TripRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
 
+    @InjectMocks
     private TripService tripService;
-
-    @BeforeEach
-    public void setUp() {
-        openMocks(this);
-        tripService = new TripService(tripRepository);
-    }
 
     @Test
     @DisplayName("여행 + 여정 조회 결과 없음")
