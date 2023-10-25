@@ -21,7 +21,7 @@ class TripRepositoryTest {
 
     @Test
     @DisplayName("여행 + 여정 조회 검증")
-    void test() {
+    void findContainTrip() {
         // given
         Trip trip = Trip.builder()
             .name("여행")
@@ -44,5 +44,26 @@ class TripRepositoryTest {
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(trip.getId());
         assertThat(result.getItineraries().size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("여정 없는 여행 조회 검증")
+    void findOnlyTrip() {
+        // given
+        Trip trip = Trip.builder()
+            .name("여행")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(7))
+            .build();
+
+        tripRepository.save(trip);
+
+        // when
+        Trip result = tripRepository.findFetchItineraryById(trip.getId()).orElse(null);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(trip.getId());
+        assertThat(result.getItineraries().size()).isEqualTo(0);
     }
 }
