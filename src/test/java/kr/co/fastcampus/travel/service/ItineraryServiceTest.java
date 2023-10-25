@@ -7,7 +7,11 @@ import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
+import kr.co.fastcampus.travel.controller.request.LodgeRequest;
+import kr.co.fastcampus.travel.controller.request.RouteRequest;
+import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Lodge;
 import kr.co.fastcampus.travel.entity.Route;
@@ -68,22 +72,22 @@ public class ItineraryServiceTest {
         given(itineraryRepository.save(any())).willAnswer(
             invocation -> invocation.getArguments()[0]);
 
-        Lodge lodge2 = Lodge.builder()
+        LodgeRequest lodge2 = LodgeRequest.builder()
             .placeName("글램핑")
             .address("부산 @@@")
             .checkInAt(LocalDateTime.of(2023, 1, 1, 15, 00))
             .checkOutAt(LocalDateTime.of(2023, 1, 2, 11, 00))
             .build();
 
-        Stay stay2 = Stay.builder()
+        StayRequest stay2 = StayRequest.builder()
             .placeName("한국")
             .address("대한민국")
-            .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+            .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 50))
             .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .build();
 
-        Route route2 = Route.builder()
-            .transportation("지하철")
+        RouteRequest route2 = RouteRequest.builder()
+            .transportation("택시")
             .departurePlaceName("우리집")
             .departureAddress("서울")
             .destinationPlaceName("해운대")
@@ -120,6 +124,7 @@ public class ItineraryServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> itineraryService.editItinerary(noExistId, request));
+        assertThatThrownBy(() -> itineraryService.editItinerary(noExistId, request))
+            .isInstanceOf(EntityNotFoundException.class);
     }
 }

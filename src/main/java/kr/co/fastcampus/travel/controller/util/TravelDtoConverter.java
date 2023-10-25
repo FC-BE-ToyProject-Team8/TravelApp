@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
+import kr.co.fastcampus.travel.controller.request.LodgeRequest;
+import kr.co.fastcampus.travel.controller.request.RouteRequest;
+import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.LodgeResponse;
@@ -74,11 +77,41 @@ public class TravelDtoConverter {
             .build();
     }
 
-    public static Itinerary toItinerary(ItineraryRequest request){
+    public static Itinerary toItinerary(ItineraryRequest request) {
         return Itinerary.builder()
-            .route(request.route())
-            .lodge(request.lodge())
-            .stay(request.stay())
+            .route(toRoute(request.route()))
+            .lodge(toLodge(request.lodge()))
+            .stay(toStay(request.stay()))
+            .build();
+    }
+
+    private static Route toRoute(RouteRequest request){
+        return Route.builder()
+            .transportation(request.transportation())
+            .departurePlaceName(request.departurePlaceName())
+            .departureAddress(request.departureAddress())
+            .destinationPlaceName(request.destinationPlaceName())
+            .destinationAddress(request.destinationAddress())
+            .departureAt(request.departureAt())
+            .arriveAt(request.arriveAt())
+            .build();
+    }
+
+    private static Lodge toLodge(LodgeRequest request){
+        return Lodge.builder()
+            .placeName(request.placeName())
+            .address(request.address())
+            .checkInAt(request.checkInAt())
+            .checkOutAt(request.checkOutAt())
+            .build();
+    }
+
+    private static Stay toStay(StayRequest request){
+        return Stay.builder()
+            .placeName(request.placeName())
+            .address(request.address())
+            .startAt(request.startAt())
+            .endAt(request.endAt())
             .build();
     }
 
