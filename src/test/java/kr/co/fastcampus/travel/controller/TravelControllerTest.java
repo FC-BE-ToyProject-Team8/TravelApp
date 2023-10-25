@@ -1,7 +1,9 @@
 package kr.co.fastcampus.travel.controller;
 
+import static kr.co.fastcampus.travel.TravelUtils.createItinerary;
 import static kr.co.fastcampus.travel.TravelUtils.createTrip;
-import static kr.co.fastcampus.travel.TravelUtils.findAllTrip;
+import static kr.co.fastcampus.travel.TravelUtils.deleteItineraryRequest;
+import static kr.co.fastcampus.travel.TravelUtils.findAllTripRequest;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -21,6 +23,7 @@ import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Trip;
+import kr.co.fastcampus.travel.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +35,8 @@ public class TravelControllerTest extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
+    @Autowired
+    private ItineraryRepository itineraryRepository;
 
     @Test
     @DisplayName("여행 등록")
@@ -144,7 +149,7 @@ public class TravelControllerTest extends ApiTest {
         List<Trip> saveTrips = IntStream.range(0, 2).mapToObj(i -> saveTrip()).toList();
 
         // when
-        ExtractableResponse<Response> response = findAllTrip();
+        ExtractableResponse<Response> response = findAllTripRequest();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -160,9 +165,46 @@ public class TravelControllerTest extends ApiTest {
         });
     }
 
+    @Test
+    @DisplayName("여정 삭제")
+    void deleteItinerary() {
+        //given
+        Trip trip = saveTrip();
+        Itinerary itinerary1 = saveItinerary(trip);
+        Itinerary itinerary2 = saveItinerary(trip);
+
+        //when
+        ExtractableResponse<Response> response = deleteItineraryRequest(itinerary2.getId());
+
+        //then
+        Trip findTrip = tripRepository.findFetchItineraryById(trip.getId()).get();
+        List<Itinerary> itineraries = findTrip.getItineraries();
+        assertThat(itineraries.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 여정 삭제")
+    void deleteNoneItinerary() {
+        //given
+        Trip trip = saveTrip();
+        Itinerary itinerary1 = saveItinerary(trip);
+        Itinerary itinerary2 = saveItinerary(trip);
+
+        //when
+        ExtractableResponse<Response> response = deleteItineraryRequest(5L);
+
+        //then
+        assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
+        assertThat(response.jsonPath().getString("errorMessage")).isEqualTo("존재하지 않는 엔티티입니다.");
+    }
+
     private Trip saveTrip() {
         Trip trip = createTrip();
-        tripRepository.save(trip);
-        return trip;
+        return tripRepository.save(trip);
+    }
+
+    private Itinerary saveItinerary(Trip trip) {
+        Itinerary itinerary = createItinerary(trip);
+        return itineraryRepository.save(itinerary);
     }
 }

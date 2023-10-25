@@ -37,13 +37,6 @@ public class Itinerary extends BaseEntity {
     private Trip trip;
 
     @Builder
-    private Itinerary(Route route, Lodge lodge, Stay stay) {
-        this.route = route;
-        this.lodge = lodge;
-        this.stay = stay;
-    }
-
-    @Builder
     private Itinerary(
         String transportation,
         String departurePlaceName,
@@ -84,6 +77,13 @@ public class Itinerary extends BaseEntity {
             .startAt(startAt)
             .endAt(endAt)
             .build();
+    }
+
+    @Builder
+    private Itinerary(Route route, Lodge lodge, Stay stay) {
+        this.route = route;
+        this.lodge = lodge;
+        this.stay = stay;
     }
 
     public void registerTrip(Trip trip) {
