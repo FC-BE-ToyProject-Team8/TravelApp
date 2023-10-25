@@ -15,35 +15,23 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
+import kr.co.fastcampus.travel.ApiTest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.TripRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class TravelControllerTest {
-
-    @LocalServerPort
-    private int port;
+public class TravelControllerTest extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
 
     @Test
     @DisplayName("여행 등록")
@@ -59,7 +47,8 @@ public class TravelControllerTest {
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(request)
-            .when().post(url)
+            .when()
+            .post(url)
             .then().log().all()
             .extract();
 
