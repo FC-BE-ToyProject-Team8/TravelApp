@@ -1,8 +1,8 @@
 package kr.co.fastcampus.travel.controller;
 
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
-import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponses;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponses;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -49,8 +49,8 @@ public class TravelController {
 
     @GetMapping("/trips")
     @Operation(summary = "여행 목록")
-    public ResponseBody<List<TripResponse>> getTripList() {
+    public ResponseBody<List<TripSummaryResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
-        return ResponseBody.ok(toTripResponses(trips));
+        return ResponseBody.ok(toTripSummaryResponses(trips));
     }
 }

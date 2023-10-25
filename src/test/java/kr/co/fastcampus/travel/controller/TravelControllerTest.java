@@ -2,7 +2,7 @@ package kr.co.fastcampus.travel.controller;
 
 import static kr.co.fastcampus.travel.TravelUtils.createTrip;
 import static kr.co.fastcampus.travel.TravelUtils.findAllTrip;
-import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.TripRepository;
@@ -38,9 +39,6 @@ public class TravelControllerTest {
 
     @LocalServerPort
     private int port;
-
-    @Autowired
-    private TripRepository tripRepository;
 
     @BeforeEach
     void setUp() {
@@ -157,14 +155,14 @@ public class TravelControllerTest {
         // then
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
-        List<TripResponse> data = jsonPath.getList("data", TripResponse.class);
+        List<TripSummaryResponse> data = jsonPath.getList("data", TripSummaryResponse.class);
 
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.size()).isEqualTo(2);
-            softly.assertThat(data).contains(toTripResponse(saveTrips.get(0)));
-            softly.assertThat(data).contains(toTripResponse(saveTrips.get(1)));
+            softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(0)));
+            softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(1)));
         });
     }
 
