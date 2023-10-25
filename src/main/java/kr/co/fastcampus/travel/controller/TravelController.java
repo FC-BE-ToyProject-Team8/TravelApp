@@ -12,9 +12,11 @@ import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Trip;
+import kr.co.fastcampus.travel.service.ItineraryService;
 import kr.co.fastcampus.travel.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TravelController {
 
     private final TripService tripService;
+    private final ItineraryService itineraryService;
 
     @PostMapping("/trips")
     @Operation(summary = "여행 등록")
@@ -52,5 +55,12 @@ public class TravelController {
     public ResponseBody<List<TripSummaryResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
         return ResponseBody.ok(toTripSummaryResponses(trips));
+    }
+
+    @DeleteMapping("/itineraries/{itineraryId}")
+    @Operation(summary = "여정 삭제")
+    public ResponseBody<Void> deleteItinerary(@PathVariable Long itineraryId) {
+        itineraryService.deleteById(itineraryId);
+        return ResponseBody.ok();
     }
 }
