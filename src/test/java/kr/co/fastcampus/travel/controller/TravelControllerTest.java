@@ -55,14 +55,13 @@ public class TravelControllerTest {
         );
 
         // when
-        ExtractableResponse<Response> response =
-            RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when().post(url)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when().post(url)
+            .then().log().all()
+            .extract();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -123,21 +122,21 @@ public class TravelControllerTest {
             .endDate(LocalDate.now().plusDays(7))
             .build();
 
-        IntStream.range(0, 3).forEach(i -> {
-            Itinerary itinerary = Itinerary.builder().build();
-            itinerary.registerTrip(trip);
-        });
+        IntStream.range(0, 3)
+            .forEach(i -> {
+                Itinerary itinerary = Itinerary.builder().build();
+                itinerary.registerTrip(trip);
+            });
 
         tripRepository.save(trip);
 
         // when
-        ExtractableResponse<Response> response =
-            RestAssured
-                .given().log().all()
-                .pathParams("id", trip.getId())
-                .when().get(url)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .pathParams("id", trip.getId())
+            .when().get(url)
+            .then().log().all()
+            .extract();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -145,7 +144,8 @@ public class TravelControllerTest {
         assertAll(
             () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
             () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
-            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3));
+            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
+        );
     }
 
     @Test
