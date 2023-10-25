@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.LodgeResponse;
@@ -58,7 +59,7 @@ public class TravelDtoConverter {
             .collect(Collectors.toList());
     }
 
-    private static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
+    public static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
         return ItineraryResponse.builder()
             .id(itinerary.getId())
             .route(Optional.ofNullable(itinerary.getRoute())
@@ -70,6 +71,14 @@ public class TravelDtoConverter {
             .stay(Optional.ofNullable(itinerary.getStay())
                 .map(TravelDtoConverter::toStayResponse)
                 .orElse(null))
+            .build();
+    }
+
+    public static Itinerary toItinerary(ItineraryRequest request){
+        return Itinerary.builder()
+            .route(request.route())
+            .lodge(request.lodge())
+            .stay(request.stay())
             .build();
     }
 

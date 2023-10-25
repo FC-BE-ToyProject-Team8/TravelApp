@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,6 +85,12 @@ public class Itinerary extends BaseEntity {
             .startAt(startAt)
             .endAt(endAt)
             .build();
+    }
+
+    public void update(Itinerary itineraryToBeUpdated){
+        this.route=itineraryToBeUpdated.getRoute();
+        this.lodge=itineraryToBeUpdated.getLodge();
+        this.stay=itineraryToBeUpdated.getStay();
     }
 
     public void registerTrip(Trip trip) {
