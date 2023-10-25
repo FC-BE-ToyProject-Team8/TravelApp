@@ -58,8 +58,8 @@ public class TravelController {
         @PathVariable Long id,
         @Valid @RequestBody ItineraryRequest itineraryRequest
     ) {
-        Itinerary itinerary = itineraryService.editItinerary(id,itineraryRequest);
-        ItineraryResponse response=toItineraryResponse(itinerary);
+        Itinerary itinerary = itineraryService.editItinerary(id, itineraryRequest);
+        ItineraryResponse response = toItineraryResponse(itinerary);
         return ResponseBody.ok(response);
     }
 }

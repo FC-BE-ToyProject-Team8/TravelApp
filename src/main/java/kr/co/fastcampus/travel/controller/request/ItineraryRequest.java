@@ -7,7 +7,6 @@ public record ItineraryRequest(
     RouteRequest route,
     LodgeRequest lodge,
     StayRequest stay
-
 ) {
 
 }

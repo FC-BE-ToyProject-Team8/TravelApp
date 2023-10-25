@@ -85,7 +85,7 @@ public class TravelDtoConverter {
             .build();
     }
 
-    private static Route toRoute(RouteRequest request){
+    private static Route toRoute(RouteRequest request) {
         return Route.builder()
             .transportation(request.transportation())
             .departurePlaceName(request.departurePlaceName())
@@ -97,7 +97,7 @@ public class TravelDtoConverter {
             .build();
     }
 
-    private static Lodge toLodge(LodgeRequest request){
+    private static Lodge toLodge(LodgeRequest request) {
         return Lodge.builder()
             .placeName(request.placeName())
             .address(request.address())
@@ -106,7 +106,7 @@ public class TravelDtoConverter {
             .build();
     }
 
-    private static Stay toStay(StayRequest request){
+    private static Stay toStay(StayRequest request) {
         return Stay.builder()
             .placeName(request.placeName())
             .address(request.address())
