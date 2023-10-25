@@ -10,6 +10,7 @@ public record TripResponse(
         String name,
         LocalDate startAt,
         LocalDate endAt,
+        boolean isForeign,
         List<ItineraryResponse> itineraries
 ) {
 

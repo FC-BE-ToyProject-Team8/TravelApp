@@ -12,10 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,6 +48,20 @@ public class Trip extends BaseEntity {
             LocalDate endDate,
             boolean isForeign
     ) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isForeign = isForeign;
+    }
+    @Builder
+    private Trip(
+            Long id,
+            String name,
+            LocalDate startDate,
+            LocalDate endDate,
+            boolean isForeign
+    ) {
+        this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
