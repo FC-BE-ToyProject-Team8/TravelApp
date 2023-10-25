@@ -34,11 +34,11 @@ import org.springframework.http.MediaType;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TravelControllerTest {
 
-    @Autowired
-    private TripRepository tripRepository;
-
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private TripRepository tripRepository;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,9 @@ public class TravelControllerTest {
     void addTrip() {
         // given
         String url = "/api/trips";
-        TripRequest request = new TripRequest("이름", "2010-01-01", "2010-01-02", false);
+        TripRequest request = new TripRequest(
+            "이름", "2010-01-01", "2010-01-02", false
+        );
 
         // when
         ExtractableResponse<Response> response =
@@ -115,8 +117,11 @@ public class TravelControllerTest {
     void getContainTrip() {
         // given
         String url = "/api/trips/{id}";
-        Trip trip = Trip.builder().name("여행").startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(7)).build();
+        Trip trip = Trip.builder()
+            .name("여행")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(7))
+            .build();
 
         IntStream.range(0, 3).forEach(i -> {
             Itinerary itinerary = Itinerary.builder().build();
