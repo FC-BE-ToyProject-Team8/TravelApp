@@ -48,10 +48,6 @@ public class TestUtil {
             .extract();
     }
 
-    public static ItineraryRequest createMockItineraryRequest() {
-        return ItineraryRequest.builder().build();
-    }
-
     public static Itinerary createMockItinerary(Trip trip, Route route, Lodge lodge, Stay stay) {
         Itinerary itinerary = Itinerary.builder()
             .route(route == null ? null : createMockRoute())
@@ -90,6 +86,10 @@ public class TestUtil {
             .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .build();
+    }
+
+    public static ItineraryRequest createMockItineraryRequest() {
+        return ItineraryRequest.builder().build();
     }
 
     public static ItineraryRequest createMockItineraryRequest(RouteRequest route,
