@@ -79,9 +79,9 @@ public class TravelDtoConverter {
 
     public static Itinerary toItinerary(ItineraryRequest request) {
         return Itinerary.builder()
-            .route(toRoute(request.route()))
-            .lodge(toLodge(request.lodge()))
-            .stay(toStay(request.stay()))
+            .route(request.route() == null ? null : toRoute(request.route()))
+            .lodge(request.lodge() == null ? null : toLodge(request.lodge()))
+            .stay(request.stay() == null ? null : toStay(request.stay()))
             .build();
     }
 
