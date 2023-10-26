@@ -35,11 +35,12 @@ public class TestUtil {
             .extract();
     }
 
-    public static ExtractableResponse<Response> findAndEditItinerary(Long id,ItineraryRequest request) {
+    public static ExtractableResponse<Response> findAndEditItinerary(Long id,
+        ItineraryRequest request) {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .pathParams("id",id)
+            .pathParams("id", id)
             .body(request)
             .when()
             .put("/api/itineraries/{id}")
