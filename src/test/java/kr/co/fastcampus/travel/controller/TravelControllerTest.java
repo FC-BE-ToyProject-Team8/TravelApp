@@ -1,9 +1,9 @@
 package kr.co.fastcampus.travel.controller;
 
-import static kr.co.fastcampus.travel.TravelUtils.createItinerary;
-import static kr.co.fastcampus.travel.TravelUtils.createTrip;
-import static kr.co.fastcampus.travel.TravelUtils.deleteItineraryRequest;
-import static kr.co.fastcampus.travel.TravelUtils.findAllTripRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createMockItinerary;
+import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestDeleteItineraryApi;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestFindAllTripApi;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -149,7 +149,7 @@ public class TravelControllerTest extends ApiTest {
         List<Trip> saveTrips = IntStream.range(0, 2).mapToObj(i -> saveTrip()).toList();
 
         // when
-        ExtractableResponse<Response> response = findAllTripRequest();
+        ExtractableResponse<Response> response = requestFindAllTripApi();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -170,11 +170,11 @@ public class TravelControllerTest extends ApiTest {
     void deleteItinerary() {
         //given
         Trip trip = saveTrip();
-        Itinerary itinerary1 = saveItinerary(trip);
-        Itinerary itinerary2 = saveItinerary(trip);
+        saveItinerary(trip);
+        Itinerary itinerary = saveItinerary(trip);
 
         //when
-        ExtractableResponse<Response> response = deleteItineraryRequest(itinerary2.getId());
+        requestDeleteItineraryApi(itinerary.getId());
 
         //then
         Trip findTrip = tripRepository.findFetchItineraryById(trip.getId()).get();
@@ -187,11 +187,11 @@ public class TravelControllerTest extends ApiTest {
     void deleteNoneItinerary() {
         //given
         Trip trip = saveTrip();
-        Itinerary itinerary1 = saveItinerary(trip);
-        Itinerary itinerary2 = saveItinerary(trip);
+        saveItinerary(trip);
+        saveItinerary(trip);
 
         //when
-        ExtractableResponse<Response> response = deleteItineraryRequest(5L);
+        ExtractableResponse<Response> response = requestDeleteItineraryApi(5L);
 
         //then
         assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
@@ -199,12 +199,12 @@ public class TravelControllerTest extends ApiTest {
     }
 
     private Trip saveTrip() {
-        Trip trip = createTrip();
+        Trip trip = createMockTrip();
         return tripRepository.save(trip);
     }
 
     private Itinerary saveItinerary(Trip trip) {
-        Itinerary itinerary = createItinerary(trip);
+        Itinerary itinerary = createMockItinerary(trip);
         return itineraryRepository.save(itinerary);
     }
 }

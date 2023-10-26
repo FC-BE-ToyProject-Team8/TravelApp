@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.repository;
 
-import static kr.co.fastcampus.travel.TravelUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -90,7 +90,7 @@ class TripRepositoryTest {
     }
 
     private Trip saveTrip() {
-        Trip trip = createTrip();
+        Trip trip = createMockTrip();
         tripRepository.save(trip);
         return trip;
     }
