@@ -2,12 +2,12 @@ package kr.co.fastcampus.travel.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
