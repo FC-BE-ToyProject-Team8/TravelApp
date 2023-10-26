@@ -1,6 +1,7 @@
 package kr.co.fastcampus.travel.service;
 
-import static kr.co.fastcampus.travel.TestUtil.*;
+import static kr.co.fastcampus.travel.TestUtil.createMockItineraryRequest;
+import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -35,16 +36,16 @@ class ItineraryServiceTest {
 
     @Test
     @DisplayName("여정 복수 등록")
-    void addItineraries(){
+    void addItineraries() {
         // given
         Trip trip = createMockTrip();
         Long id = -1L;
         given(tripRepository.findById(id)).willReturn(Optional.of(trip));
         given(tripRepository.findFetchItineraryById(id)).willReturn(Optional.of(trip));
         List<ItineraryRequest> requests = IntStream.range(0, 3)
-                .mapToObj(i -> createMockItineraryRequest())
-                .toList();
-//
+            .mapToObj(i -> createMockItineraryRequest())
+            .toList();
+
         //when
         Trip foundTripWithItineraries = itineraryService.addItineraries(id,requests);
 
@@ -60,13 +61,13 @@ class ItineraryServiceTest {
         Trip trip = createMockTrip();
         when(tripRepository.findById(-1L)).thenReturn(Optional.empty());
         List<ItineraryRequest> requests = IntStream.range(0, 3)
-                .mapToObj(i -> createMockItineraryRequest())
-                .toList();
-//
+            .mapToObj(i -> createMockItineraryRequest())
+            .toList();
+
         //when
 
         //then
         assertThatThrownBy(() -> itineraryService.addItineraries(-1L,requests))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
     }
 }

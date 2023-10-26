@@ -1,6 +1,8 @@
 package kr.co.fastcampus.travel.controller;
 
-import static kr.co.fastcampus.travel.TestUtil.*;
+import static kr.co.fastcampus.travel.TestUtil.createMockItineraryRequest;
+import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
+import static kr.co.fastcampus.travel.TestUtil.findAllTrip;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
