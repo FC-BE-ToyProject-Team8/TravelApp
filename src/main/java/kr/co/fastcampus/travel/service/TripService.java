@@ -18,6 +18,6 @@ public class TripService {
 
     public Trip findTripById(Long id) {
         return tripRepository.findFetchItineraryById(id)
-                .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(EntityNotFoundException::new);
     }
 }

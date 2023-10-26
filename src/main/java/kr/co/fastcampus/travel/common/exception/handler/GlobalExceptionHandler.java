@@ -28,17 +28,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseBody<Void> handleValidException(MethodArgumentNotValidException e) {
         log.warn("[BaseException] Message = {}",
-                NestedExceptionUtils.getMostSpecificCause(e).getMessage());
+            NestedExceptionUtils.getMostSpecificCause(e).getMessage());
         BindingResult bindingResult = e.getBindingResult();
         FieldError fieldError = bindingResult.getFieldError();
         if (fieldError != null) {
             String message = "[Request Error] "
-                    + fieldError.getField()
-                    + "="
-                    + fieldError.getRejectedValue()
-                    + " ("
-                    + fieldError.getDefaultMessage()
-                    + ")";
+                + fieldError.getField()
+                + "="
+                + fieldError.getRejectedValue()
+                + " ("
+                + fieldError.getDefaultMessage()
+                + ")";
             return ResponseBody.fail(message);
         }
         return ResponseBody.fail(e.getMessage());

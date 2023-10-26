@@ -27,12 +27,12 @@ public class ItineraryService {
     @Transactional
     public Trip addItineraries(Long id, List<ItineraryRequest> request) {
         Trip trip = tripRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        for (ItineraryRequest itineraryRequest : request){
+        for (ItineraryRequest itineraryRequest : request) {
             Itinerary itinerary = toItinerary(itineraryRequest);
             itinerary.registerTrip(trip);
             itineraryRepository.save(itinerary);
         }
         return tripRepository.findFetchItineraryById(id)
-                .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(EntityNotFoundException::new);
     }
 }

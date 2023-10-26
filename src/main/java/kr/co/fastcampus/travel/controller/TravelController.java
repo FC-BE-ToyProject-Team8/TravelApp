@@ -27,12 +27,6 @@ public class TravelController {
 
     private final ItineraryService itineraryService;
 
-    @GetMapping("/trips")
-    @Operation(summary = "여정을 포함한 여행 조회")
-    public String getTrip() {
-        return "123";
-    }
-
     @GetMapping("/trips/{id}")
     @Operation(summary = "여정을 포함한 여행 조회")
     public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
@@ -42,7 +36,7 @@ public class TravelController {
 
     @PostMapping("/trips/{id}/itineraries")
     @Operation(summary = "여정 복수 등록")
-    public ResponseBody<TripResponse> addItineraries(@PathVariable Long id , @Valid @RequestBody List<ItineraryRequest> request) {
+    public ResponseBody<TripResponse> addItineraries(@PathVariable Long id, @Valid @RequestBody List<ItineraryRequest> request) {
         Trip trip = itineraryService.addItineraries(id, request);
         return ResponseBody.ok(toTripResponse(trip));
     }
