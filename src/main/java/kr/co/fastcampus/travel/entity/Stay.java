@@ -23,10 +23,10 @@ public class Stay {
 
     @Builder
     private Stay(
-            String placeName,
-            String address,
-            LocalDateTime startAt,
-            LocalDateTime endAt
+        String placeName,
+        String address,
+        LocalDateTime startAt,
+        LocalDateTime endAt
     ) {
         this.placeName = placeName;
         this.address = address;

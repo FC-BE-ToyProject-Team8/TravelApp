@@ -8,11 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,45 +44,45 @@ public class Itinerary extends BaseEntity {
 
     @Builder
     private Itinerary(
-            String transportation,
-            String departurePlaceName,
-            String departureAddress,
-            String destinationPlaceName,
-            String destinationAddress,
-            LocalDateTime departureAt,
-            LocalDateTime arriveAt,
-            String lodgePlaceName,
-            String lodgeAddress,
-            LocalDateTime checkInAt,
-            LocalDateTime checkOutAt,
-            String stayPlaceName,
-            String stayAddress,
-            LocalDateTime startAt,
-            LocalDateTime endAt
+        String transportation,
+        String departurePlaceName,
+        String departureAddress,
+        String destinationPlaceName,
+        String destinationAddress,
+        LocalDateTime departureAt,
+        LocalDateTime arriveAt,
+        String lodgePlaceName,
+        String lodgeAddress,
+        LocalDateTime checkInAt,
+        LocalDateTime checkOutAt,
+        String stayPlaceName,
+        String stayAddress,
+        LocalDateTime startAt,
+        LocalDateTime endAt
     ) {
         this.route = Route.builder()
-                .transportation(transportation)
-                .departurePlaceName(departurePlaceName)
-                .departureAddress(departureAddress)
-                .destinationPlaceName(destinationPlaceName)
-                .destinationAddress(destinationAddress)
-                .departureAt(departureAt)
-                .arriveAt(arriveAt)
-                .build();
+            .transportation(transportation)
+            .departurePlaceName(departurePlaceName)
+            .departureAddress(departureAddress)
+            .destinationPlaceName(destinationPlaceName)
+            .destinationAddress(destinationAddress)
+            .departureAt(departureAt)
+            .arriveAt(arriveAt)
+            .build();
 
         this.lodge = Lodge.builder()
-                .placeName(lodgePlaceName)
-                .address(lodgeAddress)
-                .checkInAt(checkInAt)
-                .checkOutAt(checkOutAt)
-                .build();
+            .placeName(lodgePlaceName)
+            .address(lodgeAddress)
+            .checkInAt(checkInAt)
+            .checkOutAt(checkOutAt)
+            .build();
 
         this.stay = Stay.builder()
-                .placeName(stayPlaceName)
-                .address(stayAddress)
-                .startAt(startAt)
-                .endAt(endAt)
-                .build();
+            .placeName(stayPlaceName)
+            .address(stayAddress)
+            .startAt(startAt)
+            .endAt(endAt)
+            .build();
     }
 
     public void registerTrip(Trip trip) {

@@ -23,10 +23,10 @@ public class Lodge {
 
     @Builder
     private Lodge(
-            String placeName,
-            String address,
-            LocalDateTime checkInAt,
-            LocalDateTime checkOutAt
+        String placeName,
+        String address,
+        LocalDateTime checkInAt,
+        LocalDateTime checkOutAt
     ) {
         this.placeName = placeName;
         this.address = address;

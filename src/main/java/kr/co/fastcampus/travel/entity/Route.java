@@ -27,13 +27,13 @@ public class Route {
 
     @Builder
     private Route(
-            String transportation,
-            String departurePlaceName,
-            String departureAddress,
-            String destinationPlaceName,
-            String destinationAddress,
-            LocalDateTime departureAt,
-            LocalDateTime arriveAt
+        String transportation,
+        String departurePlaceName,
+        String departureAddress,
+        String destinationPlaceName,
+        String destinationAddress,
+        LocalDateTime departureAt,
+        LocalDateTime arriveAt
     ) {
         this.transportation = transportation;
         this.departurePlaceName = departurePlaceName;

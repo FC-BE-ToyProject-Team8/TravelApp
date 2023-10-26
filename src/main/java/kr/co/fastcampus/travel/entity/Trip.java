@@ -53,20 +53,6 @@ public class Trip extends BaseEntity {
         this.endDate = endDate;
         this.isForeign = isForeign;
     }
-    @Builder
-    private Trip(
-            Long id,
-            String name,
-            LocalDate startDate,
-            LocalDate endDate,
-            boolean isForeign
-    ) {
-        this.id = id;
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.isForeign = isForeign;
-    }
 
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
