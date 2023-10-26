@@ -1,5 +1,7 @@
 package kr.co.fastcampus.travel.service;
 
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toItinerary;
+
 import jakarta.transaction.Transactional;
 import java.util.List;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
@@ -11,9 +13,6 @@ import kr.co.fastcampus.travel.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-
-import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toItinerary;
 
 @Slf4j
 @Service

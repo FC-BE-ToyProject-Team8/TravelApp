@@ -9,7 +9,12 @@ import kr.co.fastcampus.travel.controller.request.LodgeRequest;
 import kr.co.fastcampus.travel.controller.request.RouteRequest;
 import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
-import kr.co.fastcampus.travel.controller.response.*;
+import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
+import kr.co.fastcampus.travel.controller.response.LodgeResponse;
+import kr.co.fastcampus.travel.controller.response.RouteResponse;
+import kr.co.fastcampus.travel.controller.response.StayResponse;
+import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Lodge;
 import kr.co.fastcampus.travel.entity.Route;
@@ -115,6 +120,7 @@ public class TravelDtoConverter {
             .endAt(stay.getEndAt())
             .build();
     }
+
     private static Route toRoute(RouteRequest routeRequest) {
         return Route.builder()
             .transportation(routeRequest.transportation())
