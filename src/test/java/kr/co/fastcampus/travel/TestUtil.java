@@ -3,10 +3,9 @@ package kr.co.fastcampus.travel;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.entity.Trip;
-
-import java.time.LocalDate;
 
 public class TestUtil {
     public static Trip createMockTrip() {

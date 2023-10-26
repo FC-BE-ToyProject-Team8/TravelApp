@@ -1,5 +1,14 @@
 package kr.co.fastcampus.travel.service;
 
+import static kr.co.fastcampus.travel.TestUtil.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.entity.Trip;
@@ -11,16 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
-
-import static kr.co.fastcampus.travel.TestUtil.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ItineraryServiceTest {
