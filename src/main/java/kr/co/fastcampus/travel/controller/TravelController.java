@@ -13,8 +13,8 @@ import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Trip;
-import kr.co.fastcampus.travel.service.TripService;
 import kr.co.fastcampus.travel.service.ItineraryService;
+import kr.co.fastcampus.travel.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +60,9 @@ public class TravelController {
 
     @PostMapping("/trips/{id}/itineraries")
     @Operation(summary = "여정 복수 등록")
-    public ResponseBody<TripResponse> addItineraries(@PathVariable Long id, @Valid @RequestBody List<ItineraryRequest> request) {
+    public ResponseBody<TripResponse> addItineraries(
+        @PathVariable Long id, @Valid @RequestBody List<ItineraryRequest> request
+    ) {
         Trip trip = itineraryService.addItineraries(id, request);
         return ResponseBody.ok(toTripResponse(trip));
     }

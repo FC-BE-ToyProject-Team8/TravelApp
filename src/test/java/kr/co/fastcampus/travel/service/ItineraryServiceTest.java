@@ -47,7 +47,7 @@ class ItineraryServiceTest {
             .toList();
 
         //when
-        Trip foundTripWithItineraries = itineraryService.addItineraries(id,requests);
+        Trip foundTripWithItineraries = itineraryService.addItineraries(id, requests);
 
         //then
         assertThat(foundTripWithItineraries).isNotNull();
@@ -56,7 +56,7 @@ class ItineraryServiceTest {
 
     @Test
     @DisplayName("여정 복수 등록 실패")
-    void addItineraries_fail(){
+    void addItineraries_fail() {
         // given
         Trip trip = createMockTrip();
         when(tripRepository.findById(-1L)).thenReturn(Optional.empty());
@@ -67,7 +67,7 @@ class ItineraryServiceTest {
         //when
 
         //then
-        assertThatThrownBy(() -> itineraryService.addItineraries(-1L,requests))
+        assertThatThrownBy(() -> itineraryService.addItineraries(-1L, requests))
             .isInstanceOf(EntityNotFoundException.class);
     }
 }
