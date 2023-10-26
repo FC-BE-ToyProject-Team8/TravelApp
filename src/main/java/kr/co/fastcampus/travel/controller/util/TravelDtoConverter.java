@@ -47,6 +47,12 @@ public class TravelDtoConverter {
             .build();
     }
 
+    public static List<TripSummaryResponse> toTripSummaryResponses(List<Trip> trips) {
+        return trips.stream()
+            .map(TravelDtoConverter::toTripSummaryResponse)
+            .toList();
+    }
+
     public static Trip toTrip(TripRequest request) {
         return Trip.builder()
             .name(request.name())

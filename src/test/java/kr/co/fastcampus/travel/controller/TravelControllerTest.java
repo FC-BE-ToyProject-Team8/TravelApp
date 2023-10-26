@@ -10,6 +10,9 @@ import static kr.co.fastcampus.travel.TestUtil.createMockStay;
 import static kr.co.fastcampus.travel.TestUtil.createMockStayRequest;
 import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
 import static kr.co.fastcampus.travel.TestUtil.findAndEditItinerary;
+import static kr.co.fastcampus.travel.TravelUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelUtils.findAllTrip;
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -19,7 +22,9 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.IntStream;
+import kr.co.fastcampus.travel.ApiTest;
 import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.controller.request.LodgeRequest;
@@ -28,6 +33,9 @@ import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.request.TripRequest;
+import kr.co.fastcampus.travel.controller.response.TripResponse;
+import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Lodge;
 import kr.co.fastcampus.travel.entity.Route;
@@ -39,17 +47,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class TravelControllerTest {
-
-    @LocalServerPort
-    private int port;
+public class TravelControllerTest extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
@@ -99,8 +100,8 @@ public class TravelControllerTest {
     }
 
     @Test
-    @DisplayName("여행과 여정 조회")
-    void getTrip() {
+    @DisplayName("여정 없는 여행 조회")
+    void getOnlyTrip() {
         // given
         String url = "/api/trips/{id}";
         Trip trip = Trip.builder()
@@ -108,12 +109,6 @@ public class TravelControllerTest {
             .startDate(LocalDate.now())
             .endDate(LocalDate.now().plusDays(7))
             .build();
-
-        IntStream.range(0, 3)
-            .forEach(i -> {
-                Itinerary itinerary = Itinerary.builder().build();
-                itinerary.registerTrip(trip);
-            });
 
         tripRepository.save(trip);
 
@@ -131,7 +126,7 @@ public class TravelControllerTest {
         assertAll(
             () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
             () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
-            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
+            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(0)
         );
     }
 
@@ -172,5 +167,70 @@ public class TravelControllerTest {
             softly.assertThat(data.stay().startAt()).isEqualTo("2023-01-01T11:30:30");
             softly.assertThat(data.stay().placeName()).isEqualTo("장소 업데이트");
         });
+    }
+
+    @DisplayName("여행 목록 조회")
+    void findAll() {
+        // given
+        List<Trip> saveTrips = IntStream.range(0, 2).mapToObj(i -> saveTrip()).toList();
+
+        // when
+        ExtractableResponse<Response> response = findAllTrip();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        List<TripSummaryResponse> data = jsonPath.getList("data", TripSummaryResponse.class);
+
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.size()).isEqualTo(2);
+            softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(0)));
+            softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(1)));
+        });
+    }
+  
+    @Test
+    @DisplayName("여정 포함 여행 조회")
+    void getContainTrip() {
+        // given
+        String url = "/api/trips/{id}";
+        Trip trip = Trip.builder()
+            .name("여행")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(7))
+            .build();
+
+        IntStream.range(0, 3)
+            .forEach(i -> {
+                Itinerary itinerary = Itinerary.builder().build();
+                itinerary.registerTrip(trip);
+            });
+
+        tripRepository.save(trip);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .pathParams("id", trip.getId())
+            .when().get(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertAll(
+            () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
+            () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
+            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
+        );
+    }
+
+    private Trip saveTrip() {
+        Trip trip = createTrip();
+        tripRepository.save(trip);
+        return trip;
     }
 }
