@@ -3,9 +3,11 @@ package kr.co.fastcampus.travel.controller;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toItineraryResponse;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripResponse;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
+import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponses;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
@@ -61,5 +63,12 @@ public class TravelController {
         Itinerary itinerary = itineraryService.editItinerary(id, itineraryRequest);
         ItineraryResponse response = toItineraryResponse(itinerary);
         return ResponseBody.ok(response);
+    }
+
+    @GetMapping("/trips")
+    @Operation(summary = "여행 목록")
+    public ResponseBody<List<TripSummaryResponse>> getTripList() {
+        List<Trip> trips = tripService.findAllTrips();
+        return ResponseBody.ok(toTripSummaryResponses(trips));
     }
 }
