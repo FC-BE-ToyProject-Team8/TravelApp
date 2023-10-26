@@ -1,5 +1,15 @@
 package kr.co.fastcampus.travel.controller;
 
+import static kr.co.fastcampus.travel.TestUtil.createMockItinerary;
+import static kr.co.fastcampus.travel.TestUtil.createMockItineraryRequest;
+import static kr.co.fastcampus.travel.TestUtil.createMockLodge;
+import static kr.co.fastcampus.travel.TestUtil.createMockLodgeRequest;
+import static kr.co.fastcampus.travel.TestUtil.createMockRoute;
+import static kr.co.fastcampus.travel.TestUtil.createMockRouteRequest;
+import static kr.co.fastcampus.travel.TestUtil.createMockStay;
+import static kr.co.fastcampus.travel.TestUtil.createMockStayRequest;
+import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
+import static kr.co.fastcampus.travel.TestUtil.findAndEditItinerary;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -9,7 +19,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
@@ -127,82 +136,24 @@ public class TravelControllerTest {
     }
 
     @Test
-    @DisplayName("여행과 여정 조회")
+    @DisplayName("여정 수정")
     void editItinerary() {
         //given
-        String url = "/api/itineraries/1";
+        Trip trip = createMockTrip();
+        Route route = createMockRoute();
+        Lodge lodge = createMockLodge();
+        Stay stay = createMockStay();
+        Itinerary itinerary = createMockItinerary(trip, route, lodge, stay);
+        tripRepository.save(trip);
+        itineraryRepository.save(itinerary);
 
-        Lodge lodge = Lodge.builder()
-            .placeName("호텔")
-            .address("부산 @@@")
-            .checkOutAt(LocalDateTime.of(2023, 1, 1, 15, 00))
-            .checkInAt(LocalDateTime.of(2023, 1, 2, 11, 00))
-            .build();
-
-        Stay stay = Stay.builder()
-            .placeName("한국")
-            .address("대한민국")
-            .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
-
-        Route route = Route.builder()
-            .transportation("지하철")
-            .departurePlaceName("우리집")
-            .departureAddress("서울")
-            .destinationPlaceName("해운대")
-            .destinationAddress("부산")
-            .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
-
-        itineraryRepository.save(
-            Itinerary.builder()
-                .route(route)
-                .lodge(lodge)
-                .stay(stay)
-                .build()
-        );
-
-        LodgeRequest lodge2 = LodgeRequest.builder()
-            .placeName("글램핑")
-            .address("부산 @@@")
-            .checkInAt(LocalDateTime.of(2023, 1, 1, 15, 00))
-            .checkOutAt(LocalDateTime.of(2023, 1, 2, 11, 00))
-            .build();
-
-        StayRequest stay2 = StayRequest.builder()
-            .placeName("한국")
-            .address("대한민국")
-            .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 50))
-            .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
-
-        RouteRequest route2 = RouteRequest.builder()
-            .transportation("택시")
-            .departurePlaceName("우리집")
-            .departureAddress("서울")
-            .destinationPlaceName("해운대")
-            .destinationAddress("부산")
-            .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
-
-        ItineraryRequest request = ItineraryRequest.builder()
-            .lodge(lodge2)
-            .route(route2)
-            .stay(stay2)
-            .build();
+        LodgeRequest lodge2 = createMockLodgeRequest();
+        StayRequest stay2 = createMockStayRequest();
+        RouteRequest route2 = createMockRouteRequest();
+        ItineraryRequest request = createMockItineraryRequest(route2, lodge2, stay2);
 
         //when
-        ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(request)
-            .when()
-            .put(url)
-            .then().log().all()
-            .extract();
+        ExtractableResponse<Response> response = findAndEditItinerary(itinerary.getId(), request);
 
         //then
         JsonPath jsonPath = response.jsonPath();
@@ -214,12 +165,12 @@ public class TravelControllerTest {
         assertSoftly((softly) -> {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.id()).isNotNull();
-            softly.assertThat(data.lodge().placeName()).isEqualTo("글램핑"); // 수정된 부분
-            softly.assertThat(data.lodge().checkOutAt()).isEqualTo("2023-01-02T11:00"); // 수정x
-            softly.assertThat(data.route().transportation()).isEqualTo("택시"); // 수정된 부분
-            softly.assertThat(data.route().departurePlaceName()).isEqualTo("우리집"); //수정x
-            softly.assertThat(data.stay().startAt()).isEqualTo("2023-01-01T11:30:50"); // 수정된 부분
-            softly.assertThat(data.stay().placeName()).isEqualTo("한국"); //수정x
+            softly.assertThat(data.route().transportation()).isEqualTo("이동수단 업데이트");
+            softly.assertThat(data.route().departurePlaceName()).isEqualTo("출발지 업데이트");
+            softly.assertThat(data.lodge().placeName()).isEqualTo("장소 업데이트");
+            softly.assertThat(data.lodge().checkOutAt()).isEqualTo("2023-01-02T11:00");
+            softly.assertThat(data.stay().startAt()).isEqualTo("2023-01-01T11:30:30");
+            softly.assertThat(data.stay().placeName()).isEqualTo("장소 업데이트");
         });
     }
 }
