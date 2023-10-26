@@ -8,7 +8,7 @@ import kr.co.fastcampus.travel.entity.Trip;
 
 import java.time.LocalDate;
 
-public class testUtil {
+public class TestUtil {
     public static Trip createMockTrip() {
         return Trip.builder()
             .name("tripName")

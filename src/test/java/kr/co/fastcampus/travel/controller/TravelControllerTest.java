@@ -1,7 +1,7 @@
 package kr.co.fastcampus.travel.controller;
 
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
-import static kr.co.fastcampus.travel.testUtil.*;
+import static kr.co.fastcampus.travel.TestUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;

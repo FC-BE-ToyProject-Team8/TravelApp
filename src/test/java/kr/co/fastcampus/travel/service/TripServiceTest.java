@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.service;
 
-import static kr.co.fastcampus.travel.testUtil.createMockTrip;
+import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
