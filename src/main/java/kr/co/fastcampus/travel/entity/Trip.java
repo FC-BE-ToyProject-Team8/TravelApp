@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +37,17 @@ public class Trip extends BaseEntity {
     private boolean isForeign;
 
     @OneToMany(
-            fetch = FetchType.LAZY, mappedBy = "trip",
-            cascade = CascadeType.PERSIST, orphanRemoval = true
+        fetch = FetchType.LAZY, mappedBy = "trip",
+        cascade = CascadeType.PERSIST, orphanRemoval = true
     )
     private List<Itinerary> itineraries = new ArrayList<>();
 
     @Builder
     private Trip(
-            String name,
-            LocalDate startDate,
-            LocalDate endDate,
-            boolean isForeign
+        String name,
+        LocalDate startDate,
+        LocalDate endDate,
+        boolean isForeign
     ) {
         this.name = name;
         this.startDate = startDate;
