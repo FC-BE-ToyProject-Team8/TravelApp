@@ -9,9 +9,8 @@ import static kr.co.fastcampus.travel.TestUtil.createMockRouteRequest;
 import static kr.co.fastcampus.travel.TestUtil.createMockStay;
 import static kr.co.fastcampus.travel.TestUtil.createMockStayRequest;
 import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
+import static kr.co.fastcampus.travel.TestUtil.findAllTrip;
 import static kr.co.fastcampus.travel.TestUtil.findAndEditItinerary;
-import static kr.co.fastcampus.travel.TravelUtils.createTrip;
-import static kr.co.fastcampus.travel.TravelUtils.findAllTrip;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -33,8 +32,6 @@ import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
-import kr.co.fastcampus.travel.controller.request.TripRequest;
-import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Lodge;
@@ -43,7 +40,6 @@ import kr.co.fastcampus.travel.entity.Stay;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.repository.TripRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +53,6 @@ public class TravelControllerTest extends ApiTest {
 
     @Autowired
     private ItineraryRepository itineraryRepository;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
 
     @Test
     @DisplayName("여행 등록")
@@ -229,7 +220,7 @@ public class TravelControllerTest extends ApiTest {
     }
 
     private Trip saveTrip() {
-        Trip trip = createTrip();
+        Trip trip = createMockTrip();
         tripRepository.save(trip);
         return trip;
     }
