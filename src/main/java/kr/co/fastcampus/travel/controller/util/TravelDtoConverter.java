@@ -36,15 +36,9 @@ public class TravelDtoConverter {
 
     public static Itinerary toItinerary(ItineraryRequest request) {
         return Itinerary.builder()
-            .route(Optional.ofNullable(request.route())
-                .map(TravelDtoConverter::toRoute)
-                .orElse(null))
-            .lodge(Optional.ofNullable(request.lodge())
-                .map(TravelDtoConverter::toLodge)
-                .orElse(null))
-            .stay(Optional.ofNullable(request.stay())
-                .map(TravelDtoConverter::toStay)
-                .orElse(null))
+            .route(request.route() == null ? null : toRoute(request.route()))
+            .lodge(request.lodge() == null ? null : toLodge(request.lodge()))
+            .stay(request.stay() == null ? null : toStay(request.stay()))
             .build();
     }
 
