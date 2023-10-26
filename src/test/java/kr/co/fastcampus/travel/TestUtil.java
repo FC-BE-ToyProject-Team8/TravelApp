@@ -35,7 +35,8 @@ public class TestUtil {
             .extract();
     }
 
-    public static ExtractableResponse<Response> findAndEditItinerary(Long id, ItineraryRequest request) {
+    public static ExtractableResponse<Response> findAndEditItinerary(Long id,
+        ItineraryRequest request) {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -91,7 +92,8 @@ public class TestUtil {
             .build();
     }
 
-    public static ItineraryRequest createMockItineraryRequest(RouteRequest route, LodgeRequest lodge, StayRequest stay) {
+    public static ItineraryRequest createMockItineraryRequest(RouteRequest route,
+        LodgeRequest lodge, StayRequest stay) {
         return ItineraryRequest.builder()
             .route(route == null ? null : createMockRouteRequest())
             .lodge(lodge == null ? null : createMockLodgeRequest())
