@@ -49,4 +49,10 @@ public class TripService {
 
         return tripRepository.save(trip);
     }
+
+    @Transactional
+    public void deleteTrip(Long id) {
+        Trip trip = findById(id);
+        tripRepository.delete(trip);
+    }
 }
