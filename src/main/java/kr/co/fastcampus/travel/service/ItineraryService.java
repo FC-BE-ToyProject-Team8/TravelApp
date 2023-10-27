@@ -2,10 +2,10 @@ package kr.co.fastcampus.travel.service;
 
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toItinerary;
 
+import java.util.List;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.entity.Itinerary;
-import java.util.List;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.ItineraryRepository;
 import lombok.RequiredArgsConstructor;

@@ -6,16 +6,16 @@ import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 
-import java.util.Optional;
-import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
+import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.controller.request.LodgeRequest;
 import kr.co.fastcampus.travel.controller.request.RouteRequest;
@@ -108,6 +108,7 @@ class ItineraryServiceTest {
         assertThatThrownBy(() -> itineraryService.editItinerary(noExistId, request))
             .isInstanceOf(EntityNotFoundException.class);
     }
+
     @Test
     @DisplayName("여정 복수 등록")
     void addItineraries() {

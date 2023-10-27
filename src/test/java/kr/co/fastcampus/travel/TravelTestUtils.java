@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 
 public class TravelTestUtils {
 
-    private TravelTestUtils(){}
+    private TravelTestUtils() {}
 
     public static Trip createTrip() {
         return Trip.builder()
@@ -40,6 +40,7 @@ public class TravelTestUtils {
     public static ItineraryRequest createItineraryRequest() {
         return ItineraryRequest.builder().build();
     }
+
     public static ExtractableResponse<Response> putAndExtractResponse(Long id,
         ItineraryRequest request, String url) {
         return RestAssured
