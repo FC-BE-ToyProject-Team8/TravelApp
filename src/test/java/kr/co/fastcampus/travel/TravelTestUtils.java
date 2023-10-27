@@ -16,7 +16,7 @@ import kr.co.fastcampus.travel.entity.Stay;
 import kr.co.fastcampus.travel.entity.Trip;
 import org.springframework.http.MediaType;
 
-public class TestUtil {
+public class TravelTestUtils {
 
     public static Trip createMockTrip() {
         return Trip.builder()
@@ -35,30 +35,44 @@ public class TestUtil {
             .extract();
     }
 
-    public static ExtractableResponse<Response> findAndEditItinerary(Long id,
-        ItineraryRequest request) {
+    public static ExtractableResponse<Response> putAndExtractResponse(Long id,
+        ItineraryRequest request, String url) {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .pathParams("id", id)
             .body(request)
             .when()
-            .put("/api/itineraries/{id}")
+            .put(url)
             .then().log().all()
             .extract();
     }
 
-    public static Itinerary createMockItinerary(Trip trip, Route route, Lodge lodge, Stay stay) {
+    public static Itinerary createItinerary(Trip trip) {
+        Route route = createRoute(); // route 생성
+        Lodge lodge = createLodge(); // lodge 생성
+        Stay stay = createStay();   // stay 생성
+
         Itinerary itinerary = Itinerary.builder()
-            .route(route == null ? null : createMockRoute())
-            .lodge(lodge == null ? null : createMockLodge())
-            .stay(stay == null ? null : createMockStay())
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
             .build();
         itinerary.registerTrip(trip);
         return itinerary;
     }
 
-    public static Route createMockRoute() {
+    public static Itinerary createItinerary(Trip trip, Route route, Lodge lodge, Stay stay) {
+        Itinerary itinerary = Itinerary.builder()
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
+            .build();
+        itinerary.registerTrip(trip);
+        return itinerary;
+    }
+
+    public static Route createRoute() {
         return Route.builder()
             .transportation("지하철")
             .departurePlaceName("우리집")
@@ -70,7 +84,7 @@ public class TestUtil {
             .build();
     }
 
-    public static Lodge createMockLodge() {
+    public static Lodge createLodge() {
         return Lodge.builder()
             .placeName("호텔")
             .address("부산 @@@")
@@ -79,7 +93,7 @@ public class TestUtil {
             .build();
     }
 
-    public static Stay createMockStay() {
+    public static Stay createStay() {
         return Stay.builder()
             .placeName("한국")
             .address("대한민국")
@@ -92,16 +106,16 @@ public class TestUtil {
         return ItineraryRequest.builder().build();
     }
 
-    public static ItineraryRequest createMockItineraryRequest(RouteRequest route,
+    public static ItineraryRequest createItineraryRequest(RouteRequest route,
         LodgeRequest lodge, StayRequest stay) {
         return ItineraryRequest.builder()
-            .route(route == null ? null : createMockRouteRequest())
-            .lodge(lodge == null ? null : createMockLodgeRequest())
-            .stay(stay == null ? null : createMockStayRequest())
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
             .build();
     }
 
-    public static RouteRequest createMockRouteRequest() {
+    public static RouteRequest createRouteRequest() {
         return RouteRequest.builder()
             .transportation("이동수단 업데이트")
             .departurePlaceName("출발지 업데이트")
@@ -113,7 +127,7 @@ public class TestUtil {
             .build();
     }
 
-    public static LodgeRequest createMockLodgeRequest() {
+    public static LodgeRequest createLodgeRequest() {
         return LodgeRequest.builder()
             .placeName("장소 업데이트")
             .address("주소 업데이트")
@@ -122,7 +136,7 @@ public class TestUtil {
             .build();
     }
 
-    public static StayRequest createMockStayRequest() {
+    public static StayRequest createStayRequest() {
         return StayRequest.builder()
             .placeName("장소 업데이트")
             .address("주소 업데이트")
