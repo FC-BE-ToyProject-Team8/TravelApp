@@ -39,7 +39,9 @@ public class TravelControllerTest extends ApiTest {
         // given
         String url = "/api/trips";
         TripRequest request = new TripRequest(
-            "이름", "2010-01-01", "2010-01-02", false
+            "이름",
+            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
+            false
         );
 
         // when
