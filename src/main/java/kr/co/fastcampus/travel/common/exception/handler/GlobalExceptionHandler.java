@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseBody<Void> handleValidException(MethodArgumentNotValidException e) {
-        log.warn("[BaseException] Message = {}",
+        log.warn("[MethodArgumentNotValidException] Message = {}",
             NestedExceptionUtils.getMostSpecificCause(e).getMessage());
         BindingResult bindingResult = e.getBindingResult();
         FieldError fieldError = bindingResult.getFieldError();
@@ -54,8 +54,8 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
-    public ResponseBody<Void> httpMessageNotReadableException(Exception e) {
-        log.error("[HttpMessageNotReadableException]", e);
-        return ResponseBody.fail(ErrorCode.INCORRECT_REQUEST.getErrorMsg());
+    public ResponseBody<Void> httpMessageNotReadableException(HttpMessageNotReadableException e) {
+        log.error("[HttpMessageNotReadableException] Message = {}", e.getMessage());
+        return ResponseBody.fail(e.getMessage());
     }
 }
