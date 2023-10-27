@@ -8,7 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface TripRepository extends CrudRepository<Trip, Long> {
-
     @Query(
         "select t "
             + "from Trip t "

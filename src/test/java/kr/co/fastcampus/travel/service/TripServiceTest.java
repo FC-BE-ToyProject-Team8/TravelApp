@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.service;
 
-import static kr.co.fastcampus.travel.TravelUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -80,6 +80,7 @@ class TripServiceTest {
         });
     }
 
+    @Test
     @DisplayName("여행 수정 Service 정상 작동")
     void editTrip() {
         // given

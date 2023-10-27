@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.repository;
 
-import static kr.co.fastcampus.travel.TravelUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
