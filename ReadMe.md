@@ -27,6 +27,10 @@
 - User Name: sa
 - Password: (빈칸)
 
+### Swagger 접속 경로
+1. 서버 실행한다.
+2. http://localhost:8080/swagger-ui/index.html 에 들어간다.
+
 ## ⚖️ 컨벤션
 
 ----
