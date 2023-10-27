@@ -108,14 +108,11 @@ public class TravelTestUtils {
             .build();
     }
 
-    public static ItineraryRequest createMockItineraryRequest() {
-        return ItineraryRequest.builder().build();
-    }
-
     public static ItineraryRequest createItineraryRequest(
         RouteRequest route,
         LodgeRequest lodge,
-        StayRequest stay) {
+        StayRequest stay
+    ) {
         return ItineraryRequest.builder()
             .route(route)
             .lodge(lodge)
