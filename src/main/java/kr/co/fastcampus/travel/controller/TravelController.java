@@ -57,12 +57,12 @@ public class TravelController {
 
     @PutMapping("/trips/{tripId}")
     @Operation(summary = "여행 수정")
-    public ResponseBody<TripResponse> editTrip(
+    public ResponseBody<TripSummaryResponse> editTrip(
         @PathVariable Long tripId,
         @Valid @RequestBody TripRequest request
     ) {
         Trip trip = tripService.editTrip(tripId, request);
-        TripResponse response = toTripResponse(trip);
+        TripSummaryResponse response = toTripSummaryResponse(trip);
         return ResponseBody.ok(response);
     }
 }
