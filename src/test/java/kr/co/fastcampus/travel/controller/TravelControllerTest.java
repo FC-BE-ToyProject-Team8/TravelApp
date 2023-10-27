@@ -9,6 +9,8 @@ import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.putAndExtractResponse;
 import static kr.co.fastcampus.travel.TravelTestUtils.requestDeleteApi;
 import static kr.co.fastcampus.travel.TravelTestUtils.requestFindAllTripApi;
+import static kr.co.fastcampus.travel.common.response.Status.FAIL;
+import static kr.co.fastcampus.travel.common.response.Status.SUCCESS;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -294,6 +296,37 @@ public class TravelControllerTest extends ApiTest {
             softly.assertThat(data.name()).isEqualTo("tripName");
             softly.assertThat(data.itineraries().size()).isEqualTo(3);
         });
+    }
+
+    @Test
+    @DisplayName("없는 여행 삭제")
+    void deleteTrip_failureException() {
+        //given
+        String url = "/api/trips/-1";
+
+        //when
+        ExtractableResponse<Response> response = requestDeleteApi(url);
+
+        //then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(jsonPath.getString("status")).isEqualTo(FAIL.name());
+    }
+
+    @Test
+    @DisplayName("여행 삭제")
+    void deleteTrip() {
+        //given
+        Trip trip = saveTrip();
+        String url = "/api/trips/" + trip.getId();
+
+        //when
+        ExtractableResponse<Response> response = requestDeleteApi(url);
+
+        //then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(jsonPath.getString("status")).isEqualTo(SUCCESS.name());
     }
 
     @Test
