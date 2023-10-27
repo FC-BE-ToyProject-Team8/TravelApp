@@ -71,4 +71,15 @@ public class TravelController {
         List<Trip> trips = tripService.findAllTrips();
         return ResponseBody.ok(toTripSummaryResponses(trips));
     }
+
+    @PutMapping("/trips/{tripId}")
+    @Operation(summary = "여행 수정")
+    public ResponseBody<TripSummaryResponse> editTrip(
+        @PathVariable Long tripId,
+        @Valid @RequestBody TripRequest request
+    ) {
+        Trip trip = tripService.editTrip(tripId, request);
+        TripSummaryResponse response = toTripSummaryResponse(trip);
+        return ResponseBody.ok(response);
+    }
 }
