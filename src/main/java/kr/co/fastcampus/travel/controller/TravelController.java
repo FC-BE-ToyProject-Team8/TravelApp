@@ -38,8 +38,6 @@ public class TravelController {
     private final TripService tripService;
     private final ItineraryService itineraryService;
 
-    private final ItineraryService itineraryService;
-
     @PostMapping("/trips")
     @Operation(summary = "여행 등록")
     public ResponseBody<TripSummaryResponse> addTrip(

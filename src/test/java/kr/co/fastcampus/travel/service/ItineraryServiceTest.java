@@ -3,7 +3,6 @@ package kr.co.fastcampus.travel.service;
 import static kr.co.fastcampus.travel.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
-import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
@@ -152,9 +151,9 @@ class ItineraryServiceTest {
     @DisplayName("여정 삭제")
     void deleteItinerary() {
         //given
-        Trip trip = createMockTrip();
-        Itinerary itinerary1 = createMockItinerary(trip);
-        Itinerary itinerary2 = createMockItinerary(trip);
+        Trip trip = createTrip();
+        Itinerary itinerary1 = createItinerary(trip);
+        Itinerary itinerary2 = createItinerary(trip);
         when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary2));
 
         //when

@@ -1,6 +1,14 @@
 package kr.co.fastcampus.travel.controller;
 
-import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItinerary;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.putAndExtractResponse;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestDeleteItineraryApi;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestFindAllTripApi;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -199,7 +207,7 @@ public class TravelControllerTest extends ApiTest {
         List<Trip> saveTrips = IntStream.range(0, 2).mapToObj(i -> saveTrip()).toList();
 
         // when
-        ExtractableResponse<Response> response = findAllTrip();
+        ExtractableResponse<Response> response = requestFindAllTripApi();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -329,12 +337,12 @@ public class TravelControllerTest extends ApiTest {
     }
 
     private Trip saveTrip() {
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         return tripRepository.save(trip);
     }
 
     private Itinerary saveItinerary(Trip trip) {
-        Itinerary itinerary = createMockItinerary(trip);
+        Itinerary itinerary = createItinerary(trip);
         return itineraryRepository.save(itinerary);
     }
 }

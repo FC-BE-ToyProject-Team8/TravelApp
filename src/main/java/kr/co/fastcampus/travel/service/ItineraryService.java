@@ -4,6 +4,7 @@ import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toItine
 
 import java.util.List;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.entity.Itinerary;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.ItineraryRepository;
@@ -15,17 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
 
+    @Transactional(readOnly = true)
     public Itinerary findById(Long id) {
         return itineraryRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
 
-    @Transactional
     public Itinerary editItinerary(Long id, ItineraryRequest request) {
         Itinerary itinerary = findById(id);
         Itinerary itineraryToBeUpdated = toItinerary(request);
@@ -33,7 +34,6 @@ public class ItineraryService {
         return itineraryRepository.save(itinerary);
     }
 
-    @Transactional
     public Trip addItineraries(Trip trip, List<ItineraryRequest> request) {
         for (ItineraryRequest itineraryRequest : request) {
             Itinerary itinerary = toItinerary(itineraryRequest);
@@ -43,7 +43,6 @@ public class ItineraryService {
         return trip;
     }
 
-    @Transactional
     public void deleteById(Long id) {
         Itinerary itinerary = findById(id);
         itineraryRepository.delete(itinerary);
