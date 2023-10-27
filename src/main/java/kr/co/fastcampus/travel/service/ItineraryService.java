@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = false)
 public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
@@ -24,7 +25,6 @@ public class ItineraryService {
             .orElseThrow(EntityNotFoundException::new);
     }
 
-    @Transactional
     public Itinerary editItinerary(Long id, ItineraryRequest request) {
         Itinerary itinerary = findByItineraryId(id);
         Itinerary itineraryToBeUpdated = toItinerary(request);
