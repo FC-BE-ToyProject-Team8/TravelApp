@@ -18,7 +18,9 @@ import org.springframework.http.MediaType;
 
 public class TravelTestUtils {
 
-    public static Trip createMockTrip() {
+    private TravelTestUtils() {}
+
+    public static Trip createTrip() {
         return Trip.builder()
             .name("tripName")
             .startDate(LocalDate.now())
@@ -33,6 +35,22 @@ public class TravelTestUtils {
             .when().get("/api/trips")
             .then().log().all()
             .extract();
+    }
+
+    public static ItineraryRequest createItineraryRequest() {
+        return ItineraryRequest.builder().build();
+    }
+
+    public static ItineraryRequest createItineraryRequest(
+        RouteRequest route,
+        LodgeRequest lodge,
+        StayRequest stay
+    ) {
+        return ItineraryRequest.builder()
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
+            .build();
     }
 
     public static ExtractableResponse<Response> putAndExtractResponse(Long id,
@@ -99,19 +117,6 @@ public class TravelTestUtils {
             .address("대한민국")
             .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
-    }
-
-    public static ItineraryRequest createMockItineraryRequest() {
-        return ItineraryRequest.builder().build();
-    }
-
-    public static ItineraryRequest createItineraryRequest(RouteRequest route,
-        LodgeRequest lodge, StayRequest stay) {
-        return ItineraryRequest.builder()
-            .route(route)
-            .lodge(lodge)
-            .stay(stay)
             .build();
     }
 

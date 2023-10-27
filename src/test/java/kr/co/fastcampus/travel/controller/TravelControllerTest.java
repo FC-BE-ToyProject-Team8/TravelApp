@@ -3,9 +3,9 @@ package kr.co.fastcampus.travel.controller;
 import static kr.co.fastcampus.travel.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
-import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.findAllTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.putAndExtractResponse;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
@@ -122,7 +122,7 @@ public class TravelControllerTest extends ApiTest {
     void editItinerary() {
         //given
         String url = "/api/itineraries/{id}";
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         tripRepository.save(trip);
 
         Itinerary itinerary = createItinerary(trip);
@@ -141,7 +141,7 @@ public class TravelControllerTest extends ApiTest {
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
         ItineraryResponse data = jsonPath.getObject("data", ItineraryResponse.class);
-      
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
         assertSoftly((softly) -> {
@@ -155,7 +155,8 @@ public class TravelControllerTest extends ApiTest {
             softly.assertThat(data.stay().placeName()).isEqualTo("장소 업데이트");
         });
     }
-  
+
+    @Test
     @DisplayName("여행 수정")
     void editTrip() {
         // given
@@ -187,7 +188,7 @@ public class TravelControllerTest extends ApiTest {
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
         TripResponse data = jsonPath.getObject("data", TripResponse.class);
-      
+
         assertSoftly((softly) -> {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.id()).isNotNull();
@@ -198,6 +199,7 @@ public class TravelControllerTest extends ApiTest {
         });
     }
 
+    @Test
     @DisplayName("여행 목록 조회")
     void findAll() {
         // given
@@ -257,8 +259,44 @@ public class TravelControllerTest extends ApiTest {
         );
     }
 
+    @Test
+    @DisplayName("여정 복수 등록")
+    void addItineraries() {
+        // given
+        Trip trip = createTrip();
+        tripRepository.save(trip);
+        String url = "/api/trips/1/itineraries";
+        List<ItineraryRequest> request = IntStream.range(0, 3)
+            .mapToObj(i -> createItineraryRequest())
+            .toList();
+
+        //when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        TripResponse data = jsonPath.getObject("data", TripResponse.class);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        assertSoftly((softly) -> {
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.id()).isEqualTo(1);
+            softly.assertThat(data.name()).isEqualTo("tripName");
+            softly.assertThat(data.itineraries().size()).isEqualTo(3);
+        });
+    }
+
     private Trip saveTrip() {
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         tripRepository.save(trip);
         return trip;
     }

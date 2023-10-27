@@ -9,6 +9,7 @@ public record StayRequest(
     String address,
     LocalDateTime startAt,
     LocalDateTime endAt
+
 ) {
 
 }

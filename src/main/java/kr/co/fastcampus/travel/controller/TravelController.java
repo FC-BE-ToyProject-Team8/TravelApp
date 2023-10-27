@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TravelController {
 
     private final TripService tripService;
+
     private final ItineraryService itineraryService;
 
     @PostMapping("/trips")
@@ -70,6 +71,17 @@ public class TravelController {
     public ResponseBody<List<TripSummaryResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
         return ResponseBody.ok(toTripSummaryResponses(trips));
+    }
+
+    @PostMapping("/trips/{id}/itineraries")
+    @Operation(summary = "여정 복수 등록")
+    public ResponseBody<TripResponse> addItineraries(
+
+        @PathVariable Long id, @Valid @RequestBody List<ItineraryRequest> request
+    ) {
+        Trip trip = tripService.findById(id);
+        itineraryService.addItineraries(trip, request);
+        return ResponseBody.ok(toTripResponse(tripService.findTripById(id)));
     }
 
     @PutMapping("/trips/{tripId}")

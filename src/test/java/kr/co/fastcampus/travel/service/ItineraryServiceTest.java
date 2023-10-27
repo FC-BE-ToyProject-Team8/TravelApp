@@ -3,16 +3,18 @@ package kr.co.fastcampus.travel.service;
 import static kr.co.fastcampus.travel.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
-import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.controller.request.LodgeRequest;
@@ -30,7 +32,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ItineraryServiceTest {
+class ItineraryServiceTest {
 
     @Mock
     private ItineraryRepository itineraryRepository;
@@ -43,7 +45,7 @@ public class ItineraryServiceTest {
     void editAllItinerary() {
         // given
         Long id = -1L;
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         Itinerary givenItinerary = createItinerary(trip);
 
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givenItinerary));
@@ -71,7 +73,7 @@ public class ItineraryServiceTest {
     void editPartItinerary() {
         // given
         Long id = -1L;
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         Route route = createRoute();
         Itinerary givneItinerary = createItinerary(trip, route, null, null);
 
@@ -105,5 +107,40 @@ public class ItineraryServiceTest {
         // when , then
         assertThatThrownBy(() -> itineraryService.editItinerary(noExistId, request))
             .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("여정 복수 등록")
+    void addItineraries() {
+        // given
+        Trip trip = createTrip();
+        List<ItineraryRequest> requests = IntStream.range(0, 3)
+            .mapToObj(i -> createItineraryRequest())
+            .toList();
+
+        //when
+        Trip returnedTrip  = itineraryService.addItineraries(trip, requests);
+
+        //then
+        assertThat(returnedTrip).isNotNull();
+        assertThat(returnedTrip.getItineraries().size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("여정 복수 등록 실패")
+    void addItineraries_fail() {
+        // given
+        Trip trip = createTrip();
+        List<ItineraryRequest> requests = IntStream.range(0, 3)
+            .mapToObj(i -> createItineraryRequest())
+            .toList();
+        Trip otherTrip = createTrip();
+
+        //when
+        Trip returnedTrip  = itineraryService.addItineraries(otherTrip, requests);
+
+        //then
+        assertThat(trip).isNotEqualTo(returnedTrip);
+        assertThat(trip.getItineraries().size()).isNotEqualTo(returnedTrip.getItineraries().size());
     }
 }
