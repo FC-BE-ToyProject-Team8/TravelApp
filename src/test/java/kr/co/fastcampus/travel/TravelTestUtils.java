@@ -152,10 +152,9 @@ public class TravelTestUtils {
             .extract();
     }
 
-    public static ExtractableResponse<Response> requestDeleteItineraryApi(Long id, String url) {
+    public static ExtractableResponse<Response> requestDeleteApi(String url) {
         return RestAssured.given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .pathParams("itineraryId", id)
             .when().delete(url)
             .then().log().all()
             .extract();
