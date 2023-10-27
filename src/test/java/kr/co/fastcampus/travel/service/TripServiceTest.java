@@ -94,7 +94,10 @@ class TripServiceTest {
             .willAnswer(invocation -> invocation.getArguments()[0]);
 
         TripRequest request = TripRequest.builder()
-            .name("이름2").startDate("2011-01-01").endDate("2011-01-02").isForeign(true)
+            .name("이름2")
+            .startDate(LocalDate.parse("2011-01-01"))
+            .endDate(LocalDate.parse("2011-01-02"))
+            .isForeign(true)
             .build();
 
         // when
