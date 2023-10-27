@@ -39,4 +39,14 @@ public class TripService {
     public List<Trip> findAllTrips() {
         return tripRepository.findAll();
     }
+
+    @Transactional
+    public Trip editTrip(Long tripId, TripRequest request) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(EntityNotFoundException::new);
+        Trip tripToBeUpdated = toTrip(request);
+
+        trip.update(tripToBeUpdated);
+
+        return tripRepository.save(trip);
+    }
 }

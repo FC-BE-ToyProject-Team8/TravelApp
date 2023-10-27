@@ -7,10 +7,9 @@ import lombok.Builder;
 public record StayRequest(
     String placeName,
     String address,
-
     LocalDateTime startAt,
-
     LocalDateTime endAt
+
 ) {
 
 }

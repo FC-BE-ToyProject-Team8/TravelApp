@@ -7,9 +7,7 @@ import lombok.Builder;
 public record LodgeRequest(
     String placeName,
     String address,
-
     LocalDateTime checkInAt,
-
     LocalDateTime checkOutAt
 ) {
 

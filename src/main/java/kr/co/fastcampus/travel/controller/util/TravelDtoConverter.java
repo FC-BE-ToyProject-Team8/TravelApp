@@ -1,6 +1,7 @@
 package kr.co.fastcampus.travel.controller.util;
 
-import java.time.LocalDate;
+import static java.util.Objects.isNull;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,8 +57,8 @@ public class TravelDtoConverter {
     public static Trip toTrip(TripRequest request) {
         return Trip.builder()
             .name(request.name())
-            .startDate(LocalDate.parse(request.startDate()))
-            .endDate(LocalDate.parse(request.endDate()))
+            .startDate(request.startDate())
+            .endDate(request.endDate())
             .isForeign(request.isForeign())
             .build();
     }
@@ -76,7 +77,7 @@ public class TravelDtoConverter {
             .collect(Collectors.toList());
     }
 
-    private static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
+    public static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
         return ItineraryResponse.builder()
             .id(itinerary.getId())
             .route(Optional.ofNullable(itinerary.getRoute())
@@ -88,6 +89,48 @@ public class TravelDtoConverter {
             .stay(Optional.ofNullable(itinerary.getStay())
                 .map(TravelDtoConverter::toStayResponse)
                 .orElse(null))
+            .build();
+    }
+
+    private static Route toRoute(RouteRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
+        return Route.builder()
+            .transportation(request.transportation())
+            .departurePlaceName(request.departurePlaceName())
+            .departureAddress(request.departureAddress())
+            .destinationPlaceName(request.destinationPlaceName())
+            .destinationAddress(request.destinationAddress())
+            .departureAt(request.departureAt())
+            .arriveAt(request.arriveAt())
+            .build();
+    }
+
+    private static Lodge toLodge(LodgeRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
+        return Lodge.builder()
+            .placeName(request.placeName())
+            .address(request.address())
+            .checkInAt(request.checkInAt())
+            .checkOutAt(request.checkOutAt())
+            .build();
+    }
+
+    private static Stay toStay(StayRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
+        return Stay.builder()
+            .placeName(request.placeName())
+            .address(request.address())
+            .startAt(request.startAt())
+            .endAt(request.endAt())
             .build();
     }
 
@@ -118,45 +161,6 @@ public class TravelDtoConverter {
             .address(stay.getAddress())
             .startAt(stay.getStartAt())
             .endAt(stay.getEndAt())
-            .build();
-    }
-
-    private static Route toRoute(RouteRequest routeRequest) {
-        if(routeRequest == null) {
-            return null;
-        }
-        return Route.builder()
-            .transportation(routeRequest.transportation())
-            .departurePlaceName(routeRequest.departurePlaceName())
-            .departureAddress(routeRequest.departureAddress())
-            .destinationPlaceName(routeRequest.destinationPlaceName())
-            .destinationAddress(routeRequest.destinationAddress())
-            .departureAt(routeRequest.departureAt())
-            .arriveAt(routeRequest.arriveAt())
-            .build();
-    }
-
-    private static Lodge toLodge(LodgeRequest lodgeRequest) {
-        if(lodgeRequest == null) {
-            return null;
-        }
-        return Lodge.builder()
-            .placeName(lodgeRequest.placeName())
-            .address(lodgeRequest.address())
-            .checkInAt(lodgeRequest.checkInAt())
-            .checkOutAt(lodgeRequest.checkOutAt())
-            .build();
-    }
-
-    private static Stay toStay(StayRequest stayRequest) {
-        if(stayRequest == null) {
-            return null;
-        }
-        return Stay.builder()
-            .placeName(stayRequest.placeName())
-            .address(stayRequest.address())
-            .startAt(stayRequest.startAt())
-            .endAt(stayRequest.endAt())
             .build();
     }
 }

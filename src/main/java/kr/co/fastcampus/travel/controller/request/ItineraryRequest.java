@@ -4,8 +4,9 @@ import lombok.Builder;
 
 @Builder
 public record ItineraryRequest(
-    LodgeRequest lodge,
     RouteRequest route,
+    LodgeRequest lodge,
     StayRequest stay
 ) {
+
 }
