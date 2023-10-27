@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +56,17 @@ public class TravelController {
     public ResponseBody<List<TripSummaryResponse>> getTripList() {
         List<Trip> trips = tripService.findAllTrips();
         return ResponseBody.ok(toTripSummaryResponses(trips));
+    }
+
+    @PutMapping("/trips/{tripId}")
+    @Operation(summary = "여행 수정")
+    public ResponseBody<TripSummaryResponse> editTrip(
+        @PathVariable Long tripId,
+        @Valid @RequestBody TripRequest request
+    ) {
+        Trip trip = tripService.editTrip(tripId, request);
+        TripSummaryResponse response = toTripSummaryResponse(trip);
+        return ResponseBody.ok(response);
     }
 
     @DeleteMapping("/itineraries/{itineraryId}")
