@@ -56,8 +56,8 @@ public class TravelDtoConverter {
     public static Trip toTrip(TripRequest request) {
         return Trip.builder()
             .name(request.name())
-            .startDate(LocalDate.parse(request.startDate()))
-            .endDate(LocalDate.parse(request.endDate()))
+            .startDate(request.startDate())
+            .endDate(request.endDate())
             .isForeign(request.isForeign())
             .build();
     }

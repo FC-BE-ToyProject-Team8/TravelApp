@@ -56,6 +56,13 @@ public class Trip extends BaseEntity {
         this.isForeign = isForeign;
     }
 
+    public void update(Trip tripToBeUpdated) {
+        this.name = tripToBeUpdated.getName();
+        this.startDate = tripToBeUpdated.getStartDate();
+        this.endDate = tripToBeUpdated.getEndDate();
+        this.isForeign = tripToBeUpdated.isForeign();
+    }
+
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
     }
