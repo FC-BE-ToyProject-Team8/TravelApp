@@ -41,6 +41,18 @@ public class TravelTestUtils {
         return ItineraryRequest.builder().build();
     }
 
+    public static ItineraryRequest createItineraryRequest(
+        RouteRequest route,
+        LodgeRequest lodge,
+        StayRequest stay
+    ) {
+        return ItineraryRequest.builder()
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
+            .build();
+    }
+
     public static ExtractableResponse<Response> putAndExtractResponse(Long id,
         ItineraryRequest request, String url) {
         return RestAssured
@@ -105,18 +117,6 @@ public class TravelTestUtils {
             .address("대한민국")
             .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
-    }
-
-    public static ItineraryRequest createItineraryRequest(
-        RouteRequest route,
-        LodgeRequest lodge,
-        StayRequest stay
-    ) {
-        return ItineraryRequest.builder()
-            .route(route)
-            .lodge(lodge)
-            .stay(stay)
             .build();
     }
 
