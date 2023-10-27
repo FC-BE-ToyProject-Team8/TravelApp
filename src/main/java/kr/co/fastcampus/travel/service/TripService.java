@@ -31,6 +31,11 @@ public class TripService {
             .orElseThrow(EntityNotFoundException::new);
     }
 
+    public Trip findById(Long id) {
+        return tripRepository.findById(id)
+            .orElseThrow(EntityNotFoundException::new);
+    }
+
     public List<Trip> findAllTrips() {
         return tripRepository.findAll();
     }

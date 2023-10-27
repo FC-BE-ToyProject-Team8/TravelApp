@@ -4,10 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record ItineraryResponse(
-        Long id,
-        RouteResponse route,
-        LodgeResponse lodge,
-        StayResponse stay
+    Long id,
+    RouteResponse route,
+    LodgeResponse lodge,
+    StayResponse stay
 ) {
 
 }

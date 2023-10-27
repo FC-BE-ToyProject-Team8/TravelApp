@@ -1,9 +1,14 @@
 package kr.co.fastcampus.travel.controller.util;
 
-import java.time.LocalDate;
+import static java.util.Objects.isNull;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
+import kr.co.fastcampus.travel.controller.request.LodgeRequest;
+import kr.co.fastcampus.travel.controller.request.RouteRequest;
+import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.controller.request.TripRequest;
 import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.LodgeResponse;
@@ -58,13 +63,21 @@ public class TravelDtoConverter {
             .build();
     }
 
+    public static Itinerary toItinerary(ItineraryRequest request) {
+        return Itinerary.builder()
+            .route(toRoute(request.route()))
+            .lodge(toLodge(request.lodge()))
+            .stay(toStay(request.stay()))
+            .build();
+    }
+
     private static List<ItineraryResponse> getItineraryResponses(Trip trip) {
         return trip.getItineraries().stream()
             .map(TravelDtoConverter::toItineraryResponse)
             .collect(Collectors.toList());
     }
 
-    private static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
+    public static ItineraryResponse toItineraryResponse(Itinerary itinerary) {
         return ItineraryResponse.builder()
             .id(itinerary.getId())
             .route(Optional.ofNullable(itinerary.getRoute())
@@ -76,6 +89,48 @@ public class TravelDtoConverter {
             .stay(Optional.ofNullable(itinerary.getStay())
                 .map(TravelDtoConverter::toStayResponse)
                 .orElse(null))
+            .build();
+    }
+
+    private static Route toRoute(RouteRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
+        return Route.builder()
+            .transportation(request.transportation())
+            .departurePlaceName(request.departurePlaceName())
+            .departureAddress(request.departureAddress())
+            .destinationPlaceName(request.destinationPlaceName())
+            .destinationAddress(request.destinationAddress())
+            .departureAt(request.departureAt())
+            .arriveAt(request.arriveAt())
+            .build();
+    }
+
+    private static Lodge toLodge(LodgeRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
+        return Lodge.builder()
+            .placeName(request.placeName())
+            .address(request.address())
+            .checkInAt(request.checkInAt())
+            .checkOutAt(request.checkOutAt())
+            .build();
+    }
+
+    private static Stay toStay(StayRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
+        return Stay.builder()
+            .placeName(request.placeName())
+            .address(request.address())
+            .startAt(request.startAt())
+            .endAt(request.endAt())
             .build();
     }
 
