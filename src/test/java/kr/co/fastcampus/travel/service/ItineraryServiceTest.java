@@ -50,11 +50,11 @@ public class ItineraryServiceTest {
         given(itineraryRepository.save(any())).willAnswer(
             invocation -> invocation.getArguments()[0]);
 
-        RouteRequest route2 = createRouteRequest();
-        LodgeRequest lodge2 = createLodgeRequest();
-        StayRequest stay2 = createStayRequest();
+        RouteRequest route = createRouteRequest();
+        LodgeRequest lodge = createLodgeRequest();
+        StayRequest stay = createStayRequest();
 
-        ItineraryRequest request = createItineraryRequest(route2, lodge2, stay2);
+        ItineraryRequest request = createItineraryRequest(route, lodge, stay);
 
         // when
         Itinerary editItinerary = itineraryService.editItinerary(id, request);

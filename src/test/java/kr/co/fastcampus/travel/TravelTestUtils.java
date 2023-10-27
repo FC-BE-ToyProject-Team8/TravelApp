@@ -49,9 +49,9 @@ public class TravelTestUtils {
     }
 
     public static Itinerary createItinerary(Trip trip) {
-        Route route = createRoute(); // route 생성
-        Lodge lodge = createLodge(); // lodge 생성
-        Stay stay = createStay();   // stay 생성
+        Route route = createRoute();
+        Lodge lodge = createLodge();
+        Stay stay = createStay();
 
         Itinerary itinerary = Itinerary.builder()
             .route(route)
