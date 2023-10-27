@@ -1,14 +1,12 @@
 package kr.co.fastcampus.travel.service;
 
-import static kr.co.fastcampus.travel.TestUtil.createMockItinerary;
-import static kr.co.fastcampus.travel.TestUtil.createMockItineraryRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockLodge;
-import static kr.co.fastcampus.travel.TestUtil.createMockLodgeRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockRoute;
-import static kr.co.fastcampus.travel.TestUtil.createMockRouteRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockStay;
-import static kr.co.fastcampus.travel.TestUtil.createMockStayRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItinerary;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createRoute;
+import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,9 +19,7 @@ import kr.co.fastcampus.travel.controller.request.LodgeRequest;
 import kr.co.fastcampus.travel.controller.request.RouteRequest;
 import kr.co.fastcampus.travel.controller.request.StayRequest;
 import kr.co.fastcampus.travel.entity.Itinerary;
-import kr.co.fastcampus.travel.entity.Lodge;
 import kr.co.fastcampus.travel.entity.Route;
-import kr.co.fastcampus.travel.entity.Stay;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.ItineraryRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -48,20 +44,17 @@ public class ItineraryServiceTest {
         // given
         Long id = -1L;
         Trip trip = createMockTrip();
-        Route route = createMockRoute();
-        Lodge lodge = createMockLodge();
-        Stay stay = createMockStay();
-        Itinerary givenItinerary = createMockItinerary(trip, route, lodge, stay);
+        Itinerary givenItinerary = createItinerary(trip);
 
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givenItinerary));
         given(itineraryRepository.save(any())).willAnswer(
             invocation -> invocation.getArguments()[0]);
 
-        RouteRequest route2 = createMockRouteRequest();
-        LodgeRequest lodge2 = createMockLodgeRequest();
-        StayRequest stay2 = createMockStayRequest();
+        RouteRequest route2 = createRouteRequest();
+        LodgeRequest lodge2 = createLodgeRequest();
+        StayRequest stay2 = createStayRequest();
 
-        ItineraryRequest request = createMockItineraryRequest(route2, lodge2, stay2);
+        ItineraryRequest request = createItineraryRequest(route2, lodge2, stay2);
 
         // when
         Itinerary editItinerary = itineraryService.editItinerary(id, request);
@@ -79,15 +72,15 @@ public class ItineraryServiceTest {
         // given
         Long id = -1L;
         Trip trip = createMockTrip();
-        Route route = createMockRoute();
-        Itinerary givneItinerary = createMockItinerary(trip, route, null, null);
+        Route route = createRoute();
+        Itinerary givneItinerary = createItinerary(trip, route, null, null);
 
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
         given(itineraryRepository.save(any())).willAnswer(
             invocation -> invocation.getArguments()[0]);
 
-        RouteRequest editRouteRequest = createMockRouteRequest();
-        ItineraryRequest request = createMockItineraryRequest(editRouteRequest, null, null);
+        RouteRequest editRouteRequest = createRouteRequest();
+        ItineraryRequest request = createItineraryRequest(editRouteRequest, null, null);
 
         // when
         Itinerary editItinerary = itineraryService.editItinerary(id, request);

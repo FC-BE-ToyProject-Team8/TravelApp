@@ -1,16 +1,13 @@
 package kr.co.fastcampus.travel.controller;
 
-import static kr.co.fastcampus.travel.TestUtil.createMockItinerary;
-import static kr.co.fastcampus.travel.TestUtil.createMockItineraryRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockLodge;
-import static kr.co.fastcampus.travel.TestUtil.createMockLodgeRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockRoute;
-import static kr.co.fastcampus.travel.TestUtil.createMockRouteRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockStay;
-import static kr.co.fastcampus.travel.TestUtil.createMockStayRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
-import static kr.co.fastcampus.travel.TestUtil.findAllTrip;
-import static kr.co.fastcampus.travel.TestUtil.findAndEditItinerary;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItinerary;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createMockTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.findAllTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.putAndExtractResponse;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -34,9 +31,6 @@ import kr.co.fastcampus.travel.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.controller.response.TripResponse;
 import kr.co.fastcampus.travel.controller.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.entity.Itinerary;
-import kr.co.fastcampus.travel.entity.Lodge;
-import kr.co.fastcampus.travel.entity.Route;
-import kr.co.fastcampus.travel.entity.Stay;
 import kr.co.fastcampus.travel.entity.Trip;
 import kr.co.fastcampus.travel.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.repository.TripRepository;
@@ -125,21 +119,21 @@ public class TravelControllerTest extends ApiTest {
     @DisplayName("여정 수정")
     void editItinerary() {
         //given
+        String url = "/api/itineraries/{id}";
         Trip trip = createMockTrip();
-        Route route = createMockRoute();
-        Lodge lodge = createMockLodge();
-        Stay stay = createMockStay();
-        Itinerary itinerary = createMockItinerary(trip, route, lodge, stay);
         tripRepository.save(trip);
+
+        Itinerary itinerary = createItinerary(trip);
         itineraryRepository.save(itinerary);
 
-        LodgeRequest lodge2 = createMockLodgeRequest();
-        StayRequest stay2 = createMockStayRequest();
-        RouteRequest route2 = createMockRouteRequest();
-        ItineraryRequest request = createMockItineraryRequest(route2, lodge2, stay2);
+        LodgeRequest lodge2 = createLodgeRequest();
+        StayRequest stay2 = createStayRequest();
+        RouteRequest route2 = createRouteRequest();
+        ItineraryRequest request = createItineraryRequest(route2, lodge2, stay2);
 
         //when
-        ExtractableResponse<Response> response = findAndEditItinerary(itinerary.getId(), request);
+        ExtractableResponse<Response> response =
+            putAndExtractResponse(itinerary.getId(), request, url);
 
         //then
         JsonPath jsonPath = response.jsonPath();
@@ -181,7 +175,7 @@ public class TravelControllerTest extends ApiTest {
             softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(1)));
         });
     }
-  
+
     @Test
     @DisplayName("여정 포함 여행 조회")
     void getContainTrip() {
