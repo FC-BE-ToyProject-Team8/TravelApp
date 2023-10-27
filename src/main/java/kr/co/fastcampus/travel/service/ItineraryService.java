@@ -2,7 +2,7 @@ package kr.co.fastcampus.travel.service;
 
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toItinerary;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.entity.Itinerary;
@@ -18,6 +18,7 @@ public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
 
+    @Transactional(readOnly = true)
     public Itinerary findByItineraryId(Long itineraryId) {
         return itineraryRepository.findById(itineraryId)
             .orElseThrow(EntityNotFoundException::new);
