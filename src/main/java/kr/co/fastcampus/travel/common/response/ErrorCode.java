@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
     COMMON_ENTITY_NOT_FOUND("존재하지 않는 엔티티입니다."),
+    INCORRECT_REQUEST("잘못된 요청입니다.")
     ;
 
 

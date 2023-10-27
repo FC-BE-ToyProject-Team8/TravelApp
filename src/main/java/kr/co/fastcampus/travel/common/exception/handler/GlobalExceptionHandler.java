@@ -1,10 +1,12 @@
 package kr.co.fastcampus.travel.common.exception.handler;
 
 import kr.co.fastcampus.travel.common.exception.BaseException;
+import kr.co.fastcampus.travel.common.response.ErrorCode;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,5 +50,12 @@ public class GlobalExceptionHandler {
     public ResponseBody<Void> handleUnexpectedException(Exception e) {
         log.error("[Exception]", e);
         return ResponseBody.error(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public ResponseBody<Void> httpMessageNotReadableException(Exception e) {
+        log.error("[HttpMessageNotReadableException]", e);
+        return ResponseBody.fail(ErrorCode.INCORRECT_REQUEST.getErrorMsg());
     }
 }
