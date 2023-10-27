@@ -20,12 +20,12 @@ public class ItineraryService {
     private final ItineraryRepository itineraryRepository;
 
     @Transactional
-    public Long addItineraries(Trip trip, List<ItineraryRequest> request) {
+    public Trip addItineraries(Trip trip, List<ItineraryRequest> request) {
         for (ItineraryRequest itineraryRequest : request) {
             Itinerary itinerary = toItinerary(itineraryRequest);
             itinerary.registerTrip(trip);
             itineraryRepository.save(itinerary);
         }
-        return trip.getId();
+        return trip;
     }
 }
