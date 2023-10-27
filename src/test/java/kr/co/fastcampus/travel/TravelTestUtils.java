@@ -18,7 +18,8 @@ import org.springframework.http.MediaType;
 
 public class TravelTestUtils {
 
-    private TravelTestUtils() {}
+    private TravelTestUtils() {
+    }
 
     public static Trip createTrip() {
         return Trip.builder()
@@ -27,14 +28,6 @@ public class TravelTestUtils {
             .endDate(LocalDate.now().plusDays(1))
             .isForeign(true)
             .build();
-    }
-
-    public static ExtractableResponse<Response> findAllTrip() {
-        return RestAssured
-            .given().log().all()
-            .when().get("/api/trips")
-            .then().log().all()
-            .extract();
     }
 
     public static ItineraryRequest createItineraryRequest() {
@@ -54,7 +47,8 @@ public class TravelTestUtils {
     }
 
     public static ExtractableResponse<Response> putAndExtractResponse(Long id,
-        ItineraryRequest request, String url) {
+                                                                      ItineraryRequest request,
+                                                                      String url) {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -106,8 +100,8 @@ public class TravelTestUtils {
         return Lodge.builder()
             .placeName("호텔")
             .address("부산 @@@")
-            .checkOutAt(LocalDateTime.of(2023, 1, 1, 15, 00))
-            .checkInAt(LocalDateTime.of(2023, 1, 2, 11, 00))
+            .checkOutAt(LocalDateTime.of(2023, 1, 1, 15, 0))
+            .checkInAt(LocalDateTime.of(2023, 1, 2, 11, 0))
             .build();
     }
 
@@ -136,8 +130,8 @@ public class TravelTestUtils {
         return LodgeRequest.builder()
             .placeName("장소 업데이트")
             .address("주소 업데이트")
-            .checkInAt(LocalDateTime.of(2023, 1, 1, 15, 00))
-            .checkOutAt(LocalDateTime.of(2023, 1, 2, 11, 00))
+            .checkInAt(LocalDateTime.of(2023, 1, 1, 15, 0))
+            .checkOutAt(LocalDateTime.of(2023, 1, 2, 11, 0))
             .build();
     }
 
@@ -148,5 +142,22 @@ public class TravelTestUtils {
             .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
             .build();
+    }
+
+    public static ExtractableResponse<Response> requestFindAllTripApi() {
+        return RestAssured
+            .given().log().all()
+            .when().get("/api/trips")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> requestDeleteItineraryApi(Long id, String url) {
+        return RestAssured.given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .pathParams("itineraryId", id)
+            .when().delete(url)
+            .then().log().all()
+            .extract();
     }
 }

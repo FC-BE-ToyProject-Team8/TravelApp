@@ -9,8 +9,11 @@ import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
@@ -119,7 +122,7 @@ class ItineraryServiceTest {
             .toList();
 
         //when
-        Trip returnedTrip  = itineraryService.addItineraries(trip, requests);
+        Trip returnedTrip = itineraryService.addItineraries(trip, requests);
 
         //then
         assertThat(returnedTrip).isNotNull();
@@ -137,10 +140,40 @@ class ItineraryServiceTest {
         Trip otherTrip = createTrip();
 
         //when
-        Trip returnedTrip  = itineraryService.addItineraries(otherTrip, requests);
+        Trip returnedTrip = itineraryService.addItineraries(otherTrip, requests);
 
         //then
         assertThat(trip).isNotEqualTo(returnedTrip);
         assertThat(trip.getItineraries().size()).isNotEqualTo(returnedTrip.getItineraries().size());
+    }
+
+    @Test
+    @DisplayName("여정 삭제")
+    void deleteItinerary() {
+        //given
+        Trip trip = createTrip();
+        Itinerary itinerary1 = createItinerary(trip);
+        Itinerary itinerary2 = createItinerary(trip);
+        when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary2));
+
+        //when
+        itineraryService.deleteById(itinerary2.getId());
+
+        //then
+        verify(itineraryRepository).delete(itinerary2);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 여정 삭제")
+    void deleteNoneItinerary() {
+        // given
+        when(itineraryRepository.findById(any())).thenReturn(Optional.empty());
+
+        // when
+        EntityNotFoundException e =
+            assertThrows(EntityNotFoundException.class, () -> itineraryService.deleteById(2L));
+
+        // then
+        assertThat(e.getMessage()).isEqualTo("존재하지 않는 엔티티입니다.");
     }
 }

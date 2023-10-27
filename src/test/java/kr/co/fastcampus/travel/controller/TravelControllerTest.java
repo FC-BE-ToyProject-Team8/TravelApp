@@ -6,8 +6,9 @@ import static kr.co.fastcampus.travel.TravelTestUtils.createLodgeRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
-import static kr.co.fastcampus.travel.TravelTestUtils.findAllTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.putAndExtractResponse;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestDeleteItineraryApi;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestFindAllTripApi;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -206,7 +207,7 @@ public class TravelControllerTest extends ApiTest {
         List<Trip> saveTrips = IntStream.range(0, 2).mapToObj(i -> saveTrip()).toList();
 
         // when
-        ExtractableResponse<Response> response = findAllTrip();
+        ExtractableResponse<Response> response = requestFindAllTripApi();
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -295,9 +296,53 @@ public class TravelControllerTest extends ApiTest {
         });
     }
 
+    @Test
+    @DisplayName("여정 삭제")
+    void deleteItinerary() {
+        //given
+        Trip trip = saveTrip();
+        saveItinerary(trip);
+        Itinerary itinerary = saveItinerary(trip);
+
+        //when
+        String url = "/api/itineraries/{itineraryId}";
+        requestDeleteItineraryApi(itinerary.getId(), url);
+
+        //then
+        Trip findTrip = tripRepository.findFetchItineraryById(trip.getId()).get();
+        List<Itinerary> itineraries = findTrip.getItineraries();
+        assertThat(itineraries.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 여정 삭제")
+    void deleteNoneItinerary() {
+        //given
+        Trip trip = saveTrip();
+        saveItinerary(trip);
+        saveItinerary(trip);
+
+        //when
+        String url = "/api/itineraries/{itineraryId}";
+        ExtractableResponse<Response> response = requestDeleteItineraryApi(5L, url);
+
+        //then
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
+            softly.assertThat(response.jsonPath().getString("errorMessage"))
+                .isEqualTo("존재하지 않는 엔티티입니다.");
+        });
+
+    }
+
     private Trip saveTrip() {
         Trip trip = createTrip();
-        tripRepository.save(trip);
-        return trip;
+        return tripRepository.save(trip);
+    }
+
+    private Itinerary saveItinerary(Trip trip) {
+        Itinerary itinerary = createItinerary(trip);
+        return itineraryRepository.save(itinerary);
     }
 }

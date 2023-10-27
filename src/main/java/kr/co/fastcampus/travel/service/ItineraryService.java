@@ -16,25 +16,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = false)
+@Transactional
 public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
 
     @Transactional(readOnly = true)
-    public Itinerary findByItineraryId(Long itineraryId) {
-        return itineraryRepository.findById(itineraryId)
+    public Itinerary findById(Long id) {
+        return itineraryRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
 
     public Itinerary editItinerary(Long id, ItineraryRequest request) {
-        Itinerary itinerary = findByItineraryId(id);
+        Itinerary itinerary = findById(id);
         Itinerary itineraryToBeUpdated = toItinerary(request);
         itinerary.update(itineraryToBeUpdated);
         return itineraryRepository.save(itinerary);
     }
 
-    @Transactional
     public Trip addItineraries(Trip trip, List<ItineraryRequest> request) {
         for (ItineraryRequest itineraryRequest : request) {
             Itinerary itinerary = toItinerary(itineraryRequest);
@@ -42,5 +41,10 @@ public class ItineraryService {
             itineraryRepository.save(itinerary);
         }
         return trip;
+    }
+
+    public void deleteById(Long id) {
+        Itinerary itinerary = findById(id);
+        itineraryRepository.delete(itinerary);
     }
 }
