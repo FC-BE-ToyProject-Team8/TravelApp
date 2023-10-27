@@ -1,8 +1,8 @@
 package kr.co.fastcampus.travel.controller;
 
-import static kr.co.fastcampus.travel.TestUtil.createMockItineraryRequest;
-import static kr.co.fastcampus.travel.TestUtil.createMockTrip;
-import static kr.co.fastcampus.travel.TestUtil.findAllTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.createItineraryRequest;
+import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
+import static kr.co.fastcampus.travel.TravelTestUtils.findAllTrip;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -166,11 +166,11 @@ public class TravelControllerTest extends ApiTest {
     @DisplayName("여정 복수 등록")
     void addItineraries() {
         // given
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         tripRepository.save(trip);
         String url = "/api/trips/1/itineraries";
         List<ItineraryRequest> request = IntStream.range(0, 3)
-            .mapToObj(i -> createMockItineraryRequest())
+            .mapToObj(i -> createItineraryRequest())
             .toList();
 
         //when
@@ -199,7 +199,7 @@ public class TravelControllerTest extends ApiTest {
     }
 
     private Trip saveTrip() {
-        Trip trip = createMockTrip();
+        Trip trip = createTrip();
         tripRepository.save(trip);
         return trip;
     }

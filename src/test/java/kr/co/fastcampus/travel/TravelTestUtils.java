@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import kr.co.fastcampus.travel.controller.request.ItineraryRequest;
 import kr.co.fastcampus.travel.entity.Trip;
 
-public class TestUtil {
-    public static Trip createMockTrip() {
+public class TravelTestUtils {
+    public static Trip createTrip() {
         return Trip.builder()
             .name("tripName")
             .startDate(LocalDate.now())
@@ -25,7 +25,7 @@ public class TestUtil {
             .extract();
     }
 
-    public static ItineraryRequest createMockItineraryRequest() {
+    public static ItineraryRequest createItineraryRequest() {
         return ItineraryRequest.builder().build();
     }
 }
