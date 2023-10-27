@@ -64,9 +64,9 @@ public class TravelDtoConverter {
 
     public static Itinerary toItinerary(ItineraryRequest request) {
         return Itinerary.builder()
-            .route(request.route() == null ? null : toRoute(request.route()))
-            .lodge(request.lodge() == null ? null : toLodge(request.lodge()))
-            .stay(request.stay() == null ? null : toStay(request.stay()))
+            .route(toRoute(request.route()))
+            .lodge(toLodge(request.lodge()))
+            .stay(toStay(request.stay()))
             .build();
     }
 
@@ -122,6 +122,9 @@ public class TravelDtoConverter {
     }
 
     private static Route toRoute(RouteRequest routeRequest) {
+        if(routeRequest == null) {
+            return null;
+        }
         return Route.builder()
             .transportation(routeRequest.transportation())
             .departurePlaceName(routeRequest.departurePlaceName())
@@ -134,6 +137,9 @@ public class TravelDtoConverter {
     }
 
     private static Lodge toLodge(LodgeRequest lodgeRequest) {
+        if(lodgeRequest == null) {
+            return null;
+        }
         return Lodge.builder()
             .placeName(lodgeRequest.placeName())
             .address(lodgeRequest.address())
@@ -143,6 +149,9 @@ public class TravelDtoConverter {
     }
 
     private static Stay toStay(StayRequest stayRequest) {
+        if(stayRequest == null) {
+            return null;
+        }
         return Stay.builder()
             .placeName(stayRequest.placeName())
             .address(stayRequest.address())
