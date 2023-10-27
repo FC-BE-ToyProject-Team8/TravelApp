@@ -1,5 +1,7 @@
 package kr.co.fastcampus.travel.controller.util;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -85,13 +87,17 @@ public class TravelDtoConverter {
 
     public static Itinerary toItinerary(ItineraryRequest request) {
         return Itinerary.builder()
-            .route(request.route() == null ? null : toRoute(request.route()))
-            .lodge(request.lodge() == null ? null : toLodge(request.lodge()))
-            .stay(request.stay() == null ? null : toStay(request.stay()))
+            .route(toRoute(request.route()))
+            .lodge(toLodge(request.lodge()))
+            .stay(toStay(request.stay()))
             .build();
     }
 
     private static Route toRoute(RouteRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
         return Route.builder()
             .transportation(request.transportation())
             .departurePlaceName(request.departurePlaceName())
@@ -104,6 +110,10 @@ public class TravelDtoConverter {
     }
 
     private static Lodge toLodge(LodgeRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
         return Lodge.builder()
             .placeName(request.placeName())
             .address(request.address())
@@ -113,6 +123,10 @@ public class TravelDtoConverter {
     }
 
     private static Stay toStay(StayRequest request) {
+        if (isNull(request)) {
+            return null;
+        }
+
         return Stay.builder()
             .placeName(request.placeName())
             .address(request.address())
