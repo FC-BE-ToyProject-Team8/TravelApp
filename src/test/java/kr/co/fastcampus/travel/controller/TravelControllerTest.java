@@ -174,7 +174,8 @@ public class TravelControllerTest extends ApiTest {
         Itinerary itinerary = saveItinerary(trip);
 
         //when
-        requestDeleteItineraryApi(itinerary.getId());
+        String url = "/api/itineraries/{itineraryId}";
+        requestDeleteItineraryApi(itinerary.getId(), url);
 
         //then
         Trip findTrip = tripRepository.findFetchItineraryById(trip.getId()).get();
@@ -191,11 +192,17 @@ public class TravelControllerTest extends ApiTest {
         saveItinerary(trip);
 
         //when
-        ExtractableResponse<Response> response = requestDeleteItineraryApi(5L);
+        String url = "/api/itineraries/{itineraryId}";
+        ExtractableResponse<Response> response = requestDeleteItineraryApi(5L, url);
 
         //then
-        assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
-        assertThat(response.jsonPath().getString("errorMessage")).isEqualTo("존재하지 않는 엔티티입니다.");
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
+            softly.assertThat(response.jsonPath().getString("errorMessage"))
+                .isEqualTo("존재하지 않는 엔티티입니다.");
+        });
+
     }
 
     private Trip saveTrip() {

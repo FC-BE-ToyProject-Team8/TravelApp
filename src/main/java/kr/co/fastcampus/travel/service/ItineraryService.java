@@ -16,14 +16,14 @@ public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
 
-    public Itinerary findByItineraryId(Long itineraryId) {
-        return itineraryRepository.findById(itineraryId)
+    public Itinerary findById(Long id) {
+        return itineraryRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional
-    public void deleteById(Long itineraryId) {
-        Itinerary itinerary = findByItineraryId(itineraryId);
+    public void deleteById(Long id) {
+        Itinerary itinerary = findById(id);
         itineraryRepository.delete(itinerary);
     }
 }
