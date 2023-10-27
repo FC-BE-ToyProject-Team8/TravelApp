@@ -61,9 +61,11 @@ public class TravelController {
     @PostMapping("/trips/{id}/itineraries")
     @Operation(summary = "여정 복수 등록")
     public ResponseBody<TripResponse> addItineraries(
+
         @PathVariable Long id, @Valid @RequestBody List<ItineraryRequest> request
     ) {
-        Trip trip = itineraryService.addItineraries(id, request);
-        return ResponseBody.ok(toTripResponse(trip));
+        Trip trip = tripService.findById(id);
+        itineraryService.addItineraries(trip, request);
+        return ResponseBody.ok(toTripResponse(tripService.findTripById(id)));
     }
 }
