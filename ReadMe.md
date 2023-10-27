@@ -20,14 +20,17 @@
 - **API 명세** : Swagger
 
 ### 로컬 데이터베이스 H2 접속 경로
+
 1. http://localhost:8080/h2-console 에 들어간다.
 2. 아래 정보대로 입력 칸을 채우고 Connect를 누른다.
+
 - Driver Class: org.h2.Driver
 - JDBC URL: jdbc:h2:mem:testdb;MODE=MYSQL
 - User Name: sa
 - Password: (빈칸)
 
 ### Swagger 접속 경로
+
 1. 서버 실행한다.
 2. http://localhost:8080/swagger-ui/index.html 에 들어간다.
 
@@ -248,6 +251,7 @@ public class TravelDtoConverter {
 - **Controller**: 모든 public 메서드 테스트 코드 작성 필수
 
 ### 오류 코드 번호
+
 - **200** :  성공, 예상한 에러
 - **400** : 바인딩 에러
 - **500** : 나머지
