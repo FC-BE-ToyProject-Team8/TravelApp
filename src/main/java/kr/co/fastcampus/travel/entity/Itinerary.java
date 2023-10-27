@@ -86,6 +86,12 @@ public class Itinerary extends BaseEntity {
             .build();
     }
 
+    public void update(Itinerary itineraryToBeUpdated) {
+        this.route = itineraryToBeUpdated.getRoute();
+        this.lodge = itineraryToBeUpdated.getLodge();
+        this.stay = itineraryToBeUpdated.getStay();
+    }
+
     public void registerTrip(Trip trip) {
         if (this.trip != null) {
             this.trip.getItineraries().remove(this);
