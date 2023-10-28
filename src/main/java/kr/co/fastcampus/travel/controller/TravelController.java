@@ -95,6 +95,13 @@ public class TravelController {
         return ResponseBody.ok(response);
     }
 
+    @DeleteMapping("/trips/{id}")
+    @Operation(summary = "여행 삭제")
+    public ResponseBody<Void> deleteTrip(@PathVariable Long id) {
+        tripService.deleteTrip(id);
+        return ResponseBody.ok();
+    }
+
     @DeleteMapping("/itineraries/{itineraryId}")
     @Operation(summary = "여정 삭제")
     public ResponseBody<Void> deleteItinerary(@PathVariable Long itineraryId) {

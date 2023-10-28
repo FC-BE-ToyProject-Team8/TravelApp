@@ -125,4 +125,17 @@ class TripServiceTest {
         assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request))
             .isInstanceOf(EntityNotFoundException.class);
     }
+
+    @Test
+    @DisplayName("없는 여행을 삭제하면 예외")
+    void findById_failure() {
+        // given
+        when(tripRepository.findById(-1L))
+            .thenReturn(Optional.empty());
+
+        // when
+        // then
+        assertThatThrownBy(() -> tripService.deleteTrip(-1L))
+            .isInstanceOf(EntityNotFoundException.class);
+    }
 }
