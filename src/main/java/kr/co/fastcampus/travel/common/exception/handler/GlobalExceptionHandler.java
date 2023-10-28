@@ -1,7 +1,6 @@
 package kr.co.fastcampus.travel.common.exception.handler;
 
 import kr.co.fastcampus.travel.common.exception.BaseException;
-import kr.co.fastcampus.travel.common.response.ErrorCode;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
