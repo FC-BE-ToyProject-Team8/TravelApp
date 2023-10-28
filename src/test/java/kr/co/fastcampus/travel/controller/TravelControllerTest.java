@@ -309,7 +309,7 @@ public class TravelControllerTest extends ApiTest {
 
         //then
         JsonPath jsonPath = response.jsonPath();
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(jsonPath.getString("status")).isEqualTo(FAIL.name());
     }
 
@@ -361,7 +361,7 @@ public class TravelControllerTest extends ApiTest {
 
         //then
         assertSoftly(softly -> {
-            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
             softly.assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
             softly.assertThat(response.jsonPath().getString("errorMessage"))
                 .isEqualTo("존재하지 않는 엔티티입니다.");
