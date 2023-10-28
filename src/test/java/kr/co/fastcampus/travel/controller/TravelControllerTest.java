@@ -7,8 +7,10 @@ import static kr.co.fastcampus.travel.TravelTestUtils.createRouteRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createStayRequest;
 import static kr.co.fastcampus.travel.TravelTestUtils.createTrip;
 import static kr.co.fastcampus.travel.TravelTestUtils.putAndExtractResponse;
-import static kr.co.fastcampus.travel.TravelTestUtils.requestDeleteItineraryApi;
+import static kr.co.fastcampus.travel.TravelTestUtils.requestDeleteApi;
 import static kr.co.fastcampus.travel.TravelTestUtils.requestFindAllTripApi;
+import static kr.co.fastcampus.travel.common.response.Status.FAIL;
+import static kr.co.fastcampus.travel.common.response.Status.SUCCESS;
 import static kr.co.fastcampus.travel.controller.util.TravelDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -297,6 +299,37 @@ public class TravelControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("없는 여행 삭제")
+    void deleteTrip_failureException() {
+        //given
+        String url = "/api/trips/-1";
+
+        //when
+        ExtractableResponse<Response> response = requestDeleteApi(url);
+
+        //then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(jsonPath.getString("status")).isEqualTo(FAIL.name());
+    }
+
+    @Test
+    @DisplayName("여행 삭제")
+    void deleteTrip() {
+        //given
+        Trip trip = saveTrip();
+        String url = "/api/trips/" + trip.getId();
+
+        //when
+        ExtractableResponse<Response> response = requestDeleteApi(url);
+
+        //then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(jsonPath.getString("status")).isEqualTo(SUCCESS.name());
+    }
+
+    @Test
     @DisplayName("여정 삭제")
     void deleteItinerary() {
         //given
@@ -305,8 +338,8 @@ public class TravelControllerTest extends ApiTest {
         Itinerary itinerary = saveItinerary(trip);
 
         //when
-        String url = "/api/itineraries/{itineraryId}";
-        requestDeleteItineraryApi(itinerary.getId(), url);
+        String url = "/api/itineraries/" + itinerary.getId();
+        requestDeleteApi(url);
 
         //then
         Trip findTrip = tripRepository.findFetchItineraryById(trip.getId()).get();
@@ -323,8 +356,8 @@ public class TravelControllerTest extends ApiTest {
         saveItinerary(trip);
 
         //when
-        String url = "/api/itineraries/{itineraryId}";
-        ExtractableResponse<Response> response = requestDeleteItineraryApi(5L, url);
+        String url = "/api/itineraries/5";
+        ExtractableResponse<Response> response = requestDeleteApi(url);
 
         //then
         assertSoftly(softly -> {
