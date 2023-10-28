@@ -38,7 +38,7 @@
 - 실제 서버에 배포된 API의 Swagger
 - http://ec2-13-125-249-31.ap-northeast-2.compute.amazonaws.com/swagger-ui/index.html
 
-## ⚖️ [컨벤셔](https://github.com/FC-BE-ToyProject-Team8/TravelApp/wiki)
+## ⚖️ [컨벤션](https://github.com/FC-BE-ToyProject-Team8/TravelApp/wiki)
 
 ----
 
@@ -88,7 +88,7 @@
 ### 5. 성공/오류 코드 번호
 
 - **200** : 성공
-- **400** : 바인딩 및 클라이언트 에러
+- **400** : 클라이언트가 입력을 잘못 함
 - **500** : 서버 에러
 
 ### 6. 기타 합의사항
@@ -116,20 +116,20 @@
 
 ## API 테스트
 
-### `POST | api/trips` 여행 등록 (요청/응답 - 성공)
+### `POST /trips` 여행 등록 (요청/응답 - 성공)
 
 ![img.png](resultimage/여행등록요청1.png)
 ![img_1.png](resultimage/여행등록응답성공.png)
 ![img_2.png](resultimage/여행등록성공DB확인.png)
 
-### `POST | api/trips` 여행 등록 (요청/응답 - 실패 *notNull)
+### `POST /trips` 여행 등록 (요청/응답 - 실패 *notNull)
 
 ![img_4.png](resultimage/여행등록요청2.png)
 ![img_3.png](resultimage/여행등록응답실패.png)
 ![img.png](resultimage/여행등록실패로그.png)
 -----
 
-### `GET | api/trips` 여행 목록 조회 (요청/응답 - 성공)
+### `GET /trips` 여행 목록 조회 (요청/응답 - 성공)
 
 ![img_2.png](resultimage/여행테이블확인.png)
 ![img.png](resultimage/여행목록조회요청.png)
@@ -137,33 +137,33 @@
 
 ----
 
-### `DELETE | api/trips/{tripId}` 여행 삭제 (요청/응답 - 성공)
+### `DELETE /trips/{id}` 여행 삭제 (요청/응답 - 성공)
 
 ![img_1.png](resultimage/여행삭제요청1.png)
 ![img_2.png](resultimage/여행삭제응답성공.png)
 
 ----
 
-### `POST | trips/{tripId}/itineraries` 여정 복수 추가 (요청/응답 - 성공)
+### `POST /trips/{id}/itineraries` 여정 복수 추가 (요청/응답 - 성공)
 
 ![img_3.png](resultimage/여정복수추가요청1.png)
 ![img_4.png](resultimage/여정복수추가응답성공.png)
 ![img_5.png](resultimage/여정복수추가성공DB확인.png)
 
-### `POST | trips/{tripId}/itineraries` 여정 복수 추가 (요청/응답 - 실패 * 없는 여행 ID)
+### `POST /trips/{id}/itineraries` 여정 복수 추가 (요청/응답 - 실패 * 없는 여행 ID)
 
 ![img_1.png](resultimage/여정복수추가요청2.png)
 ![img_1.png](resultimage/여정복수추가응답실패.png)
 ![img_1.png](resultimage/여정복수등록실패로그.png)
 ----
 
-### `PUT | api/itineraries/{itineraryId}` 여정 수정 (요청/응답 - 성공)
+### `PUT /itineraries/{id}` 여정 수정 (요청/응답 - 성공)
 
 ![img_1.png](resultimage/여정수정요청1.png)
 ![img_2.png](resultimage/여정수정응답성공.png)
 ![img.png](resultimage/여정수정성공DB확인.png)
 
-### `PUT | api/itineraries/{itineraryId}` 여정 수정 (요청/응답 - 실패 *날짜 유효성)
+### `PUT /itineraries/{id}` 여정 수정 (요청/응답 - 실패 *날짜 유효성)
 
 ![img_3.png](resultimage/여정수정요청2.png)
 ![img_4.png](resultimage/여정수정응답실패.png)
@@ -171,24 +171,24 @@
 
 ----
 
-### `DELETE | api/itineraries/{itinerariesId}` 여정 삭제 (요청/응답 - 성공)
+### `DELETE /itineraries/{id}` 여정 삭제 (요청/응답 - 성공)
 
 ![img_5.png](resultimage/여정삭제요청1.png)
 ![img_6.png](resultimage/여정삭제응답성공.png)
 ![img_7.png](resultimage/여정삭제성공DB확인.png)
 
-### `DELETE | api/itineraries/{itinerariesId}` 여정 삭제 (요청/응답 - 실패 *없는 여정 ID)
+### `DELETE /itineraries/{id}` 여정 삭제 (요청/응답 - 실패 *없는 여정 ID)
 
 ![img_5.png](resultimage/여정삭제요청2.png)
 ![img_1.png](resultimage/여정삭제응답실패.png)
 ----
 
-### `GET | api/trips/{tripId}` 여행+여정 조회 (요청/응답 - 성공)
+### `GET /trips/{id}` 여행+여정 조회 (요청/응답 - 성공)
 
 ![img.png](resultimage/여행+여정조회요청1.png)
 ![img_1.png](resultimage/여행+여정조회응답성공.png)
 
-### `GET | api/trips/{tripId}` 여행+여정 조회 (요청/응답 - 실패 *없는 여행 ID)
+### `GET /trips/{id}` 여행+여정 조회 (요청/응답 - 실패 *없는 여행 ID)
 
 ![img_2.png](resultimage/여행+여정조회요청2.png)
 ![img_1.png](resultimage/여행+여정조회응답실패.png)
