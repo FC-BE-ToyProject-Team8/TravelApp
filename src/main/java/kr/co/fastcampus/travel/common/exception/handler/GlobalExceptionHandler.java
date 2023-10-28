@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = BaseException.class)
     public ResponseBody<Void> handleBaseException(BaseException e) {
         log.warn("[BaseException] Message = {}", e.getMessage());
