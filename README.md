@@ -19,6 +19,9 @@
 - **CI**: GitHub Actions,
 - **API 명세** : Swagger
 
+### API 명세
+![img.png](URI사진.png)
+
 ### 서버 배포
 
 - AWS EC2를 사용해 develop, main 브랜치 자동 배포를 진행했습니다.
@@ -109,7 +112,7 @@
 
 ## ERD
 
-![패키지 및 클래스 구성도](resultimage/ERD.png)
+![img.png](resultimage/ERD.png)
 
 ## 초기 실행 화면
 
