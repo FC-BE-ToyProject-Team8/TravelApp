@@ -46,13 +46,13 @@ public class TravelTestUtils {
             .build();
     }
 
-    public static ExtractableResponse<Response> putAndExtractResponse(Long id,
+    public static ExtractableResponse<Response> putAndExtractResponse(Long itineraryId,
                                                                       ItineraryRequest request,
                                                                       String url) {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .pathParams("id", id)
+            .pathParams("itineraryId", itineraryId)
             .body(request)
             .when()
             .put(url)

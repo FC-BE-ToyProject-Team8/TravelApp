@@ -93,7 +93,7 @@ public class TravelControllerTest extends ApiTest {
     @DisplayName("여정 없는 여행 조회")
     void getOnlyTrip() {
         // given
-        String url = "/api/trips/{id}";
+        String url = "/api/trips/{tripId}";
         Trip trip = Trip.builder()
             .name("여행")
             .startDate(LocalDate.now())
@@ -105,7 +105,7 @@ public class TravelControllerTest extends ApiTest {
         // when
         ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-            .pathParams("id", trip.getId())
+            .pathParams("tripId", trip.getId())
             .when().get(url)
             .then().log().all()
             .extract();
@@ -124,7 +124,7 @@ public class TravelControllerTest extends ApiTest {
     @DisplayName("여정 수정")
     void editItinerary() {
         //given
-        String url = "/api/itineraries/{id}";
+        String url = "/api/itineraries/{itineraryId}";
         Trip trip = createTrip();
         tripRepository.save(trip);
 
@@ -229,7 +229,7 @@ public class TravelControllerTest extends ApiTest {
     @DisplayName("여정 포함 여행 조회")
     void getContainTrip() {
         // given
-        String url = "/api/trips/{id}";
+        String url = "/api/trips/{tripId}";
         Trip trip = Trip.builder()
             .name("여행")
             .startDate(LocalDate.now())
@@ -247,7 +247,7 @@ public class TravelControllerTest extends ApiTest {
         // when
         ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-            .pathParams("id", trip.getId())
+            .pathParams("tripId", trip.getId())
             .when().get(url)
             .then().log().all()
             .extract();
@@ -356,7 +356,7 @@ public class TravelControllerTest extends ApiTest {
         saveItinerary(trip);
 
         //when
-        String url = "/api/itineraries/5";
+        String url = "/api/itineraries/-1";
         ExtractableResponse<Response> response = requestDeleteApi(url);
 
         //then
