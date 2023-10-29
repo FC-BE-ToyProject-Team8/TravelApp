@@ -115,6 +115,9 @@
 
 ![img.png](resultimage/ERD.png)
 
+- `create_at`/`update_at` 컬럼은 자동으로 값을 넣어주기 위해, `JPA Auditing` 기능을 사용하였습니다.<br>
+이때 자동으로  `create_at`/`update_at` 데이터는 `TIMESTAMP` 타입으로 데이터가 추가되는데,<br> 해당 타입은 [2038년 문제](https://namu.wiki/w/2038%EB%85%84%20%EB%AC%B8%EC%A0%9C) 를 가지고 있기에 다음 프로젝트에서 `DATETIME` 타입으로 바꿀 예정입니다. 
+
 ## 초기 실행 화면
 
 ![img.png](resultimage/스프링부트초기실행화면.png)
