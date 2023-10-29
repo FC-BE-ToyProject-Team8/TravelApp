@@ -48,20 +48,20 @@ public class TravelController {
         return ResponseBody.ok(response);
     }
 
-    @GetMapping("/trips/{id}")
+    @GetMapping("/trips/{tripId}")
     @Operation(summary = "여정을 포함한 여행 조회")
-    public ResponseBody<TripResponse> getTrip(@PathVariable Long id) {
-        Trip trip = tripService.findTripById(id);
+    public ResponseBody<TripResponse> getTrip(@PathVariable Long tripId) {
+        Trip trip = tripService.findTripById(tripId);
         return ResponseBody.ok(toTripResponse(trip));
     }
 
-    @PutMapping("/itineraries/{id}")
+    @PutMapping("/itineraries/{itineraryId}")
     @Operation(summary = "여정 수정")
     public ResponseBody<ItineraryResponse> editItinerary(
-        @PathVariable Long id,
+        @PathVariable Long itineraryId,
         @Valid @RequestBody ItineraryRequest itineraryRequest
     ) {
-        Itinerary itinerary = itineraryService.editItinerary(id, itineraryRequest);
+        Itinerary itinerary = itineraryService.editItinerary(itineraryId, itineraryRequest);
         ItineraryResponse response = toItineraryResponse(itinerary);
         return ResponseBody.ok(response);
     }
@@ -73,15 +73,15 @@ public class TravelController {
         return ResponseBody.ok(toTripSummaryResponses(trips));
     }
 
-    @PostMapping("/trips/{id}/itineraries")
+    @PostMapping("/trips/{tripId}/itineraries")
     @Operation(summary = "여정 복수 등록")
     public ResponseBody<TripResponse> addItineraries(
-
-        @PathVariable Long id, @Valid @RequestBody List<ItineraryRequest> request
+        @PathVariable Long tripId,
+        @Valid @RequestBody List<ItineraryRequest> request
     ) {
-        Trip trip = tripService.findById(id);
+        Trip trip = tripService.findById(tripId);
         itineraryService.addItineraries(trip, request);
-        return ResponseBody.ok(toTripResponse(tripService.findTripById(id)));
+        return ResponseBody.ok(toTripResponse(tripService.findTripById(tripId)));
     }
 
     @PutMapping("/trips/{tripId}")
@@ -95,10 +95,10 @@ public class TravelController {
         return ResponseBody.ok(response);
     }
 
-    @DeleteMapping("/trips/{id}")
+    @DeleteMapping("/trips/{tripId}")
     @Operation(summary = "여행 삭제")
-    public ResponseBody<Void> deleteTrip(@PathVariable Long id) {
-        tripService.deleteTrip(id);
+    public ResponseBody<Void> deleteTrip(@PathVariable Long tripId) {
+        tripService.deleteTrip(tripId);
         return ResponseBody.ok();
     }
 
