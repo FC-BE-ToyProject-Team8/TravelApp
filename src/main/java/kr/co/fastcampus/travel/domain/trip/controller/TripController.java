@@ -10,9 +10,6 @@ import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripUpdateRequ
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
-import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
-import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
-import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +33,7 @@ public class TripController {
     @GetMapping
     @Operation(summary = "여행 목록")
     public ResponseBody<List<TripSummaryResponse>> getTripList() {
-        List<TripInfoDto> response = tripService.findAllTrips();
+        var response = tripService.findAllTrips();
         return ResponseBody.ok(mapper.of(response));
     }
 
@@ -45,15 +42,14 @@ public class TripController {
     public ResponseBody<TripSummaryResponse> addTrip(
         @Valid @RequestBody TripSaveRequest request
     ) {
-        TripSaveDto dto = mapper.of(request);
-        TripInfoDto response = tripService.addTrip(dto);
+        var response = tripService.addTrip(mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
     }
 
     @GetMapping("/{tripId}")
     @Operation(summary = "여정을 포함한 여행 조회")
     public ResponseBody<TripResponse> getTrip(@PathVariable Long tripId) {
-        TripItineraryInfoDto response = tripService.findTripItineraryById(tripId);
+        var response = tripService.findTripItineraryById(tripId);
         return ResponseBody.ok(mapper.of(response));
     }
 
@@ -63,7 +59,7 @@ public class TripController {
         @PathVariable Long tripId,
         @Valid @RequestBody TripUpdateRequest request
     ) {
-        TripInfoDto response = tripService.editTrip(tripId, mapper.of(request));
+        var response = tripService.editTrip(tripId, mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
     }
 

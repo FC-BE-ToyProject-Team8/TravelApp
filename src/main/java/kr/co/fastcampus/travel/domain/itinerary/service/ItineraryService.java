@@ -19,13 +19,13 @@ public class ItineraryService {
     private final ItineraryRepository itineraryRepository;
 
     public ItineraryDto findItineraryById(Long id) {
-        Itinerary itinerary = findById(id);
+        var itinerary = findById(id);
         return ItineraryDto.from(itinerary);
     }
 
     @Transactional
     public ItineraryDto editItinerary(Long id, ItineraryUpdateDto dto) {
-        Itinerary itinerary = findById(id);
+        var itinerary = findById(id);
         Itinerary updateItinerary = dto.toEntity();
         itinerary.update(updateItinerary);
         return ItineraryDto.from(itinerary);
@@ -33,7 +33,7 @@ public class ItineraryService {
 
     @Transactional
     public void deleteById(Long id) {
-        Itinerary itinerary = findById(id);
+        var itinerary = findById(id);
         itineraryRepository.delete(itinerary);
     }
 

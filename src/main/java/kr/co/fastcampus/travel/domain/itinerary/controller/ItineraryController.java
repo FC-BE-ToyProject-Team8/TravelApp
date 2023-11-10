@@ -4,14 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.ItineraryDtoMapper;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.ItineraryUpdateRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
 import kr.co.fastcampus.travel.domain.itinerary.service.ItineraryService;
-import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
-import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +35,7 @@ public class ItineraryController {
     public ResponseBody<TripResponse> saveItineraries(
         @RequestBody ItinerariesSaveRequest request
     ) {
-        TripItineraryInfoDto response = tripService.addItineraries(request.tripId(), mapper.of(request));
+        var response = tripService.addItineraries(request.tripId(), mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
     }
 
@@ -47,7 +45,7 @@ public class ItineraryController {
         @PathVariable Long itineraryId,
         @Valid @RequestBody ItineraryUpdateRequest request
     ) {
-        ItineraryDto response = itineraryService.editItinerary(itineraryId, mapper.of(request));
+        var response = itineraryService.editItinerary(itineraryId, mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
     }
 
