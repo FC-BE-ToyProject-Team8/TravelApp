@@ -2,10 +2,10 @@ package kr.co.fastcampus.travel.domain.trip.controller.util;
 
 import java.util.List;
 import kr.co.fastcampus.travel.domain.itinerary.controller.util.ItineraryDtoConverter;
-import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.controller.request.TripRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.response.TripSummaryResponse;
+import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 
 public class TripDtoConverter {
 

@@ -5,10 +5,10 @@ import lombok.Builder;
 
 @Builder
 public record LodgeResponse(
-        String placeName,
-        String address,
-        LocalDateTime checkInAt,
-        LocalDateTime checkOutAt
+    String placeName,
+    String address,
+    LocalDateTime checkInAt,
+    LocalDateTime checkOutAt
 ) {
 
 }

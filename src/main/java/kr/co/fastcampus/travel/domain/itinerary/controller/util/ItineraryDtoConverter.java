@@ -12,11 +12,11 @@ import kr.co.fastcampus.travel.domain.itinerary.controller.response.ItineraryRes
 import kr.co.fastcampus.travel.domain.itinerary.controller.response.LodgeResponse;
 import kr.co.fastcampus.travel.domain.itinerary.controller.response.RouteResponse;
 import kr.co.fastcampus.travel.domain.itinerary.controller.response.StayResponse;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Lodge;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Stay;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
-import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
-import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 
 public class ItineraryDtoConverter {
 

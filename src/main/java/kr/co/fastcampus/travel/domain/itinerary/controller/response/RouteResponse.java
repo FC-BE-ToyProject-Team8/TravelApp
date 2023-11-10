@@ -5,13 +5,13 @@ import lombok.Builder;
 
 @Builder
 public record RouteResponse(
-        String transportation,
-        String departurePlaceName,
-        String departureAddress,
-        String destinationPlaceName,
-        String destinationAddress,
-        LocalDateTime departureAt,
-        LocalDateTime arriveAt
+    String transportation,
+    String departurePlaceName,
+    String departureAddress,
+    String destinationPlaceName,
+    String destinationAddress,
+    LocalDateTime departureAt,
+    LocalDateTime arriveAt
 ) {
 
 }

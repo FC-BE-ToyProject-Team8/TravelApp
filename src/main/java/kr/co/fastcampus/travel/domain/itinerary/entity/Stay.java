@@ -2,7 +2,6 @@ package kr.co.fastcampus.travel.domain.itinerary.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;

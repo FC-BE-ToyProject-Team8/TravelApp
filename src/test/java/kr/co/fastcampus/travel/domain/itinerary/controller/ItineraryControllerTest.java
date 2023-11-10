@@ -10,7 +10,6 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.putAndExtractRespon
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;

@@ -1,7 +1,6 @@
 package kr.co.fastcampus.travel.domain.trip.controller;
 
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryRequest;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestFindAllTripApi;
@@ -21,12 +20,12 @@ import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.response.Status;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
+import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.request.TripRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.response.TripSummaryResponse;
-import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
-import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
