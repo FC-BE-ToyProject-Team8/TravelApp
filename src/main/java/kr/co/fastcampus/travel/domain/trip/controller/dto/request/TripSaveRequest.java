@@ -1,12 +1,10 @@
-package kr.co.fastcampus.travel.domain.trip.controller.request;
+package kr.co.fastcampus.travel.domain.trip.controller.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import lombok.Builder;
 
-@Builder
-public record TripRequest(
+public record TripSaveRequest(
     @NotBlank
     String name,
     @NotNull

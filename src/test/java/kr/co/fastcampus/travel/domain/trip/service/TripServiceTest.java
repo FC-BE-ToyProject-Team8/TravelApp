@@ -4,7 +4,6 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -13,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
-import kr.co.fastcampus.travel.domain.trip.controller.request.TripRequest;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
+import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,8 +41,8 @@ class TripServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> tripService.findTripById(-1L))
-            .isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> tripService.findTripItineraryById(-1L))
+                .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -49,10 +50,10 @@ class TripServiceTest {
     void findTripById_success() {
         // given
         when(tripRepository.findFetchItineraryById(-1L))
-            .thenReturn(Optional.of(Trip.builder().build()));
+                .thenReturn(Optional.of(Trip.builder().build()));
 
         // when
-        Trip result = tripService.findTripById(-1L);
+        TripItineraryInfoDto result = tripService.findTripItineraryById(-1L);
 
         // then
         assertThat(result).isNotNull();
@@ -70,13 +71,13 @@ class TripServiceTest {
         given(tripRepository.findAll()).willReturn(trips);
 
         // when
-        List<Trip> findTrips = tripService.findAllTrips();
+        List<TripInfoDto> findTrips = tripService.findAllTrips();
 
         // then
         assertSoftly(softly -> {
             softly.assertThat(findTrips.size()).isEqualTo(2);
-            softly.assertThat(findTrips).contains(trip1);
-            softly.assertThat(findTrips).contains(trip2);
+            softly.assertThat(findTrips).contains(TripInfoDto.from(trip1));
+            softly.assertThat(findTrips).contains(TripInfoDto.from(trip2));
         });
     }
 
@@ -86,29 +87,27 @@ class TripServiceTest {
         // given
         Long tripId = 1L;
         Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
-            .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
-            .build();
+                .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+                .build();
 
         given(tripRepository.findById(tripId))
-            .willReturn(Optional.of(givenTrip));
-        given(tripRepository.save(any()))
-            .willAnswer(invocation -> invocation.getArguments()[0]);
+                .willReturn(Optional.of(givenTrip));
 
-        TripRequest request = TripRequest.builder()
-            .name("이름2")
-            .startDate(LocalDate.parse("2011-01-01"))
-            .endDate(LocalDate.parse("2011-01-02"))
-            .isForeign(true)
-            .build();
+        TripUpdateDto dto = new TripUpdateDto(
+                "이름2",
+                LocalDate.parse("2011-01-01"),
+                LocalDate.parse("2011-01-02"),
+                true
+        );
 
         // when
-        Trip editedTrip = tripService.editTrip(tripId, request);
+        TripInfoDto result = tripService.editTrip(tripId, dto);
 
         // then
-        assertThat(editedTrip.getName()).isEqualTo("이름2");
-        assertThat(editedTrip.getStartDate().toString()).isEqualTo("2011-01-01");
-        assertThat(editedTrip.getEndDate().toString()).isEqualTo("2011-01-02");
-        assertThat(editedTrip.isForeign()).isEqualTo(true);
+        assertThat(result.name()).isEqualTo("이름2");
+        assertThat(result.startDate().toString()).isEqualTo("2011-01-01");
+        assertThat(result.endDate().toString()).isEqualTo("2011-01-02");
+        assertThat(result.isForeign()).isEqualTo(true);
     }
 
     @Test
@@ -117,13 +116,18 @@ class TripServiceTest {
         // given
         Long notExistingTripId = 1L;
         given(tripRepository.findById(notExistingTripId))
-            .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
-        TripRequest request = TripRequest.builder().build();
+        TripUpdateDto request = new TripUpdateDto(
+                null,
+                null,
+                null,
+                true
+        );
 
         // when, then
         assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request))
-            .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -131,11 +135,11 @@ class TripServiceTest {
     void findById_failure() {
         // given
         when(tripRepository.findById(-1L))
-            .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
 
         // when
         // then
         assertThatThrownBy(() -> tripService.deleteTrip(-1L))
-            .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(EntityNotFoundException.class);
     }
 }

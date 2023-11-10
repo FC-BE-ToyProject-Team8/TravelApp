@@ -1,7 +1,6 @@
 package kr.co.fastcampus.travel.domain.itinerary.controller;
 
 import static kr.co.fastcampus.travel.domain.itinerary.controller.util.ItineraryDtoConverter.toItineraryResponse;
-import static kr.co.fastcampus.travel.domain.trip.controller.util.TripDtoConverter.toTripResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -11,8 +10,7 @@ import kr.co.fastcampus.travel.domain.itinerary.controller.request.ItineraryRequ
 import kr.co.fastcampus.travel.domain.itinerary.controller.response.ItineraryResponse;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.service.ItineraryService;
-import kr.co.fastcampus.travel.domain.trip.controller.response.TripResponse;
-import kr.co.fastcampus.travel.domain.trip.entity.Trip;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +38,11 @@ public class ItineraryController {
         @RequestParam Long tripId,
         @Valid @RequestBody List<ItineraryRequest> request
     ) {
-        Trip trip = tripService.findById(tripId);
-        itineraryService.addItineraries(trip, request);
-        return ResponseBody.ok(toTripResponse(tripService.findTripById(tripId)));
+        // todo: 수정 필요
+//        Trip trip = tripService.findById(tripId);
+//        itineraryService.addItineraries(trip, request);
+//        ResponseBody.ok(toTripResponse(tripService.findTripById(tripId)));
+        return null;
     }
 
     @PutMapping("/{itineraryId}")

@@ -6,7 +6,6 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestFindAllTripApi;
 import static kr.co.fastcampus.travel.common.response.Status.FAIL;
 import static kr.co.fastcampus.travel.common.response.Status.SUCCESS;
-import static kr.co.fastcampus.travel.domain.trip.controller.util.TripDtoConverter.toTripSummaryResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -22,9 +21,9 @@ import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
-import kr.co.fastcampus.travel.domain.trip.controller.request.TripRequest;
-import kr.co.fastcampus.travel.domain.trip.controller.response.TripResponse;
-import kr.co.fastcampus.travel.domain.trip.controller.response.TripSummaryResponse;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +45,7 @@ public class TripControllerTest extends ApiTest {
     void addTrip() {
         // given
         String url = "/api/trips";
-        TripRequest request = new TripRequest(
+        TripSaveRequest request = new TripSaveRequest(
             "이름",
             LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
             false
@@ -73,8 +72,8 @@ public class TripControllerTest extends ApiTest {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.id()).isNotNull();
             softly.assertThat(data.name()).isEqualTo("이름");
-            softly.assertThat(data.startAt().toString()).isEqualTo("2010-01-01");
-            softly.assertThat(data.endAt().toString()).isEqualTo("2010-01-02");
+            softly.assertThat(data.startDate().toString()).isEqualTo("2010-01-01");
+            softly.assertThat(data.endDate().toString()).isEqualTo("2010-01-02");
             softly.assertThat(data.isForeign()).isEqualTo(false);
         });
     }
@@ -121,12 +120,12 @@ public class TripControllerTest extends ApiTest {
         );
 
         String url = "/api/trips/1";
-        TripRequest request = TripRequest.builder()
-            .name("이름2")
-            .startDate(LocalDate.parse("2011-01-01"))
-            .endDate(LocalDate.parse("2011-01-02"))
-            .isForeign(true)
-            .build();
+        TripSaveRequest request = new TripSaveRequest(
+                "이름2",
+                LocalDate.parse("2011-01-01"),
+                LocalDate.parse("2011-01-02"),
+                true
+        );
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -147,8 +146,8 @@ public class TripControllerTest extends ApiTest {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.id()).isNotNull();
             softly.assertThat(data.name()).isEqualTo("이름2");
-            softly.assertThat(data.startAt()).isEqualTo("2011-01-01");
-            softly.assertThat(data.endAt()).isEqualTo("2011-01-02");
+            softly.assertThat(data.startDate()).isEqualTo("2011-01-01");
+            softly.assertThat(data.endDate()).isEqualTo("2011-01-02");
             softly.assertThat(data.isForeign()).isEqualTo(true);
         });
     }
@@ -171,9 +170,19 @@ public class TripControllerTest extends ApiTest {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.size()).isEqualTo(2);
-            softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(0)));
-            softly.assertThat(data).contains(toTripSummaryResponse(saveTrips.get(1)));
+            softly.assertThat(data).contains(createTripSummaryResponse(saveTrips.get(0)));
+            softly.assertThat(data).contains(createTripSummaryResponse(saveTrips.get(1)));
         });
+    }
+
+    private static TripSummaryResponse createTripSummaryResponse(Trip trip) {
+        return new TripSummaryResponse(
+                trip.getId(),
+                trip.getName(),
+                trip.getStartDate(),
+                trip.getEndDate(),
+                trip.isForeign()
+        );
     }
 
     @Test

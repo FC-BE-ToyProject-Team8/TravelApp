@@ -1,19 +1,18 @@
 package kr.co.fastcampus.travel.domain.trip.controller;
 
-import static kr.co.fastcampus.travel.domain.trip.controller.util.TripDtoConverter.toTripResponse;
-import static kr.co.fastcampus.travel.domain.trip.controller.util.TripDtoConverter.toTripSummaryResponse;
-import static kr.co.fastcampus.travel.domain.trip.controller.util.TripDtoConverter.toTripSummaryResponses;
-
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
-import kr.co.fastcampus.travel.domain.itinerary.service.ItineraryService;
-import kr.co.fastcampus.travel.domain.trip.controller.request.TripRequest;
-import kr.co.fastcampus.travel.domain.trip.controller.response.TripResponse;
-import kr.co.fastcampus.travel.domain.trip.controller.response.TripSummaryResponse;
-import kr.co.fastcampus.travel.domain.trip.entity.Trip;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripUpdateRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
+import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,41 +31,40 @@ import org.springframework.web.bind.annotation.RestController;
 public class TripController {
 
     private final TripService tripService;
-    private final ItineraryService itineraryService;
+    private final TripDtoMapper mapper;
 
     @GetMapping
     @Operation(summary = "여행 목록")
     public ResponseBody<List<TripSummaryResponse>> getTripList() {
-        List<Trip> trips = tripService.findAllTrips();
-        return ResponseBody.ok(toTripSummaryResponses(trips));
+        List<TripInfoDto> response = tripService.findAllTrips();
+        return ResponseBody.ok(mapper.of(response));
     }
 
     @PostMapping
     @Operation(summary = "여행 등록")
     public ResponseBody<TripSummaryResponse> addTrip(
-        @Valid @RequestBody TripRequest request
+        @Valid @RequestBody TripSaveRequest request
     ) {
-        Trip trip = tripService.addTrip(request);
-        TripSummaryResponse response = toTripSummaryResponse(trip);
-        return ResponseBody.ok(response);
+        TripSaveDto dto = mapper.of(request);
+        TripInfoDto response = tripService.addTrip(dto);
+        return ResponseBody.ok(mapper.of(response));
     }
 
     @GetMapping("/{tripId}")
     @Operation(summary = "여정을 포함한 여행 조회")
     public ResponseBody<TripResponse> getTrip(@PathVariable Long tripId) {
-        Trip trip = tripService.findTripById(tripId);
-        return ResponseBody.ok(toTripResponse(trip));
+        TripItineraryInfoDto response = tripService.findTripItineraryById(tripId);
+        return ResponseBody.ok(mapper.of(response));
     }
 
     @PutMapping("/{tripId}")
     @Operation(summary = "여행 수정")
     public ResponseBody<TripSummaryResponse> editTrip(
         @PathVariable Long tripId,
-        @Valid @RequestBody TripRequest request
+        @Valid @RequestBody TripUpdateRequest request
     ) {
-        Trip trip = tripService.editTrip(tripId, request);
-        TripSummaryResponse response = toTripSummaryResponse(trip);
-        return ResponseBody.ok(response);
+        TripInfoDto response = tripService.editTrip(tripId, mapper.of(request));
+        return ResponseBody.ok(mapper.of(response));
     }
 
     @DeleteMapping("/{tripId}")

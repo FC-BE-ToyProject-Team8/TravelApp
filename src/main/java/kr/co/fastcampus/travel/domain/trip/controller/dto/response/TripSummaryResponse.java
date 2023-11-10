@@ -1,4 +1,4 @@
-package kr.co.fastcampus.travel.domain.trip.controller.response;
+package kr.co.fastcampus.travel.domain.trip.controller.dto.response;
 
 import java.time.LocalDate;
 import lombok.Builder;
@@ -7,8 +7,8 @@ import lombok.Builder;
 public record TripSummaryResponse(
     Long id,
     String name,
-    LocalDate startAt,
-    LocalDate endAt,
+    LocalDate startDate,
+    LocalDate endDate,
     boolean isForeign
 ) {
 
