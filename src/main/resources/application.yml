@@ -13,4 +13,4 @@ spring:
     database-platform: H2
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate

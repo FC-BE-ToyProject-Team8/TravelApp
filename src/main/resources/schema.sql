@@ -1,9 +1,10 @@
 -- Drop tables if they exist
+DROP TABLE IF EXISTS `comment`;
+DROP TABLE IF EXISTS `like_trip`;
 DROP TABLE IF EXISTS `itinerary`;
 DROP TABLE IF EXISTS `trip`;
 DROP TABLE IF EXISTS `member`;
-DROP TABLE IF EXISTS `like`;
-DROP TABLE IF EXISTS `comment`;
+
 
 -- Create Member table
 CREATE TABLE `member` (
@@ -57,8 +58,8 @@ CREATE TABLE `itinerary` (
     FOREIGN KEY (`trip_id`) REFERENCES `trip`(`id`) ON DELETE CASCADE
 );
 
--- Create Like table
-CREATE TABLE `like` (
+-- Create ThumbsUp table
+CREATE TABLE `like_trip` (
     `id`	BIGINT	NOT NULL,
     `member_id`	BIGINT	NOT NULL,
     `trip_id`	BIGINT	NOT NULL,
