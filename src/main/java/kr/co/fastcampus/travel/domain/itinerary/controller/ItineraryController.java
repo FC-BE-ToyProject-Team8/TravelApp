@@ -1,17 +1,17 @@
 package kr.co.fastcampus.travel.domain.itinerary.controller;
 
-import static kr.co.fastcampus.travel.domain.itinerary.controller.util.ItineraryDtoConverter.toItineraryResponse;
-
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
-import kr.co.fastcampus.travel.domain.itinerary.controller.request.ItineraryRequest;
-import kr.co.fastcampus.travel.domain.itinerary.controller.response.ItineraryResponse;
-import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.ItineraryDtoMapper;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.ItineraryUpdateRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
 import kr.co.fastcampus.travel.domain.itinerary.service.ItineraryService;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
+import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -31,29 +30,25 @@ public class ItineraryController {
 
     private final TripService tripService;
     private final ItineraryService itineraryService;
+    private final ItineraryDtoMapper mapper;
 
     @PostMapping
     @Operation(summary = "여정 복수 등록")
-    public ResponseBody<TripResponse> addItineraries(
-        @RequestParam Long tripId,
-        @Valid @RequestBody List<ItineraryRequest> request
+    public ResponseBody<TripResponse> saveItineraries(
+        @RequestBody ItinerariesSaveRequest request
     ) {
-        // todo: 수정 필요
-//        Trip trip = tripService.findById(tripId);
-//        itineraryService.addItineraries(trip, request);
-//        ResponseBody.ok(toTripResponse(tripService.findTripById(tripId)));
-        return null;
+        TripItineraryInfoDto response = tripService.addItineraries(request.tripId(), mapper.of(request));
+        return ResponseBody.ok(mapper.of(response));
     }
 
     @PutMapping("/{itineraryId}")
     @Operation(summary = "여정 수정")
     public ResponseBody<ItineraryResponse> editItinerary(
         @PathVariable Long itineraryId,
-        @Valid @RequestBody ItineraryRequest itineraryRequest
+        @Valid @RequestBody ItineraryUpdateRequest request
     ) {
-        Itinerary itinerary = itineraryService.editItinerary(itineraryId, itineraryRequest);
-        ItineraryResponse response = toItineraryResponse(itinerary);
-        return ResponseBody.ok(response);
+        ItineraryDto response = itineraryService.editItinerary(itineraryId, mapper.of(request));
+        return ResponseBody.ok(mapper.of(response));
     }
 
     @DeleteMapping("/{itineraryId}")

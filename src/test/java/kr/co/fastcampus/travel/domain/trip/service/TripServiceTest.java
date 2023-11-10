@@ -11,7 +11,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
@@ -140,6 +143,42 @@ class TripServiceTest {
         // when
         // then
         assertThatThrownBy(() -> tripService.deleteTrip(-1L))
+                .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("여정 복수 등록")
+    void addItineraries() {
+        // given
+        Trip trip = createTrip();
+        List<ItinerarySaveDto> requests = IntStream.range(0, 3)
+            .mapToObj(i -> TravelTestUtils.createItinerarySaveDto())
+            .toList();
+
+        given(tripRepository.findById(trip.getId()))
+                .willReturn(Optional.of(trip));
+
+        //when
+        TripItineraryInfoDto returnedTrip = tripService.addItineraries(trip.getId(), requests);
+
+        //then
+        assertThat(returnedTrip).isNotNull();
+        assertThat(returnedTrip.itineraries().size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("여정 복수 등록 실패")
+    void addItineraries_fail() {
+        // given
+        Trip trip = createTrip();
+        List<ItinerarySaveDto> requests = List.of();
+
+        given(tripRepository.findById(trip.getId()))
+                .willReturn(Optional.empty());
+
+        //when
+        //then
+        assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), requests))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 }

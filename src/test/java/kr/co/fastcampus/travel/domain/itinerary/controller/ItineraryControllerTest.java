@@ -1,10 +1,10 @@
 package kr.co.fastcampus.travel.domain.itinerary.controller;
 
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryRequest;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeRequest;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteRequest;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createStayRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryUpdateRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeUpdateRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteUpdateRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createStayUpdateRequest;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.putAndExtractResponse;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
@@ -16,11 +16,11 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import kr.co.fastcampus.travel.common.ApiTest;
-import kr.co.fastcampus.travel.domain.itinerary.controller.request.ItineraryRequest;
-import kr.co.fastcampus.travel.domain.itinerary.controller.request.LodgeRequest;
-import kr.co.fastcampus.travel.domain.itinerary.controller.request.RouteRequest;
-import kr.co.fastcampus.travel.domain.itinerary.controller.request.StayRequest;
-import kr.co.fastcampus.travel.domain.itinerary.controller.response.ItineraryResponse;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.ItineraryUpdateRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.LodgeUpdateRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.RouteUpdateRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.StayUpdateRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -49,14 +49,14 @@ public class ItineraryControllerTest extends ApiTest {
         Itinerary itinerary = createItinerary(trip);
         itineraryRepository.save(itinerary);
 
-        LodgeRequest lodge2 = createLodgeRequest();
-        StayRequest stay2 = createStayRequest();
-        RouteRequest route2 = createRouteRequest();
-        ItineraryRequest request = createItineraryRequest(route2, lodge2, stay2);
+        LodgeUpdateRequest lodge = createLodgeUpdateRequest();
+        StayUpdateRequest stay = createStayUpdateRequest();
+        RouteUpdateRequest route = createRouteUpdateRequest();
+        ItineraryUpdateRequest request = createItineraryUpdateRequest(route, lodge, stay);
 
         //when
         ExtractableResponse<Response> response =
-            putAndExtractResponse(itinerary.getId(), request, url);
+                putAndExtractResponse(itinerary.getId(), request, url);
 
         //then
         JsonPath jsonPath = response.jsonPath();
@@ -149,7 +149,7 @@ public class ItineraryControllerTest extends ApiTest {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
             softly.assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
             softly.assertThat(response.jsonPath().getString("errorMessage"))
-                .isEqualTo("존재하지 않는 엔티티입니다.");
+                    .isEqualTo("존재하지 않는 엔티티입니다.");
         });
 
     }
