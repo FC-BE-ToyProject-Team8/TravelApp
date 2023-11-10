@@ -1,6 +1,21 @@
 -- Drop tables if they exist
 DROP TABLE IF EXISTS `itinerary`;
 DROP TABLE IF EXISTS `trip`;
+DROP TABLE IF EXISTS `member`;
+DROP TABLE IF EXISTS `like`;
+DROP TABLE IF EXISTS `comment`;
+
+-- Create Member table
+CREATE TABLE `member` (
+    `id`	BIGINT	NOT NULL AUTO_INCREMENT,
+    `email`	VARCHAR(500) NOT NULL,
+    `name`	VARCHAR(30)	NOT NULL,
+    `nickname`	VARCHAR(30) UNIQUE NOT NULL,
+    `password`	VARCHAR(1000)	NOT NULL,
+    `created_date`	TIMESTAMP	NOT NULL,
+    `updated_date`	TIMESTAMP	NOT NULL,
+    PRIMARY KEY (`id`)
+);
 
 -- Create Trip table
 CREATE TABLE `trip` (
@@ -40,4 +55,29 @@ CREATE TABLE `itinerary` (
     `updated_date` TIMESTAMP NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`trip_id`) REFERENCES `trip`(`id`) ON DELETE CASCADE
+);
+
+-- Create Like table
+CREATE TABLE `like` (
+    `id`	BIGINT	NOT NULL,
+    `member_id`	BIGINT	NOT NULL,
+    `trip_id`	BIGINT	NOT NULL,
+    `created_date`	TIMESTAMP	NOT NULL,
+    `updated_date`	TIMESTAMP	NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`trip_id`) REFERENCES `trip`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON DELETE CASCADE
+);
+
+-- Create Comment table
+CREATE TABLE `Comment` (
+    `id`	VARCHAR(255)	NOT NULL,
+    `member_id`	BIGINT	NOT NULL,
+    `trip_id`	BIGINT	NOT NULL,
+    `content`	VARCHAR(1000)	NOT NULL,
+    `created_date`	TIMESTAMP	NOT NULL,
+    `updated_date`	TIMESTAMP	NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`trip_id`) REFERENCES `trip`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON DELETE CASCADE
 );

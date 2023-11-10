@@ -17,7 +17,7 @@ public class Lodge {
     @Column(name = "lodge_place_name", length = 100)
     private String placeName;
 
-    @Column(name = "lodge_address")
+    @Column(name = "lodge_address", length = 200)
     private String address;
 
     private LocalDateTime checkInAt;

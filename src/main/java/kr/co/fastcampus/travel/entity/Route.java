@@ -19,11 +19,13 @@ public class Route {
     @Column(length = 100)
     private String departurePlaceName;
 
+    @Column(length = 200)
     private String departureAddress;
 
     @Column(length = 100)
     private String destinationPlaceName;
 
+    @Column(length = 200)
     private String destinationAddress;
 
     private LocalDateTime departureAt;

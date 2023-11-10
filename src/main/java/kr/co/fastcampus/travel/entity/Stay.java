@@ -17,11 +17,13 @@ public class Stay {
     @Column(name = "stay_place_name", length = 100)
     private String placeName;
 
-    @Column(name = "stay_address")
+    @Column(name = "stay_address", length = 200)
     private String address;
 
+    @Column(name = "stay_start_at")
     private LocalDateTime startAt;
 
+    @Column(name = "stay_end_at")
     private LocalDateTime endAt;
 
     @Builder
