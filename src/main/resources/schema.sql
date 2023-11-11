@@ -75,7 +75,7 @@ CREATE TABLE `like_trip`
 );
 
 -- Create Comment table
-CREATE TABLE `Comment`
+CREATE TABLE `comment`
 (
     `id`           VARCHAR(255)  NOT NULL,
     `member_id`    BIGINT        NOT NULL,
