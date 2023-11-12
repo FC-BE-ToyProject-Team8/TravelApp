@@ -1,4 +1,4 @@
-package kr.co.fastcampus.travel.domain.secure.config;
+package kr.co.fastcampus.travel.common.secure.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -40,9 +40,15 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(new AntPathRequestMatcher("/login", HttpMethod.GET.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/join", HttpMethod.POST.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/login", HttpMethod.GET.name())
+                        ).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/join", HttpMethod.POST.name())
+                        ).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
+                        ).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest().authenticated());
 

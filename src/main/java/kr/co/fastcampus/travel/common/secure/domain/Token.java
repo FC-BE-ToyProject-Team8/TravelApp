@@ -1,10 +1,8 @@
-package kr.co.fastcampus.travel.domain.secure;
+package kr.co.fastcampus.travel.common.secure.domain;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 
 @Builder
-@EqualsAndHashCode
 public class Token {
 
   private String grantType;
