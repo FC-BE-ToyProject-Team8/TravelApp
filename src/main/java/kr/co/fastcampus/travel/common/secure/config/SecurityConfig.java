@@ -1,5 +1,7 @@
 package kr.co.fastcampus.travel.common.secure.config;
 
+import kr.co.fastcampus.travel.common.secure.config.handler.TokenAccessDeniedHandler;
+import kr.co.fastcampus.travel.common.secure.config.handler.TokenAuthenticationEntryPoint;
 import kr.co.fastcampus.travel.common.secure.domain.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -53,6 +55,10 @@ public class SecurityConfig {
         ;
 
         http
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(new TokenAccessDeniedHandler())
+                        .authenticationEntryPoint(new TokenAuthenticationEntryPoint())
+                )
                 .apply(new SecurityConfigAdapter(jwtProvider));
 
         return http.build();
