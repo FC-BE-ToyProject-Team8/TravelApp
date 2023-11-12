@@ -78,43 +78,6 @@ public class ItineraryControllerTest extends ApiTest {
     }
 
     @Test
-    @DisplayName("여정 복수 등록")
-    void addItineraries() {
-        // todo: 수정 필요
-        // given
-//        Trip trip = createTrip();
-//        tripRepository.save(trip);
-//        String url = "/api/itineraries?tripId=1";
-//        List<ItineraryRequest> request = IntStream.range(0, 3)
-//            .mapToObj(i -> createItineraryRequest())
-//            .toList();
-//
-//        //when
-//        ExtractableResponse<Response> response = RestAssured
-//            .given().log().all()
-//            .contentType(MediaType.APPLICATION_JSON_VALUE)
-//            .body(request)
-//            .when()
-//            .post(url)
-//            .then().log().all()
-//            .extract();
-//
-//        // then
-//        JsonPath jsonPath = response.jsonPath();
-//        String status = jsonPath.getString("status");
-//        TripResponse data = jsonPath.getObject("data", TripResponse.class);
-//
-//        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-//
-//        assertSoftly((softly) -> {
-//            softly.assertThat(status).isEqualTo("SUCCESS");
-//            softly.assertThat(data.id()).isEqualTo(1);
-//            softly.assertThat(data.name()).isEqualTo("tripName");
-//            softly.assertThat(data.itineraries().size()).isEqualTo(3);
-//        });
-    }
-
-    @Test
     @DisplayName("여정 삭제")
     void deleteItinerary() {
         //given

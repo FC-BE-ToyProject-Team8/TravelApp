@@ -1,6 +1,7 @@
 package kr.co.fastcampus.travel.domain.trip.controller;
 
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestFindAllTripApi;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.response.Status;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
@@ -251,6 +254,45 @@ public class TripControllerTest extends ApiTest {
         JsonPath jsonPath = response.jsonPath();
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(jsonPath.getString("status")).isEqualTo(SUCCESS.name());
+    }
+
+
+
+    @Test
+    @DisplayName("여정 복수 등록")
+    void addItineraries() {
+        // given
+        Trip trip = createTrip();
+        tripRepository.save(trip);
+        String url = "/api/itineraries?tripId=1";
+        List<ItinerarySaveRequest> itineraries = IntStream.range(0, 3)
+                .mapToObj(i -> createItinerarySaveRequest())
+                .toList();
+        ItinerariesSaveRequest request = new ItinerariesSaveRequest(1L, itineraries);
+
+        //when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        TripResponse data = jsonPath.getObject("data", TripResponse.class);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        assertSoftly((softly) -> {
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.id()).isEqualTo(1);
+            softly.assertThat(data.name()).isEqualTo("tripName");
+            softly.assertThat(data.itineraries().size()).isEqualTo(3);
+        });
     }
 
     private Trip saveTrip() {
