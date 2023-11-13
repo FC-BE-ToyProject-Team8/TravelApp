@@ -45,7 +45,7 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/login", HttpMethod.GET.name())
                         ).permitAll()
                         .requestMatchers(
-                                new AntPathRequestMatcher("/join", HttpMethod.POST.name())
+                                new AntPathRequestMatcher("/signup", HttpMethod.POST.name())
                         ).permitAll()
                         .requestMatchers(
                                 new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
