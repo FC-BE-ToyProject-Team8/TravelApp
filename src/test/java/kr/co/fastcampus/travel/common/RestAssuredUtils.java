@@ -31,7 +31,10 @@ public final class RestAssuredUtils {
     }
 
 
-    public static ExtractableResponse<Response> restAssuredPostWithToken(String url, Object request) {
+    public static ExtractableResponse<Response> restAssuredPostWithToken(
+            String url,
+            Object request
+    ) {
         String accessToken = TokenUtils.getAccessToken();
 
         return restAssuredWithToken(accessToken)

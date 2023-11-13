@@ -38,7 +38,6 @@ class SecurityServiceTest {
     private SecurityService securityService;
 
 
-
     @Test
     @DisplayName("로그인 - 비밀번호 미일치")
     void login_notMatchingPassword() {
