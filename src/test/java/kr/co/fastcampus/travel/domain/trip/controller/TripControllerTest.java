@@ -2,7 +2,9 @@ package kr.co.fastcampus.travel.domain.trip.controller;
 
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createTripWithMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.requestFindAllTripApi;
 import static kr.co.fastcampus.travel.common.response.Status.FAIL;
@@ -24,6 +26,8 @@ import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.Itin
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
@@ -42,6 +46,9 @@ public class TripControllerTest extends ApiTest {
 
     @Autowired
     private ItineraryRepository itineraryRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("여행 등록")
@@ -295,8 +302,44 @@ public class TripControllerTest extends ApiTest {
         });
     }
 
+    @Test
+    @DisplayName("사용자 닉네임으로 여행 검색")
+    void searchByNickname() {
+        // given
+        Member member = createMember();
+        memberRepository.save(member);
+        List<Trip> saveTrips = IntStream.range(0, 10).mapToObj(i -> saveTripWithMember(member)).toList();
+        String url = "/api/trips/search-by-nickname?query={query}&page={page}";
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .pathParams("query", member.getNickname(), "page", 1)
+            .when().get(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        List<TripSummaryResponse> data = jsonPath.getList("data", TripSummaryResponse.class);
+
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.size()).isEqualTo(5);
+            softly.assertThat(data).contains(createTripSummaryResponse(saveTrips.get(0)));
+            softly.assertThat(data).contains(createTripSummaryResponse(saveTrips.get(1)));
+        });
+    }
+
     private Trip saveTrip() {
         Trip trip = createTrip();
+        return tripRepository.save(trip);
+    }
+
+    private Trip saveTripWithMember(Member member) {
+        Trip trip = createTripWithMember(member);
         return tripRepository.save(trip);
     }
 

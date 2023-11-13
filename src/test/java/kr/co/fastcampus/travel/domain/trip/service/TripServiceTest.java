@@ -1,6 +1,8 @@
 package kr.co.fastcampus.travel.domain.trip.service;
 
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createTripWithMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -14,7 +16,10 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
@@ -26,12 +31,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     @InjectMocks
     private TripService tripService;
@@ -180,5 +189,45 @@ class TripServiceTest {
         //then
         assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), requests))
                 .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("사용자 닉네임으로 여행 검색")
+    void findTripsByNickname() {
+        //given
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
+        List<Trip> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            list.add(trip);
+        }
+        int page = 1;
+        PageRequest pageRequest = PageRequest.of(page - 1, 5);
+        given(memberRepository.findByNickname(trip.getMember().getNickname())).willReturn(Optional.of(member));
+        given(tripRepository.findTripByMember(trip.getMember(), pageRequest)).willReturn(list);
+
+        //when
+        List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page);
+
+        //then
+        assertSoftly(softly -> {
+            softly.assertThat(findTrips.size()).isEqualTo(5);
+            softly.assertThat(findTrips).contains(TripInfoDto.from(trip));
+        });
+    }
+
+    @Test
+    @DisplayName("사용자 닉네임으로 여행 검색 실패")
+    void findTripsByNickname_fail() {
+        //given
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
+        int page = 1;
+        given(memberRepository.findByNickname(trip.getMember().getNickname())).willReturn(Optional.empty());
+
+        //when
+        //then
+        assertThatThrownBy(() -> tripService.findTripsByNickname(member.getNickname(), page))
+            .isInstanceOf(MemberNotFoundException.class);
     }
 }
