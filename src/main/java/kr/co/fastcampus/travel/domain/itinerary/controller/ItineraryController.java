@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/itineraries")
@@ -32,7 +34,7 @@ public class ItineraryController {
 
     @PostMapping
     @Operation(summary = "여정 복수 등록")
-    public ResponseBody<TripResponse> saveItineraries(
+    public ResponseBody<List<ItineraryResponse>> saveItineraries(
         @RequestBody ItinerariesSaveRequest request
     ) {
         var response = tripService.addItineraries(request.tripId(), mapper.of(request));
