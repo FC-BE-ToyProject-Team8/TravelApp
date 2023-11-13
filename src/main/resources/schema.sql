@@ -23,13 +23,16 @@ CREATE TABLE `member`
 CREATE TABLE `trip`
 (
     `id`           BIGINT       NOT NULL AUTO_INCREMENT,
+    `member_id`    BIGINT       NOT NULL,
     `name`         VARCHAR(100) NOT NULL,
     `start_date`   DATE         NOT NULL,
     `end_date`     DATE         NOT NULL,
-    `is_foreign`   TINYINT(1)   NOT NULL,
+    `is_foreign`   boolean      NOT NULL,
+    `like_count`   BIGINT       NOT NULL DEFAULT 0,
     `created_date` TIMESTAMP    NOT NULL,
     `updated_date` TIMESTAMP    NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE
 );
 
 -- Create Itinerary table
@@ -64,7 +67,7 @@ CREATE TABLE `itinerary`
 -- Create ThumbsUp table
 CREATE TABLE `like_trip`
 (
-    `id`           BIGINT    NOT NULL,
+    `id`           BIGINT    NOT NULL AUTO_INCREMENT,
     `member_id`    BIGINT    NOT NULL,
     `trip_id`      BIGINT    NOT NULL,
     `created_date` TIMESTAMP NOT NULL,
@@ -77,7 +80,7 @@ CREATE TABLE `like_trip`
 -- Create Comment table
 CREATE TABLE `comment`
 (
-    `id`           VARCHAR(255)  NOT NULL,
+    `id`           BIGINT        NOT NULL AUTO_INCREMENT,
     `member_id`    BIGINT        NOT NULL,
     `trip_id`      BIGINT        NOT NULL,
     `content`      VARCHAR(1000) NOT NULL,
