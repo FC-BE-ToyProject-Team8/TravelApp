@@ -11,7 +11,6 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -27,7 +26,6 @@ public interface TripDtoMapper {
     TripUpdateDto of(TripUpdateRequest request);
 
     // Response
-    @Mapping(source = "dto.itineraries", target = "itineraries")
     TripResponse of(TripItineraryInfoDto dto);
 
     TripSummaryResponse of(TripInfoDto dto);
