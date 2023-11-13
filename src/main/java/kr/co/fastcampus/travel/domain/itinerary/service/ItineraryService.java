@@ -13,17 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
 
+    @Transactional(readOnly = true)
     public ItineraryDto findItineraryById(Long id) {
         var itinerary = findById(id);
         return ItineraryDto.from(itinerary);
     }
 
-    @Transactional
     public ItineraryDto editItinerary(Long id, ItineraryUpdateDto dto) {
         var itinerary = findById(id);
         Itinerary updateItinerary = dto.toEntity();
@@ -31,7 +31,6 @@ public class ItineraryService {
         return ItineraryDto.from(itinerary);
     }
 
-    @Transactional
     public void deleteById(Long id) {
         var itinerary = findById(id);
         itineraryRepository.delete(itinerary);
