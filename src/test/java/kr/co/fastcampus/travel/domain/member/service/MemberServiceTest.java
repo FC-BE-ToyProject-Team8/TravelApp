@@ -67,7 +67,7 @@ class MemberServiceTest {
 
         given(memberRepository.findByEmail(dto.email()))
                 .willReturn(Optional.empty());
-        given(memberRepository.findByNickname(dto.email()))
+        given(memberRepository.findByNickname(dto.nickname()))
                 .willReturn(Optional.of(Member.builder().build()));
 
         // when

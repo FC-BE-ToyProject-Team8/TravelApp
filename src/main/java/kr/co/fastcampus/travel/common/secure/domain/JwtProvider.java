@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
-import kr.co.fastcampus.travel.domain.member.entity.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,9 +48,9 @@ public class JwtProvider {
         this.refreshTokenExpiredTime = tokenValidateSeconds * TOKEN_REFRESH_INTERVAL;
     }
 
-    public Token generateToken(Member member) {
-        String accessToken = createToken(member, accessTokenExpiredTime);
-        String refreshToken = createToken(member, refreshTokenExpiredTime);
+    public Token generateToken(String email, String role) {
+        String accessToken = createToken(email, role, accessTokenExpiredTime);
+        String refreshToken = createToken(email, role, refreshTokenExpiredTime);
 
         return Token.builder()
                 .grantType(grantType)
@@ -90,10 +89,10 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(principal, token, grantedAuthorities);
     }
 
-    private String createToken(Member member, long expiredTime) {
+    private String createToken(String email, String role, long expiredTime) {
         return Jwts.builder()
-                .setSubject(member.getEmail())
-                .claim(AUTHORITIES_KEY, member.getRole().name())
+                .setSubject(email)
+                .claim(AUTHORITIES_KEY, role)
                 .setExpiration(new Date(System.currentTimeMillis() + expiredTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
