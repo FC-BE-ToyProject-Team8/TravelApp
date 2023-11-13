@@ -2,8 +2,12 @@ package kr.co.fastcampus.travel.domain.trip.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -12,6 +16,7 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +28,10 @@ public class TripService {
 
     private final TripRepository tripRepository;
 
+    private final MemberRepository memberRepository;
+
+    private final int pageSize = 5;
+
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto) {
         var trip = tripRepository.save(dto.toEntity());
@@ -31,7 +40,7 @@ public class TripService {
 
     public TripItineraryInfoDto findTripItineraryById(Long id) {
         var trip = tripRepository.findFetchItineraryById(id)
-                .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(EntityNotFoundException::new);
         return TripItineraryInfoDto.from(trip);
     }
 
@@ -48,8 +57,8 @@ public class TripService {
     public List<TripInfoDto> findAllTrips() {
         var trips = tripRepository.findAll();
         return trips.stream()
-                .map(TripInfoDto::from)
-                .collect(Collectors.toList());
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -70,8 +79,18 @@ public class TripService {
     public TripItineraryInfoDto addItineraries(Long id, List<ItinerarySaveDto> dto) {
         var trip = findById(id);
         dto.stream()
-                .map(ItinerarySaveDto::toEntity)
-                .forEach(trip::addItinerary);
+            .map(ItinerarySaveDto::toEntity)
+            .forEach(trip::addItinerary);
         return TripItineraryInfoDto.from(trip);
+    }
+
+    @Transactional
+    public List<TripInfoDto> findTripsByNickname(String nickname, int page) {
+        Member member = memberRepository.findByNickname(nickname).orElseThrow(MemberNotFoundException::new);
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        var trips = tripRepository.findTripByMember(member, pageRequest);
+        return trips.stream()
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
     }
 }

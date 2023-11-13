@@ -12,14 +12,7 @@ import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryRe
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -68,5 +61,14 @@ public class TripController {
     public ResponseBody<Void> deleteTrip(@PathVariable Long tripId) {
         tripService.deleteTrip(tripId);
         return ResponseBody.ok();
+    }
+
+    @GetMapping("/search-by-nickname")
+    @Operation(summary = "사용자 닉네임으로 여행 검색")
+    public ResponseBody<List<TripSummaryResponse>> searchByNickname(
+        @RequestParam("query") String query,
+        @RequestParam(required = false, defaultValue = "1", value = "page") int page) {
+        var response = tripService.findTripsByNickname(query, page);
+        return ResponseBody.ok(mapper.of(response));
     }
 }
