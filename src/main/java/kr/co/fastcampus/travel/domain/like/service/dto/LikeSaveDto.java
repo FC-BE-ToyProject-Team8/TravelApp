@@ -11,7 +11,7 @@ public record LikeSaveDto(
     Member member,
     Trip trip
 ) {
-    public Like toEntity(){
+    public Like toEntity() {
         return Like.builder()
             .id(id)
             .member(member)

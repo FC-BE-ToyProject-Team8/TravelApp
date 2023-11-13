@@ -86,7 +86,8 @@ public class TripService {
 
     @Transactional
     public List<TripInfoDto> findTripsByNickname(String nickname, int page) {
-        Member member = memberRepository.findByNickname(nickname).orElseThrow(MemberNotFoundException::new);
+        Member member = memberRepository.findByNickname(nickname)
+            .orElseThrow(MemberNotFoundException::new);
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         var trips = tripRepository.findTripByMember(member, pageRequest);
         return trips.stream()

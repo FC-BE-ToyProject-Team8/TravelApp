@@ -24,7 +24,7 @@ public class LikeService {
 
     public void saveLike(Long tripId, Long memberId) {
         Trip trip = tripRepository.findById(tripId).orElseThrow(EntityNotFoundException::new);
-        if(likeRepository.existsByTripAndMemberId(trip, memberId)){
+        if (likeRepository.existsByTripAndMemberId(trip, memberId)) {
             throw new DuplicatedLikeException();
         }
         Like like = Like.builder()
@@ -35,7 +35,7 @@ public class LikeService {
         updateLikeCount(trip, 1);
     }
 
-    public void updateLikeCount(Trip trip , int plusNumber){
+    public void updateLikeCount(Trip trip, int plusNumber){
 
     }
 }

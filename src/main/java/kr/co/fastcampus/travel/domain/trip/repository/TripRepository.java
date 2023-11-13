@@ -2,7 +2,6 @@ package kr.co.fastcampus.travel.domain.trip.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import org.springframework.data.domain.PageRequest;
