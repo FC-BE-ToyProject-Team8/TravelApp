@@ -1,8 +1,13 @@
 package kr.co.fastcampus.travel.domain.member.controller;
 
+import static kr.co.fastcampus.travel.common.MemberTestUtils.NAME;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.NICKNAME;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
+import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -14,14 +19,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 class MemberControllerTest extends ApiTest {
 
-    public static final String EMAIL = "email";
-    public static final String NAME = "name";
-    public static final String NICKNAME = "nickname";
-    public static final String PASSWORD = "password";
     @Autowired
     private MemberRepository memberRepository;
 
@@ -33,14 +33,7 @@ class MemberControllerTest extends ApiTest {
         MemberSaveRequest request = createMemberSaveReqeust();
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when()
-                .post(url)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = restAssuredPostBody(url, request);
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -58,14 +51,7 @@ class MemberControllerTest extends ApiTest {
         MemberSaveRequest request = createMemberSaveReqeust();
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when()
-                .post(url)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = restAssuredPostBody(url, request);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -86,35 +72,10 @@ class MemberControllerTest extends ApiTest {
         );
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when()
-                .post(url)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = restAssuredPostBody(url, request);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    }
-
-    private Member createMember() {
-        return Member.builder()
-                .email(EMAIL)
-                .name(NAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-    }
-
-    private MemberSaveRequest createMemberSaveReqeust() {
-        return new MemberSaveRequest(
-                EMAIL,
-                NAME,
-                NICKNAME,
-                PASSWORD
-        );
     }
 
     private void saveMember(Member member) {
