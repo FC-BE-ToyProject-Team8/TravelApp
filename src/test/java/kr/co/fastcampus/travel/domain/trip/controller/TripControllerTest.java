@@ -22,6 +22,7 @@ import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
+import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
@@ -283,15 +284,13 @@ public class TripControllerTest extends ApiTest {
         // then
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
-        TripResponse data = jsonPath.getObject("data", TripResponse.class);
+        List<ItineraryResponse> data = jsonPath.getList("data", ItineraryResponse.class);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
         assertSoftly((softly) -> {
             softly.assertThat(status).isEqualTo("SUCCESS");
-            softly.assertThat(data.id()).isEqualTo(1);
-            softly.assertThat(data.name()).isEqualTo("tripName");
-            softly.assertThat(data.itineraries().size()).isEqualTo(3);
+            softly.assertThat(data.size()).isEqualTo(3);
         });
     }
 

@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
+import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
@@ -159,11 +160,11 @@ class TripServiceTest {
                 .willReturn(Optional.of(trip));
 
         //when
-        TripItineraryInfoDto returnedTrip = tripService.addItineraries(trip.getId(), requests);
+        List<ItineraryDto> returnedItineraries = tripService.addItineraries(trip.getId(), requests);
 
         //then
-        assertThat(returnedTrip).isNotNull();
-        assertThat(returnedTrip.itineraries().size()).isEqualTo(3);
+        assertThat(returnedItineraries).isNotNull();
+        assertThat(returnedItineraries.size()).isEqualTo(3);
     }
 
     @Test
