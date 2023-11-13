@@ -23,10 +23,11 @@ CREATE TABLE `member`
 CREATE TABLE `trip`
 (
     `id`           BIGINT       NOT NULL AUTO_INCREMENT,
+    `member_id`    BIGINT       NOT NULL ,
     `name`         VARCHAR(100) NOT NULL,
     `start_date`   DATE         NOT NULL,
     `end_date`     DATE         NOT NULL,
-    `is_foreign`   TINYINT(1)   NOT NULL,
+    `is_foreign`   boolean   NOT NULL,
     `created_date` TIMESTAMP    NOT NULL,
     `updated_date` TIMESTAMP    NULL,
     PRIMARY KEY (`id`)
@@ -77,7 +78,7 @@ CREATE TABLE `like_trip`
 -- Create Comment table
 CREATE TABLE `comment`
 (
-    `id`           VARCHAR(255)  NOT NULL,
+    `id`           BIGINT  NOT NULL,
     `member_id`    BIGINT        NOT NULL,
     `trip_id`      BIGINT        NOT NULL,
     `content`      VARCHAR(1000) NOT NULL,

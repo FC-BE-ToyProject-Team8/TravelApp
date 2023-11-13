@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
+import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import lombok.AccessLevel;
@@ -52,6 +53,12 @@ public class Trip extends BaseEntity {
     )
     private List<Itinerary> itineraries = new ArrayList<>();
 
+    @OneToMany(
+        fetch = FetchType.LAZY, mappedBy = "trip",
+        cascade = CascadeType.PERSIST, orphanRemoval = true
+    )
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
     private Trip(
         String name,
@@ -74,5 +81,9 @@ public class Trip extends BaseEntity {
 
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
+    }
+
+    public void addComment(Comment comment){
+        comments.add(comment);
     }
 }
