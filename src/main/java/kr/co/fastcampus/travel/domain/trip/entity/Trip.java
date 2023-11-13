@@ -57,12 +57,14 @@ public class Trip extends BaseEntity {
         String name,
         LocalDate startDate,
         LocalDate endDate,
-        boolean isForeign
+        boolean isForeign,
+        Member member
     ) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
+        this.member = member;
     }
 
     public void update(Trip tripToBeUpdated) {
