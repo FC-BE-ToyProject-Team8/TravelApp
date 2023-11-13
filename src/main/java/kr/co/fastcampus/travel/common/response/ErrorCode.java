@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-    COMMON_ENTITY_NOT_FOUND("존재하지 않는 엔티티입니다.");
+    COMMON_ENTITY_NOT_FOUND("존재하지 않는 엔티티입니다."),
+    DUPLICATED_LIKE("중복된 좋아요입니다.");
 
 
     private final String errorMsg;
