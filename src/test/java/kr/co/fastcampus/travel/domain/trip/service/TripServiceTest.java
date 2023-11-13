@@ -203,8 +203,10 @@ class TripServiceTest {
         }
         int page = 1;
         PageRequest pageRequest = PageRequest.of(page - 1, 5);
-        given(memberRepository.findByNickname(trip.getMember().getNickname())).willReturn(Optional.of(member));
-        given(tripRepository.findTripByMember(trip.getMember(), pageRequest)).willReturn(list);
+        given(memberRepository.findByNickname(trip.getMember().getNickname()))
+            .willReturn(Optional.of(member));
+        given(tripRepository.findTripByMember(trip.getMember(), pageRequest))
+            .willReturn(list);
 
         //when
         List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page);
