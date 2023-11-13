@@ -14,3 +14,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+
+kakao:
+  api:
+    key: dd0c848e81e9871630e66d93e2e51d64
