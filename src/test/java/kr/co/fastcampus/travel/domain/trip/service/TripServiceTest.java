@@ -225,7 +225,8 @@ class TripServiceTest {
         Member member = createMember();
         Trip trip = createTripWithMember(member);
         int page = 1;
-        given(memberRepository.findByNickname(trip.getMember().getNickname())).willReturn(Optional.empty());
+        given(memberRepository.findByNickname(trip.getMember().getNickname()))
+            .willReturn(Optional.empty());
 
         //when
         //then

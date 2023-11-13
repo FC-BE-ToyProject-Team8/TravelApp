@@ -308,7 +308,8 @@ public class TripControllerTest extends ApiTest {
         // given
         Member member = createMember();
         memberRepository.save(member);
-        List<Trip> saveTrips = IntStream.range(0, 10).mapToObj(i -> saveTripWithMember(member)).toList();
+        List<Trip> saveTrips = IntStream.range(0, 10)
+            .mapToObj(i -> saveTripWithMember(member)).toList();
         String url = "/api/trips/search-by-nickname?query={query}&page={page}";
 
         // when
