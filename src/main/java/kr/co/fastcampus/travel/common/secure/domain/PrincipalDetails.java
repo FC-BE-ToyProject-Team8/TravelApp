@@ -21,7 +21,7 @@ public record PrincipalDetails(
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
