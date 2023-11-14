@@ -18,7 +18,7 @@ public record CommentInfoDto(
     String content
 ) {
 
-    public static CommentInfoDto from(Comment comment){
+    public static CommentInfoDto from(Comment comment) {
         return CommentInfoDto.builder()
             .id(comment.getId())
             .member(MemberInfoDto.from(comment.getMember()))
