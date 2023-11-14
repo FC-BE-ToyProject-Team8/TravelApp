@@ -20,3 +20,8 @@ spring:
   sql:
     init:
       mode: never
+
+jwt:
+  secret: U3ByaW5nU2VjdXJpdHkgSmF2YSBXZWIgVG9rZW4gU2VjcmV0IEtleSBUZXN0
+  grand-type: Bearer
+  token-validate-in-seconds: 3600

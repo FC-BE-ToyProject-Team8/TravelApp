@@ -2,13 +2,13 @@ package kr.co.fastcampus.travel.domain.itinerary.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.ItineraryDtoMapper;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.ItineraryUpdateRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
 import kr.co.fastcampus.travel.domain.itinerary.service.ItineraryService;
-import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class ItineraryController {
 
     @PostMapping
     @Operation(summary = "여정 복수 등록")
-    public ResponseBody<TripResponse> saveItineraries(
+    public ResponseBody<List<ItineraryResponse>> saveItineraries(
         @RequestBody ItinerariesSaveRequest request
     ) {
         var response = tripService.addItineraries(request.tripId(), mapper.of(request));
