@@ -1,12 +1,9 @@
 package kr.co.fastcampus.travel.domain.trip.service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
-import kr.co.fastcampus.travel.domain.member.entity.Member;
-import kr.co.fastcampus.travel.domain.member.entity.RoleType;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
@@ -16,7 +13,8 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,15 +79,8 @@ public class TripService {
         return TripItineraryInfoDto.from(trip);
     }
 
-    public List<TripInfoDto> searchByTripName(String tripName, Principal principal) {
-        Member member = memberService.findMemberByEmail(principal.getName());
-        if (member.getRole() != RoleType.User) {
-            throw new AccessDeniedException("User role is required");
-        }
-        var trips = tripRepository.findAllByNameContainingIgnoreCase(tripName);
-        return trips.stream()
-            .map(TripInfoDto::from)
-            .toList();
+    public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
+        var trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
+        return trips.map(TripInfoDto::from);
     }
-
 }

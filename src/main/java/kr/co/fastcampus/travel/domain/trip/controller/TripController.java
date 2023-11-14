@@ -2,7 +2,6 @@ package kr.co.fastcampus.travel.domain.trip.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
@@ -13,6 +12,7 @@ import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryRe
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,9 +76,9 @@ public class TripController {
     @Operation(summary = "여행 이름으로 검색")
     public ResponseBody<List<TripSummaryResponse>> searchByTripName(
         @RequestParam String query,
-        Principal principal
+        Pageable pageable
     ) {
-        var response = tripService.searchByTripName(query, principal);
+        var response = tripService.searchByTripName(query, pageable);
         return ResponseBody.ok(mapper.of(response));
     }
 }

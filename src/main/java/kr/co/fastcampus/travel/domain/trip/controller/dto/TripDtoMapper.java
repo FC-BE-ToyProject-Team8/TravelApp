@@ -12,11 +12,12 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInf
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
 @Mapper(
-        componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface TripDtoMapper {
 
@@ -31,4 +32,10 @@ public interface TripDtoMapper {
     TripSummaryResponse of(TripInfoDto dto);
 
     List<TripSummaryResponse> of(List<TripInfoDto> dto);
+
+    default List<TripSummaryResponse> of(Page<TripInfoDto> page) {
+        return page.getContent().stream()
+            .map(this::of)
+            .toList();
+    }
 }
