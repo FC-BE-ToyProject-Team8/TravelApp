@@ -13,10 +13,10 @@ public record MemberSaveDto(
 
     public Member toEntity(String encodePassword) {
         return Member.builder()
-            .email(email)
-            .name(name)
-            .nickname(nickname)
-            .password(encodePassword)
-            .build();
+                .email(email)
+                .name(name)
+                .nickname(nickname)
+                .password(encodePassword)
+                .build();
     }
 }
