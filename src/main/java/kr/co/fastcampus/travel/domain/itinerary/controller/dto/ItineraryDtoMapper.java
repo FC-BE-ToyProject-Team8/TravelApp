@@ -73,5 +73,18 @@ public interface ItineraryDtoMapper {
 
     ItineraryResponse of(ItineraryDto dto);
 
+    default List<ItineraryResponse> of(List<ItineraryDto> itineraryDto) {
+        if (itineraryDto == null) {
+            return null;
+        }
+
+        List<ItineraryResponse> list = new ArrayList<>(itineraryDto.size());
+        for (ItineraryDto item : itineraryDto) {
+            list.add(of(item));
+        }
+
+        return list;
+    }
+
     TripResponse of(TripItineraryInfoDto dto);
 }
