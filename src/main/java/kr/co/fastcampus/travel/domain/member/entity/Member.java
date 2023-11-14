@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
 import kr.co.fastcampus.travel.common.secure.domain.RoleType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,4 +37,13 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    @Builder
+    private Member(String email, String name, String nickname, String password) {
+        this.email = email;
+        this.name = name;
+        this.nickname = nickname;
+        this.password = password;
+        this.role = RoleType.User;
+    }
 }
