@@ -50,13 +50,12 @@ class LikeServiceTest {
         given(tripService.findById(tripId)).willReturn(trip);
 
         //when
-        for(int i=0; i<threadCount; i++){
-            executorService.submit(()->{
-                try{
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
                     Member member = createMember();
                     likeService.saveLike(tripId, member.getEmail());
-                }
-                finally {
+                } finally {
                     latch.countDown();
                 }
             });
