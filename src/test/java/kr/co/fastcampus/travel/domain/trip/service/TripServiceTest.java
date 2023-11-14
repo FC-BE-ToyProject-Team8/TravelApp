@@ -21,6 +21,7 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.Itinera
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
@@ -32,13 +33,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
+
+    @Mock
+    private MemberService memberService;
 
     @Mock
     private MemberRepository memberRepository;
@@ -203,14 +210,15 @@ class TripServiceTest {
             list.add(trip);
         }
         int page = 1;
-        PageRequest pageRequest = PageRequest.of(page - 1, 5);
-        given(memberRepository.findByNickname(trip.getMember().getNickname()))
-            .willReturn(Optional.of(member));
-        given(tripRepository.findTripByMember(trip.getMember(), pageRequest))
-            .willReturn(list);
+        Pageable pageable= PageRequest.of(page - 1, 5);
+        given(memberService.findByNickname(trip.getMember().getNickname()))
+            .willReturn(member);
+        Page<Trip> fakePage = new PageImpl<>(list, pageable, list.size());
+        given(tripRepository.findTripByMember(trip.getMember(), pageable))
+            .willReturn(fakePage);
 
         //when
-        List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page);
+        List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page, pageable);
 
         //then
         assertSoftly(softly -> {
@@ -225,13 +233,23 @@ class TripServiceTest {
         //given
         Member member = createMember();
         Trip trip = createTripWithMember(member);
+        List<Trip> list = new ArrayList<>();
+
         int page = 1;
-        given(memberRepository.findByNickname(trip.getMember().getNickname()))
-            .willReturn(Optional.empty());
+        Pageable pageable= PageRequest.of(page - 1, 5);
+        given(memberService.findByNickname(trip.getMember().getNickname()))
+            .willReturn(member);
+        Page<Trip> fakePage = new PageImpl<>(list, pageable, list.size());
+        given(tripRepository.findTripByMember(trip.getMember(), pageable))
+            .willReturn(fakePage);
 
         //when
+        List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page, pageable);
+
         //then
-        assertThatThrownBy(() -> tripService.findTripsByNickname(member.getNickname(), page))
-            .isInstanceOf(MemberNotFoundException.class);
+        assertSoftly(softly -> {
+            softly.assertThat(findTrips.size()).isEqualTo(0);
+            softly.assertThat(TripInfoDto.from(trip)).isNotIn(findTrips);
+        });
     }
 }
