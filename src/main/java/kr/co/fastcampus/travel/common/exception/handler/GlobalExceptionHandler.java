@@ -1,11 +1,11 @@
 package kr.co.fastcampus.travel.common.exception.handler;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.lang.reflect.Field;
 import kr.co.fastcampus.travel.common.exception.BaseException;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +41,11 @@ public class GlobalExceptionHandler {
 
         String sb = "[Request error] "
             + fieldErrors.stream()
-                .map(fieldError
-                    -> fieldError.getDefaultMessage() +
-                    " (" + fieldError.getField() + "=" + fieldError.getRejectedValue() + ")"
-                )
-                .collect(Collectors.joining(", "));
+            .map(fieldError
+                -> fieldError.getDefaultMessage()
+                + " (" + fieldError.getField() + "=" + fieldError.getRejectedValue() + ")"
+            )
+            .collect(Collectors.joining(", "));
         return ResponseBody.fail(sb);
     }
 
