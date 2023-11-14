@@ -3,8 +3,8 @@ package kr.co.fastcampus.travel.domain.placesearch.service;
 import java.security.Principal;
 import kr.co.fastcampus.travel.common.exception.ApiRequestFailedException;
 import kr.co.fastcampus.travel.common.exception.ApiUnauthorizedException;
-import kr.co.fastcampus.travel.common.secure.domain.RoleType;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.entity.RoleType;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.placesearch.controller.dto.kakao.KakaoApiSearchResponse;
 import lombok.RequiredArgsConstructor;
@@ -52,8 +52,7 @@ public class PlaceSearchService {
     ) {
         Member member = memberService.findMemberByEmail(principal.getName());
         if (member.getRole() != RoleType.User) {
-            // 추후 수정 예정
-            throw new AccessDeniedException("추후 수정 예정입니다.");
+            throw new AccessDeniedException("권한이 없습니다.");
         }
 
         HttpHeaders headers = new HttpHeaders();

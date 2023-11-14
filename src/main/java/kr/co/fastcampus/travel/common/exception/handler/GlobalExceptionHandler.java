@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 상태 코드를 400(Bad Request)로 설정
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseBody<Void> missingServletRequestParameterException(
         MissingServletRequestParameterException e
     ) {

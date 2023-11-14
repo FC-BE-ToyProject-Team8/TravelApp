@@ -23,7 +23,7 @@ public class PlaceSearchController {
     private final PlaceSearchService placeSearchService;
     private final PlaceSearchDtoMapper mapper;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseBody<List<PlaceInfoResponse>> searchByKakaoApiKeyword(
         @RequestParam String query,
         @PageableDefault(page = 1, size = 15) Pageable pageable,
