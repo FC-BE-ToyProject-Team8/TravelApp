@@ -26,11 +26,7 @@ class TripRepositoryTest {
     @DisplayName("여행 + 여정 조회 검증")
     void findContainTrip() {
         // given
-        Trip trip = Trip.builder()
-            .name("여행")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(7))
-            .build();
+        Trip trip = createTrip();
 
         IntStream.range(0, 3)
             .forEach(i -> {
@@ -53,11 +49,7 @@ class TripRepositoryTest {
     @DisplayName("여정 없는 여행 조회 검증")
     void findOnlyTrip() {
         // given
-        Trip trip = Trip.builder()
-            .name("여행")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(7))
-            .build();
+        Trip trip = createTrip();
 
         tripRepository.save(trip);
 
