@@ -210,7 +210,7 @@ class TripServiceTest {
             list.add(trip);
         }
         int page = 1;
-        Pageable pageable= PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 5);
         given(memberService.findByNickname(trip.getMember().getNickname()))
             .willReturn(member);
         Page<Trip> fakePage = new PageImpl<>(list, pageable, list.size());
@@ -218,7 +218,8 @@ class TripServiceTest {
             .willReturn(fakePage);
 
         //when
-        List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page, pageable);
+        List<TripInfoDto> findTrips =
+            tripService.findTripsByNickname(member.getNickname(), page, pageable);
 
         //then
         assertSoftly(softly -> {
@@ -236,7 +237,7 @@ class TripServiceTest {
         List<Trip> list = new ArrayList<>();
 
         int page = 1;
-        Pageable pageable= PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 5);
         given(memberService.findByNickname(trip.getMember().getNickname()))
             .willReturn(member);
         Page<Trip> fakePage = new PageImpl<>(list, pageable, list.size());
@@ -244,7 +245,8 @@ class TripServiceTest {
             .willReturn(fakePage);
 
         //when
-        List<TripInfoDto> findTrips = tripService.findTripsByNickname(member.getNickname(), page, pageable);
+        List<TripInfoDto> findTrips =
+            tripService.findTripsByNickname(member.getNickname(), page, pageable);
 
         //then
         assertSoftly(softly -> {
