@@ -1,8 +1,11 @@
 package kr.co.fastcampus.travel.domain.comment.service;
 
+import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
+import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
 import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentSaveDto;
+import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentUpdateDto;
 import kr.co.fastcampus.travel.domain.comment.service.dto.response.CommentInfoDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
@@ -32,7 +35,22 @@ public class CommentService {
         comment.addMember(member);
         comment.addTrip(trip);
 
-        var newComment = commentRepository.save(comment);
+        Comment newComment = commentRepository.save(comment);
         return CommentInfoDto.from(newComment);
+    }
+
+    @Transactional
+    public CommentInfoDto editComment(Long commentId, String memberEmail,
+        CommentUpdateDto request) {
+        Comment comment = findById(commentId);
+        if (!comment.getMember().getEmail().equals(memberEmail)) {
+            throw new CommentMemberMismatchException();
+        }
+        comment.update(request.content());
+        return CommentInfoDto.from(comment);
+    }
+
+    private Comment findById(Long id) {
+        return commentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }
