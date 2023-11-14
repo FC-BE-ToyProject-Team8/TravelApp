@@ -26,8 +26,7 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = getAuthorization(httpServletRequest);
         String token = jwtProvider.resolveToken(authorization);
