@@ -82,8 +82,4 @@ public class Trip extends BaseEntity {
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
     }
-
-    public void addComment(Comment comment){
-        comments.add(comment);
-    }
 }

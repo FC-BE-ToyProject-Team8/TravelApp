@@ -31,7 +31,7 @@ public class TripService {
 
     public TripItineraryInfoDto findTripItineraryById(Long id) {
         var trip = tripRepository.findFetchItineraryById(id)
-                .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(EntityNotFoundException::new);
         return TripItineraryInfoDto.from(trip);
     }
 
@@ -40,7 +40,7 @@ public class TripService {
         return TripInfoDto.from(trip);
     }
 
-    private Trip findById(Long id) {
+    public Trip findById(Long id) {
         return tripRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
@@ -48,8 +48,8 @@ public class TripService {
     public List<TripInfoDto> findAllTrips() {
         var trips = tripRepository.findAll();
         return trips.stream()
-                .map(TripInfoDto::from)
-                .collect(Collectors.toList());
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -70,8 +70,8 @@ public class TripService {
     public TripItineraryInfoDto addItineraries(Long id, List<ItinerarySaveDto> dto) {
         var trip = findById(id);
         dto.stream()
-                .map(ItinerarySaveDto::toEntity)
-                .forEach(trip::addItinerary);
+            .map(ItinerarySaveDto::toEntity)
+            .forEach(trip::addItinerary);
         return TripItineraryInfoDto.from(trip);
     }
 }

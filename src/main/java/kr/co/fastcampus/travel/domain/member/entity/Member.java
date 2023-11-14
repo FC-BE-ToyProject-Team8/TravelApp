@@ -38,12 +38,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @OneToMany(
-        fetch = FetchType.LAZY, mappedBy = "member",
-        cascade = CascadeType.PERSIST, orphanRemoval = true
-    )
-    private List<Comment> comments = new ArrayList<>();
-
     @Builder
     private Member(
         String email,

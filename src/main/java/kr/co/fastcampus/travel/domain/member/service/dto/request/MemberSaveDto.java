@@ -11,14 +11,12 @@ public record MemberSaveDto(
     String password
 ) {
 
-    public Member toEntity(){
+    public Member toEntity(String encodePassword) {
         return Member.builder()
             .email(email)
-            .nickname(nickname)
             .name(name)
-            .password(password)
+            .nickname(nickname)
+            .password(encodePassword)
             .build();
-
-
     }
 }

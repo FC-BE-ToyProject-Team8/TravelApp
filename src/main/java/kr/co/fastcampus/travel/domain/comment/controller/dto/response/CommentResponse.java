@@ -2,9 +2,8 @@ package kr.co.fastcampus.travel.domain.comment.controller.dto.response;
 
 import java.util.Objects;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
-import kr.co.fastcampus.travel.domain.member.controller.response.MemberResponse;
+import kr.co.fastcampus.travel.domain.member.controller.dto.response.MemberResponse;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
-import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import lombok.Builder;

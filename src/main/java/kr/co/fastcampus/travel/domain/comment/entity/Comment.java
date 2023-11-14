@@ -42,13 +42,21 @@ public class Comment extends BaseEntity {
         Trip trip,
         String content
     ) {
-        this.content = content;
+        this.id = id;
         this.member = member;
         this.trip = trip;
-        this.id = id;
+        this.content = content;
     }
 
-    public void update(Comment commentToBeUpdated) {
+    public void addTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    public void addMember(Member member) {
+        this.member = member;
+    }
+
+    public void update(String commentToBeUpdated) {
         this.content = content;
     }
 }
