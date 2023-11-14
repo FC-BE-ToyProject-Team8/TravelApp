@@ -1,5 +1,11 @@
 package kr.co.fastcampus.travel.common.exception.handler;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.lang.reflect.Field;
 import kr.co.fastcampus.travel.common.exception.BaseException;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
@@ -29,19 +35,30 @@ public class GlobalExceptionHandler {
     public ResponseBody<Void> handleValidException(MethodArgumentNotValidException e) {
         log.warn("[MethodArgumentNotValidException] Message = {}",
             NestedExceptionUtils.getMostSpecificCause(e).getMessage());
+
         BindingResult bindingResult = e.getBindingResult();
-        FieldError fieldError = bindingResult.getFieldError();
-        if (fieldError != null) {
-            String message = "[Request Error] "
-                + fieldError.getField()
-                + "="
-                + fieldError.getRejectedValue()
-                + " ("
-                + fieldError.getDefaultMessage()
-                + ")";
-            return ResponseBody.fail(message);
-        }
-        return ResponseBody.fail(e.getMessage());
+        List<FieldError> fieldErrors = getSortedFieldErrors(bindingResult);
+
+        String sb = "[Request error] "
+            + fieldErrors.stream()
+                .map(fieldError
+                    -> fieldError.getDefaultMessage() +
+                    " (" + fieldError.getField() + "=" + fieldError.getRejectedValue() + ")"
+                )
+                .collect(Collectors.joining(", "));
+        return ResponseBody.fail(sb);
+    }
+
+    private List<FieldError> getSortedFieldErrors(BindingResult bindingResult) {
+        List<String> declaredFields = Arrays.stream(
+                Objects.requireNonNull(bindingResult.getTarget()).getClass().getDeclaredFields())
+            .map(Field::getName)
+            .toList();
+
+        return bindingResult.getFieldErrors().stream()
+            .filter(fieldError -> declaredFields.contains(fieldError.getField()))
+            .sorted(Comparator.comparingInt(fe -> declaredFields.indexOf(fe.getField())))
+            .collect(Collectors.toList());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
