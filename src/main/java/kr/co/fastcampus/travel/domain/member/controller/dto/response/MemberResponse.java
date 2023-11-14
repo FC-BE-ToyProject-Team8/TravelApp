@@ -6,8 +6,8 @@ import lombok.Builder;
 @Builder
 public record MemberResponse(
     Long id,
-    String email,
     String name,
+    String email,
     String nickname
 ) {
 
