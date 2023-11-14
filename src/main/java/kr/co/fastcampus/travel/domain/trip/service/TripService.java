@@ -8,6 +8,7 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.Itinera
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -17,6 +18,7 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInf
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,7 @@ public class TripService {
 
     private final TripRepository tripRepository;
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     private final int pageSize = 5;
 
@@ -87,13 +89,16 @@ public class TripService {
     }
 
     @Transactional
-    public List<TripInfoDto> findTripsByNickname(String nickname, int page) {
-        Member member = memberRepository.findByNickname(nickname)
-            .orElseThrow(MemberNotFoundException::new);
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
-        var trips = tripRepository.findTripByMember(member, pageRequest);
+    public List<TripInfoDto> findTripsByNickname(String nickname, int page, Pageable pageable) {
+        Member member = findMemberByNickname(nickname);
+        pageable = PageRequest.of(page - 1, pageSize);
+        var trips = tripRepository.findTripByMember(member, pageable);
         return trips.stream()
             .map(TripInfoDto::from)
             .collect(Collectors.toList());
+    }
+
+    public Member findMemberByNickname(String nickname) {
+        return memberService.findByNickname(nickname);
     }
 }
