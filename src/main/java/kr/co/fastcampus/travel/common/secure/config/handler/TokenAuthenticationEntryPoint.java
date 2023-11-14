@@ -29,7 +29,8 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
         sendErrorResponse(response, errorMessage.toString());
     }
 
-    private void sendErrorResponse(HttpServletResponse response, String errorMessage) throws IOException {
+    private void sendErrorResponse(HttpServletResponse response, String errorMessage)
+            throws IOException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -19,7 +19,9 @@ public final class TokenUtils {
         createMember();
         String url = "/login";
         LoginReqeust request = new LoginReqeust(EMAIL, PASSWORD);
-        return GRANT_TYPE + restAssuredPostBody(url, request).jsonPath().getString("data.accessToken");
+        return GRANT_TYPE + restAssuredPostBody(url, request)
+                .jsonPath()
+                .getString("data.accessToken");
     }
 
     private static void createMember() {

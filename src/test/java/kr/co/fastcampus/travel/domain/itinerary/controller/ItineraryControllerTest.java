@@ -16,7 +16,6 @@
 //import io.restassured.response.Response;
 //import java.util.List;
 //import kr.co.fastcampus.travel.common.ApiTest;
-//import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.ItineraryUpdateRequest;
 //import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.LodgeUpdateRequest;
 //import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.RouteUpdateRequest;
 //import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.StayUpdateRequest;
