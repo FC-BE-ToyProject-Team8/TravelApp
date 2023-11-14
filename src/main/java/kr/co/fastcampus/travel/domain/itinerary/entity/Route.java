@@ -1,8 +1,10 @@
 package kr.co.fastcampus.travel.domain.itinerary.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.domain.itinerary.entity.util.TransportationConverter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Route {
 
-    @Column(length = 100)
-    private String transportation;
+    @Convert(converter = TransportationConverter.class)
+    private Transportation transportation;
 
     @Column(length = 100)
     private String departurePlaceName;
@@ -34,7 +36,7 @@ public class Route {
 
     @Builder
     private Route(
-        String transportation,
+        Transportation transportation,
         String departurePlaceName,
         String departureAddress,
         String destinationPlaceName,

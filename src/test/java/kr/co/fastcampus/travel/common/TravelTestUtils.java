@@ -17,6 +17,7 @@ import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Lodge;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Stay;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
@@ -134,7 +135,7 @@ public class TravelTestUtils {
 
     public static Route createRoute() {
         return Route.builder()
-                .transportation("지하철")
+                .transportation(Transportation.BUS)
                 .departurePlaceName("우리집")
                 .departureAddress("서울")
                 .destinationPlaceName("해운대")
@@ -164,7 +165,7 @@ public class TravelTestUtils {
 
     public static RouteSaveDto createRouteSaveDto() {
         return new RouteSaveDto(
-                "지하철",
+                Transportation.BUS,
                 "우리집",
                 "서울",
                 "해운대",
@@ -194,7 +195,7 @@ public class TravelTestUtils {
 
     public static RouteUpdateDto createRouteUpdateDto() {
         return new RouteUpdateDto(
-                "이동수단 업데이트",
+                Transportation.SUBWAY,
                 "출발지 업데이트",
                 "출발 주소 업데이트",
                 "목적지 업데이트",
@@ -224,7 +225,7 @@ public class TravelTestUtils {
 
     public static RouteSaveRequest createRouteSaveRequest() {
         return new RouteSaveRequest(
-                "지하철",
+                Transportation.BUS,
                 "우리집",
                 "서울",
                 "해운대",
@@ -254,7 +255,7 @@ public class TravelTestUtils {
 
     public static RouteUpdateRequest createRouteUpdateRequest() {
         return new RouteUpdateRequest(
-                "이동수단 업데이트",
+                Transportation.SUBWAY,
                 "출발지 업데이트",
                 "출발 주소 업데이트",
                 "목적지 업데이트",
