@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
-import kr.co.fastcampus.travel.common.secure.domain.RoleType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
