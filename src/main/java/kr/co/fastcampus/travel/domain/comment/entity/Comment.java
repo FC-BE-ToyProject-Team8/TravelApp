@@ -48,11 +48,11 @@ public class Comment extends BaseEntity {
         this.content = content;
     }
 
-    public void addTrip(Trip trip) {
+    public void setTrip(Trip trip) {
         this.trip = trip;
     }
 
-    public void addMember(Member member) {
+    public void setMember(Member member) {
         this.member = member;
     }
 
