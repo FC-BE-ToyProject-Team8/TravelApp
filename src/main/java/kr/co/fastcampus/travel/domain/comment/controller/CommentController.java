@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.domain.comment.controller;
 
+import jakarta.validation.Valid;
 import java.security.Principal;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.comment.controller.dto.CommentDtoMapper;
@@ -26,7 +27,7 @@ public class CommentController {
     @PostMapping
     public ResponseBody<CommentResponse> saveComment(
         @RequestParam Long tripId,
-        @RequestBody CommentSaveRequest request,
+        @Valid @RequestBody CommentSaveRequest request,
         Principal principal
     ) {
         String memberEmail = principal.getName();
