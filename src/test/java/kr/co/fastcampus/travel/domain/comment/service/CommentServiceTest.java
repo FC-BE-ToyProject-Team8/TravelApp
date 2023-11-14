@@ -109,7 +109,7 @@ public class CommentServiceTest {
 
     @Test
     @DisplayName("댓글 삭제 - 성공")
-    void deleteComment(){
+    void deleteComment() {
         // given
         Long commentId = -1L;
         Trip trip = createTrip();
