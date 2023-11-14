@@ -40,7 +40,7 @@ public class TripService {
         return TripInfoDto.from(trip);
     }
 
-    private Trip findById(Long id) {
+    public Trip findById(Long id) {
         return tripRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
