@@ -26,6 +26,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class TripServiceTest {
@@ -180,5 +184,48 @@ class TripServiceTest {
         //then
         assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), requests))
                 .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("여행 이름으로 여행 검색 - 성공 케이스")
+    void searchByTripName() {
+        String query = "trip";
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Trip> trips = IntStream.range(0, 10)
+            .mapToObj(i -> createTrip())
+            .toList();
+        List<TripInfoDto> tripInfos = trips.stream()
+            .map(TripInfoDto::from)
+            .toList();
+
+        when(tripRepository.findAllByNameStartingWith(query, pageable))
+            .thenReturn(new PageImpl<>(trips, pageable, trips.size()));
+
+        // When
+        Page<TripInfoDto> result = tripService.searchByTripName(query, pageable);
+
+        // Then
+        assertSoftly(softly -> {
+            softly.assertThat(result.getNumber()).isEqualTo(0);
+            softly.assertThat(result.getSize()).isEqualTo(3);
+            softly.assertThat(result.getTotalElements()).isEqualTo(tripInfos.size());
+            softly.assertThat(result.getContent()).isEqualTo(tripInfos);
+        });
+    }
+
+    @Test
+    @DisplayName("여행 이름으로 여행 검색 결과 X")
+    void searchByTripNameNoResult() {
+        // Given
+        String query = "no trip";
+        Pageable pageable = PageRequest.of(0, 3);
+        when(tripRepository.findAllByNameStartingWith(query, pageable))
+            .thenReturn(Page.empty());
+
+        // When
+        Page<TripInfoDto> actualResult = tripService.searchByTripName(query, pageable);
+
+        // Then
+        assertThat(actualResult.isEmpty()).isEqualTo(true);
     }
 }
