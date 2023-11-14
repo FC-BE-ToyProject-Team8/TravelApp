@@ -19,6 +19,7 @@ public interface CommentDtoMapper {
 
     //request
     CommentSaveDto of(CommentSaveRequest request);
+
     CommentUpdateDto of(CommentUpdateRequest request);
 
     //response

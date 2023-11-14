@@ -53,7 +53,7 @@ public class CommentController {
         return ResponseBody.ok(mapper.of(response));
     }
 
-    @DeleteMapping("/{commentId")
+    @DeleteMapping("/{commentId}")
     public ResponseBody<Void> deleteComment(@PathVariable Long commentId, Principal principal) {
         String memberEmail = principal.getName();
         commentService.deleteById(commentId, memberEmail);

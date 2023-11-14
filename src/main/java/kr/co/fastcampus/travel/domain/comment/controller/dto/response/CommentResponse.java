@@ -15,7 +15,6 @@ public record CommentResponse(
     MemberResponse member,
     TripSummaryResponse trip,
     String content
-
 ) {
 
     public static CommentResponse from(Comment comment) {

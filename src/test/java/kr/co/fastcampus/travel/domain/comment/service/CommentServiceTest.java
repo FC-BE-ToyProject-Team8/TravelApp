@@ -1,7 +1,7 @@
 package kr.co.fastcampus.travel.domain.comment.service;
 
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createComment;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createComment;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
