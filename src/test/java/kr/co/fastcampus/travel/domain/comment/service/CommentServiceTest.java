@@ -9,9 +9,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
+import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
 import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentSaveDto;
@@ -103,5 +105,36 @@ public class CommentServiceTest {
         assertThatThrownBy(() ->
             commentService.editComment(commentId, newMemberEmail, request))
             .isInstanceOf(CommentMemberMismatchException.class);
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 - 성공")
+    void deleteComment(){
+        // given
+        Long commentId = -1L;
+        Trip trip = createTrip();
+        Member member = createMember();
+        Comment comment = createComment(trip, member);
+        given(commentRepository.findById(commentId)).willReturn(Optional.of(comment));
+
+        // when
+        commentService.deleteById(commentId, member.getEmail());
+
+        // then
+        verify(commentRepository).delete(comment);
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 - 실패 (댓글이 없는 경우)")
+    void deleteCommentNotFound() {
+        // given
+        Long commentId = 1L;
+        Member member = createMember();
+        given(commentRepository.findById(commentId)).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() ->
+            commentService.deleteById(commentId, member.getEmail()))
+            .isInstanceOf(EntityNotFoundException.class);
     }
 }
