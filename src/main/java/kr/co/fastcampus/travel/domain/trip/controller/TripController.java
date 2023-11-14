@@ -7,12 +7,16 @@ import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripUpdateRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripPageResponseDto;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,11 +78,11 @@ public class TripController {
 
     @GetMapping("/search-by-trip-name")
     @Operation(summary = "여행 이름으로 검색")
-    public ResponseBody<List<TripSummaryResponse>> searchByTripName(
+    public ResponseBody<TripPageResponseDto> searchByTripName(
         @RequestParam String query,
-        Pageable pageable
+        @PageableDefault(size = 5) Pageable pageable
     ) {
-        var response = tripService.searchByTripName(query, pageable);
-        return ResponseBody.ok(mapper.of(response));
+        Page<TripInfoDto> response = tripService.searchByTripName(query, pageable);
+        return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
     }
 }

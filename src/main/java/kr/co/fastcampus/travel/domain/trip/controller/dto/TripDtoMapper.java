@@ -33,9 +33,7 @@ public interface TripDtoMapper {
 
     List<TripSummaryResponse> of(List<TripInfoDto> dto);
 
-    default List<TripSummaryResponse> of(Page<TripInfoDto> page) {
-        return page.getContent().stream()
-            .map(this::of)
-            .toList();
+    default Page<TripSummaryResponse> of(Page<TripInfoDto> dto) {
+        return dto.map(this::of);
     }
 }
