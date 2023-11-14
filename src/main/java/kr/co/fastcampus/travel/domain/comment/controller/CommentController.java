@@ -10,6 +10,7 @@ import kr.co.fastcampus.travel.domain.comment.controller.dto.response.CommentRes
 import kr.co.fastcampus.travel.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,6 +51,13 @@ public class CommentController {
         var response =
             commentService.editComment(commentId, memberEmail, mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
+    }
+
+    @DeleteMapping("/{commentId")
+    public ResponseBody<Void> deleteComment(@PathVariable Long commentId, Principal principal) {
+        String memberEmail = principal.getName();
+        commentService.deleteById(commentId, memberEmail);
+        return ResponseBody.ok();
     }
 
 }

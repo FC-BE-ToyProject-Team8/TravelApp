@@ -26,6 +26,10 @@ public class CommentService {
     private final TripService tripService;
     private final MemberService memberService;
 
+    private Comment findById(Long id) {
+        return commentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
     @Transactional
     public CommentInfoDto addComment(Long tripId, String memberEmail, CommentSaveDto dto) {
         Trip trip = tripService.findById(tripId);
@@ -43,14 +47,20 @@ public class CommentService {
     public CommentInfoDto editComment(Long commentId, String memberEmail,
         CommentUpdateDto request) {
         Comment comment = findById(commentId);
-        if (!comment.getMember().getEmail().equals(memberEmail)) {
-            throw new CommentMemberMismatchException();
-        }
+        validateMemberMatch(memberEmail, comment);
         comment.update(request.content());
         return CommentInfoDto.from(comment);
     }
 
-    private Comment findById(Long id) {
-        return commentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public void deleteById(Long commentId, String memberEmail) {
+        Comment comment = findById(commentId);
+        validateMemberMatch(memberEmail, comment);
+        commentRepository.delete(comment);
+    }
+
+    private void validateMemberMatch(String memberEmail, Comment comment) {
+        if (!comment.getMember().getEmail().equals(memberEmail)) {
+            throw new CommentMemberMismatchException();
+        }
     }
 }
