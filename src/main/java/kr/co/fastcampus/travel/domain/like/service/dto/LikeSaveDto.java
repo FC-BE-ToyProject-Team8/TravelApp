@@ -12,7 +12,7 @@ public record LikeSaveDto(
     Trip trip
 ) {
 
-    public Like toEntity(){
+    public Like toEntity() {
         return Like.builder()
             .member(member)
             .trip(trip)
