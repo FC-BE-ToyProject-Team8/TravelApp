@@ -18,4 +18,6 @@ public interface TripRepository extends CrudRepository<Trip, Long> {
 
     @Override
     List<Trip> findAll();
+
+    List<Trip> findAllByNameContainingIgnoreCase(String name);
 }

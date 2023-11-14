@@ -2,6 +2,7 @@ package kr.co.fastcampus.travel.domain.trip.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -68,5 +70,15 @@ public class TripController {
     public ResponseBody<Void> deleteTrip(@PathVariable Long tripId) {
         tripService.deleteTrip(tripId);
         return ResponseBody.ok();
+    }
+
+    @GetMapping("/search-by-trip-name")
+    @Operation(summary = "여행 이름으로 검색")
+    public ResponseBody<List<TripSummaryResponse>> searchByTripName(
+        @RequestParam String query,
+        Principal principal
+    ) {
+        var response = tripService.searchByTripName(query, principal);
+        return ResponseBody.ok(mapper.of(response));
     }
 }
