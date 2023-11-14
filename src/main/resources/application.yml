@@ -17,7 +17,6 @@ spring:
 
 
 jwt:
-  # SpringSecurity Java Web Token Secret Key
-  secret: U3ByaW5nU2VjdXJpdHkgSmF2YSBXZWIgVG9rZW4gU2VjcmV0IEtleQ==
+  secret: SpringSecurity Java Web Token Secret Key
   grand-type: Bearer
   token-validate-in-seconds: 3600

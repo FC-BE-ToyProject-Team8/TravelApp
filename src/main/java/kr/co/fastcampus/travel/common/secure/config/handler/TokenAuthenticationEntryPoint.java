@@ -6,11 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.util.StringUtils;
 
 public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -20,13 +20,13 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException
     ) throws IOException {
-        String errorMessage = request.getAttribute(TOKEN_EXPIRED).toString();
+        Object errorMessage = request.getAttribute(TOKEN_EXPIRED);
 
-        if (!StringUtils.hasText(errorMessage)) {
+        if (Objects.isNull(errorMessage)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        sendErrorResponse(response, errorMessage);
+        sendErrorResponse(response, errorMessage.toString());
     }
 
     private void sendErrorResponse(HttpServletResponse response, String errorMessage) throws IOException {

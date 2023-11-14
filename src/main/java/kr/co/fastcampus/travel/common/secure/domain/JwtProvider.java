@@ -11,9 +11,11 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import java.security.Key;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+import javax.crypto.SecretKey;
 import kr.co.fastcampus.travel.common.exception.TokenExpireException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,11 +44,16 @@ public class JwtProvider {
             @Value("${jwt.grand-type}") String grantType,
             @Value("${jwt.token-validate-in-seconds}") long tokenValidateSeconds
     ) {
-        byte[] secretByteKey = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(secretByteKey);
+        this.key = getSecretKey(secretKey);
         this.grantType = grantType;
         this.accessTokenExpiredTime = tokenValidateSeconds * MILLISECONDS_TO_SECONDS;
         this.refreshTokenExpiredTime = tokenValidateSeconds * TOKEN_REFRESH_INTERVAL;
+    }
+
+    private SecretKey getSecretKey(String secretKey) {
+        String base64EncodedSecretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public Token generateToken(String email, String role) {
@@ -78,6 +85,7 @@ public class JwtProvider {
         } catch (IllegalArgumentException e) {
             log.info("잘못된 JWT 입니다.");
         } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 입니다.");
             throw new TokenExpireException();
         }
         return false;
