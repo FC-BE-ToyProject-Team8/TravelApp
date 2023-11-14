@@ -21,7 +21,6 @@
 //import java.util.stream.IntStream;
 //import kr.co.fastcampus.travel.common.ApiTest;
 //import kr.co.fastcampus.travel.common.response.Status;
-//import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
 //import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 //import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
 //import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
