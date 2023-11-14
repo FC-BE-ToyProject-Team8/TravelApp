@@ -6,7 +6,10 @@ import io.restassured.response.Response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentSaveRequest;
+import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentUpdateRequest;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
+import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentSaveDto;
+import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.LodgeSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.RouteSaveRequest;
@@ -46,9 +49,27 @@ public class TravelTestUtils {
             .build();
     }
 
-    public static CommentSaveRequest createCommentRequest() {
+    public static CommentSaveRequest createCommentSaveRequest() {
         return CommentSaveRequest.builder()
             .content("test comment")
+            .build();
+    }
+
+    public static CommentUpdateRequest createCommentUpdateRequest() {
+        return CommentUpdateRequest.builder()
+            .content("update comment")
+            .build();
+    }
+
+    public static CommentSaveDto createCommentSaveDto(){
+        return CommentSaveDto.builder()
+            .content("test comment")
+            .build();
+    }
+
+    public static CommentUpdateDto createCommentUpdateDto(){
+        return CommentUpdateDto.builder()
+            .content("update comment")
             .build();
     }
 
