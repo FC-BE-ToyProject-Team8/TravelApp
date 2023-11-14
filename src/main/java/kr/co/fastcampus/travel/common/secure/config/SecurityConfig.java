@@ -59,6 +59,6 @@ public class SecurityConfig {
                 )
                 .apply(new SecurityConfigAdapter(jwtProvider));
 
-        return http.build();
+        return http.getOrBuild();
     }
 }
