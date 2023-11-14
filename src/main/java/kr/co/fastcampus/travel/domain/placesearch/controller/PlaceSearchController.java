@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.domain.placesearch.controller;
 
+import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.placesearch.controller.dto.PlaceSearchDtoMapper;
@@ -25,10 +26,11 @@ public class PlaceSearchController {
     @GetMapping("")
     public ResponseBody<List<PlaceInfoResponse>> searchByKakaoApiKeyword(
         @RequestParam String query,
-        @PageableDefault(page = 1, size = 15) Pageable pageable
+        @PageableDefault(page = 1, size = 15) Pageable pageable,
+        Principal principal
     ) {
         KakaoApiSearchResponse response =
-            placeSearchService.searchByKakaoApiKeyword(query, pageable);
+            placeSearchService.searchByKakaoApiKeyword(query, pageable, principal);
         return ResponseBody.ok(mapper.of(response.documents()));
     }
 }
