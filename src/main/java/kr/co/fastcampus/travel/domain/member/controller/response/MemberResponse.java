@@ -11,7 +11,7 @@ public record MemberResponse(
     String nickname
 ) {
 
-    public static MemberResponse from(Member member){
+    public static MemberResponse from(Member member) {
         return MemberResponse.builder()
             .id(member.getId())
             .email(member.getEmail())
