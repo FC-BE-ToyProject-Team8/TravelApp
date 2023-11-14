@@ -3,6 +3,7 @@ package kr.co.fastcampus.travel.domain.itinerary.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +33,10 @@ public class Stay {
         LocalDateTime startAt,
         LocalDateTime endAt
     ) {
+        if (endAt.isBefore(startAt)) {
+            throw new InvalidDateSequenceException();
+        }
+
         this.placeName = placeName;
         this.address = address;
         this.startAt = startAt;
