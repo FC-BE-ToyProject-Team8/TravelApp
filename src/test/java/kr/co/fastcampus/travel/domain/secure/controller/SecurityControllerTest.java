@@ -11,7 +11,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
-import kr.co.fastcampus.travel.domain.secure.controller.dto.reqeust.LoginReqeust;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

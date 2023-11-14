@@ -1,6 +1,6 @@
 package kr.co.fastcampus.travel.domain.secure.controller.dto;
 
-import kr.co.fastcampus.travel.domain.secure.controller.dto.reqeust.LoginReqeust;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.response.LoginResponse;
 import kr.co.fastcampus.travel.domain.secure.service.reqeust.LoginDto;
 import kr.co.fastcampus.travel.domain.secure.service.response.TokenDto;

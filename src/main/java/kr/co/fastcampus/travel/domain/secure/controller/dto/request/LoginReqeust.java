@@ -1,4 +1,4 @@
-package kr.co.fastcampus.travel.domain.secure.controller.dto.reqeust;
+package kr.co.fastcampus.travel.domain.secure.controller.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

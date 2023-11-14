@@ -3,7 +3,7 @@ package kr.co.fastcampus.travel.domain.secure.controller;
 import jakarta.validation.Valid;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.SecurityDtoMapper;
-import kr.co.fastcampus.travel.domain.secure.controller.dto.reqeust.LoginReqeust;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.response.LoginResponse;
 import kr.co.fastcampus.travel.domain.secure.service.SecurityService;
 import lombok.RequiredArgsConstructor;

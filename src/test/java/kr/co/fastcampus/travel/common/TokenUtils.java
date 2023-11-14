@@ -6,7 +6,7 @@ import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReq
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 
 import kr.co.fastcampus.travel.domain.member.controller.dto.request.MemberSaveRequest;
-import kr.co.fastcampus.travel.domain.secure.controller.dto.reqeust.LoginReqeust;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 
 public final class TokenUtils {
 
