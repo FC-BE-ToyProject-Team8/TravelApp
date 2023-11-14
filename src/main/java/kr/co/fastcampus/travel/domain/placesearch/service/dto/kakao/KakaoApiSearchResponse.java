@@ -1,4 +1,4 @@
-package kr.co.fastcampus.travel.domain.placesearch.controller.dto.kakao;
+package kr.co.fastcampus.travel.domain.placesearch.service.dto.kakao;
 
 import java.util.List;
 

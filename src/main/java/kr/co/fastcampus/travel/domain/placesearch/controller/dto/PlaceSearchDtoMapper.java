@@ -1,8 +1,8 @@
 package kr.co.fastcampus.travel.domain.placesearch.controller.dto;
 
 import java.util.List;
-import kr.co.fastcampus.travel.domain.placesearch.controller.dto.kakao.Place;
 import kr.co.fastcampus.travel.domain.placesearch.controller.dto.response.PlaceInfoResponse;
+import kr.co.fastcampus.travel.domain.placesearch.service.dto.kakao.Place;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

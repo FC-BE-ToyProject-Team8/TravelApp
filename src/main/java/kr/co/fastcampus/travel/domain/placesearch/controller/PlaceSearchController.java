@@ -1,12 +1,11 @@
 package kr.co.fastcampus.travel.domain.placesearch.controller;
 
-import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.placesearch.controller.dto.PlaceSearchDtoMapper;
-import kr.co.fastcampus.travel.domain.placesearch.controller.dto.kakao.KakaoApiSearchResponse;
 import kr.co.fastcampus.travel.domain.placesearch.controller.dto.response.PlaceInfoResponse;
 import kr.co.fastcampus.travel.domain.placesearch.service.PlaceSearchService;
+import kr.co.fastcampus.travel.domain.placesearch.service.dto.kakao.KakaoApiSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,11 +25,10 @@ public class PlaceSearchController {
     @GetMapping
     public ResponseBody<List<PlaceInfoResponse>> searchByKakaoApiKeyword(
         @RequestParam String query,
-        @PageableDefault(page = 1, size = 15) Pageable pageable,
-        Principal principal
+        @PageableDefault(page = 1, size = 15) Pageable pageable
     ) {
         KakaoApiSearchResponse response =
-            placeSearchService.searchByKakaoApiKeyword(query, pageable, principal);
+            placeSearchService.searchByKakaoApiKeyword(query, pageable);
         return ResponseBody.ok(mapper.of(response.documents()));
     }
 }
