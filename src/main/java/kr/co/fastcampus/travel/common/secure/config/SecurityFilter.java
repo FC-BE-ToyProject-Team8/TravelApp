@@ -7,6 +7,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import kr.co.fastcampus.travel.common.exception.TokenExpireException;
 import kr.co.fastcampus.travel.common.secure.domain.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class SecurityFilter implements Filter {
 
+    public static final String TOKEN_EXPIRED = "tokenExpired";
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final JwtProvider jwtProvider;
@@ -29,9 +31,13 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = getAuthorization(httpServletRequest);
         String token = jwtProvider.resolveToken(authorization);
-        if (isValidToken(token)) {
-            Authentication authentication = jwtProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (isValidToken(token)) {
+                Authentication authentication = jwtProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (TokenExpireException e) {
+            request.setAttribute(TOKEN_EXPIRED, e.getMessage());
         }
 
         chain.doFilter(request, response);

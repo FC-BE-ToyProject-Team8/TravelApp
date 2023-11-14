@@ -1,10 +1,16 @@
 package kr.co.fastcampus.travel.common.secure.config.handler;
 
+import static kr.co.fastcampus.travel.common.secure.config.SecurityFilter.TOKEN_EXPIRED;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.util.StringUtils;
 
 public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -14,6 +20,19 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException
     ) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        String errorMessage = request.getAttribute(TOKEN_EXPIRED).toString();
+
+        if (!StringUtils.hasText(errorMessage)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+        sendErrorResponse(response, errorMessage);
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, String errorMessage) throws IOException {
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(errorMessage);
     }
 }

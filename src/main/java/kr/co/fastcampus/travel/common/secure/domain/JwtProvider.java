@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+import kr.co.fastcampus.travel.common.exception.TokenExpireException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -72,12 +73,12 @@ public class JwtProvider {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
-        } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 입니다.");
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 입니다.");
         } catch (IllegalArgumentException e) {
             log.info("잘못된 JWT 입니다.");
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpireException();
         }
         return false;
     }
