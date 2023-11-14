@@ -19,10 +19,10 @@ public class Stay {
     @Column(name = "stay_address", length = 200)
     private String address;
 
-    @Column(name = "stay_start_at")
+    @Column(name = "start_at")
     private LocalDateTime startAt;
 
-    @Column(name = "stay_end_at")
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     @Builder

@@ -2,10 +2,10 @@ package kr.co.fastcampus.travel.domain.trip.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
+import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -76,12 +76,14 @@ public class TripService {
     }
 
     @Transactional
-    public TripItineraryInfoDto addItineraries(Long id, List<ItinerarySaveDto> dto) {
+    public List<ItineraryDto> addItineraries(Long id, List<ItinerarySaveDto> dto) {
         var trip = findById(id);
         dto.stream()
-            .map(ItinerarySaveDto::toEntity)
-            .forEach(trip::addItinerary);
-        return TripItineraryInfoDto.from(trip);
+                .map(ItinerarySaveDto::toEntity)
+                .forEach(trip::addItinerary);
+        return trip.getItineraries().stream()
+            .map(ItineraryDto::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional

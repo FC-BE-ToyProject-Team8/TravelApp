@@ -31,7 +31,7 @@ import org.springframework.http.MediaType;
 
 public class TravelTestUtils {
 
-    private static final String API_TRIPS_ENDPOINT = "/api/trips";
+    public static final String API_TRIPS_ENDPOINT = "/api/trips";
 
     private TravelTestUtils() {
     }
