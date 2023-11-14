@@ -13,7 +13,6 @@ public record LikeSaveDto(
 ) {
     public Like toEntity(){
         return Like.builder()
-            .id(id)
             .member(member)
             .trip(trip)
             .build();
