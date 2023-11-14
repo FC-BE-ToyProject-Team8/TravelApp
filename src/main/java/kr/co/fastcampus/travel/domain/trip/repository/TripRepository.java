@@ -22,5 +22,5 @@ public interface TripRepository extends CrudRepository<Trip, Long> {
     @Override
     List<Trip> findAll();
 
-    Page<Trip> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Trip> findAllByNameStartingWith(String name, Pageable pageable);
 }

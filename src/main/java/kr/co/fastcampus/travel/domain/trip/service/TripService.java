@@ -80,7 +80,7 @@ public class TripService {
     }
 
     public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
-        var trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
+        var trips = tripRepository.findAllByNameStartingWith(tripName, pageable);
         return trips.map(TripInfoDto::from);
     }
 }
