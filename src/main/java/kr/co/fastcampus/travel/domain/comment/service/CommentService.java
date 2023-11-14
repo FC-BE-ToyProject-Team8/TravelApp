@@ -52,6 +52,7 @@ public class CommentService {
         return CommentInfoDto.from(comment);
     }
 
+    @Transactional
     public void deleteById(Long commentId, String memberEmail) {
         Comment comment = findById(commentId);
         validateMemberMatch(memberEmail, comment);
