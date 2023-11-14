@@ -1,7 +1,9 @@
 package kr.co.fastcampus.travel.domain.placesearch.service.dto.kakao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
+@Builder
 public record Place(
     @JsonProperty("address_name")
     String addressName,
