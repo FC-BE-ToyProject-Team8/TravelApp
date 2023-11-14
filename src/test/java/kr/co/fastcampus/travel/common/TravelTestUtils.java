@@ -61,13 +61,13 @@ public class TravelTestUtils {
             .build();
     }
 
-    public static CommentSaveDto createCommentSaveDto(){
+    public static CommentSaveDto createCommentSaveDto() {
         return CommentSaveDto.builder()
             .content("test comment")
             .build();
     }
 
-    public static CommentUpdateDto createCommentUpdateDto(){
+    public static CommentUpdateDto createCommentUpdateDto() {
         return CommentUpdateDto.builder()
             .content("update comment")
             .build();
