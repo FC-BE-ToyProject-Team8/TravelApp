@@ -5,6 +5,8 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentSaveRequest;
+import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.LodgeSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.RouteSaveRequest;
@@ -25,6 +27,7 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.Itine
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.LodgeUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.RouteUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.StayUpdateDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import org.springframework.http.MediaType;
 
@@ -33,6 +36,29 @@ public class TravelTestUtils {
     public static final String API_TRIPS_ENDPOINT = "/api/trips";
 
     private TravelTestUtils() {
+    }
+
+    public static Comment createComment(Trip trip, Member member){
+        return Comment.builder()
+            .trip(trip)
+            .member(member)
+            .content("test comment")
+            .build();
+    }
+
+    public static CommentSaveRequest createCommentRequest(){
+        return CommentSaveRequest.builder()
+            .content("test comment")
+            .build();
+    }
+
+    public static Member createMember() {
+        return Member.builder()
+            .email("test@email.com")
+            .name("tester")
+            .nickname("testNick")
+            .password("123")
+            .build();
     }
 
     public static Trip createTrip() {
