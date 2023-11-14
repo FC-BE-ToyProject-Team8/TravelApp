@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-class PlaceServiceControllerTest extends ApiTest {
+class PlaceSearchControllerTest extends ApiTest {
 
     @Test
     @DisplayName("카카오 API를 이용한 키워드 장소 검색, 페이지 X")

@@ -20,6 +20,8 @@ public interface PlaceSearchDtoMapper {
     @Mapping(target = "address", expression = "java(getAddress(place))")
     PlaceInfoResponse of(Place place);
 
+    List<PlaceInfoResponse> of(List<Place> places);
+
     default String getAddress(Place place) {
         if (place.roadAddressName().isEmpty()) {
             return place.addressName();
@@ -27,6 +29,4 @@ public interface PlaceSearchDtoMapper {
             return place.roadAddressName();
         }
     }
-
-    List<PlaceInfoResponse> of(List<Place> places);
 }

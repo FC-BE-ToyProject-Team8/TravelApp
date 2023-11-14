@@ -25,3 +25,7 @@ jwt:
   secret: U3ByaW5nU2VjdXJpdHkgSmF2YSBXZWIgVG9rZW4gU2VjcmV0IEtleSBUZXN0
   grand-type: Bearer
   token-validate-in-seconds: 3600
+
+kakao:
+  api:
+    key: dd0c848e81e9871630e66d93e2e51d64
