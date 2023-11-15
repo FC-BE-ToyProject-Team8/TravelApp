@@ -50,8 +50,8 @@ public class CommentControllerTest extends ApiTest {
         MemberSaveRequest saveMember = createMemberSaveReqeust();
         restAssuredPostBody(memberSignUpUrl, request);
 
-        restAssuredPostWithToken(API_TRIPS_ENDPOINT,saveTrip);
-        restAssuredPostWithToken(memberSignUpUrl,saveMember);
+        restAssuredPostWithToken(API_TRIPS_ENDPOINT, saveTrip);
+        restAssuredPostWithToken(memberSignUpUrl, saveMember);
 
         // when
         ExtractableResponse<Response> response = restAssuredPostWithToken(url, request);

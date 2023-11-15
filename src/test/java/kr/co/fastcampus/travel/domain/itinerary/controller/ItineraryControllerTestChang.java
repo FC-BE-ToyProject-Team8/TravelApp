@@ -86,8 +86,6 @@ public class ItineraryControllerTestChang extends ApiTest {
             softly.assertThat(data.stay().startAt()).isEqualTo("2023-01-01T11:30:30");
             softly.assertThat(data.stay().placeName()).isEqualTo("장소 업데이트");
         });
-    }
-//
 //    @Test
 //    @DisplayName("여정 삭제")
 //    void deleteItinerary() {
@@ -137,4 +135,5 @@ public class ItineraryControllerTestChang extends ApiTest {
 //        Itinerary itinerary = createItinerary(trip);
 //        return itineraryRepository.save(itinerary);
 //    }
+    }
 }
