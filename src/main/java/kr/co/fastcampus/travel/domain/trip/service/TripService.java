@@ -15,6 +15,7 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -107,5 +108,10 @@ public class TripService {
 
     private Member findMember(String memberEmail) {
         return memberService.findByEmail(memberEmail);
+    }
+
+    public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
+        Page<Trip> trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
+        return trips.map(TripInfoDto::from);
     }
 }
