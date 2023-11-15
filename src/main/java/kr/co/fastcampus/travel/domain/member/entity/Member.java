@@ -1,13 +1,19 @@
 package kr.co.fastcampus.travel.domain.member.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
+import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
