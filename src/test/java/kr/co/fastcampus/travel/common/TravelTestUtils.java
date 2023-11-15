@@ -47,6 +47,16 @@ public class TravelTestUtils {
             .build();
     }
 
+    public static Trip createTripWithMember(Member member) {
+        return Trip.builder()
+            .name("tripName")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(1))
+            .isForeign(true)
+            .member(member)
+            .build();
+    }
+
     public static Trip createTrip() {
         return Trip.builder()
                 .name("tripName")

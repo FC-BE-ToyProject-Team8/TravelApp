@@ -79,6 +79,7 @@ public class Trip extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
+        this.member = member;
         this.likeCount = likeCount;
         this.member = member;
     }
