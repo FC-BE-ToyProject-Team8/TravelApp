@@ -7,4 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface LikeRepository extends CrudRepository<Like, Long> {
     boolean existsByTripAndMember(Trip trip, Member member);
+
+    void deleteByTripAndMember(Trip trip, Member member);
+
 }
