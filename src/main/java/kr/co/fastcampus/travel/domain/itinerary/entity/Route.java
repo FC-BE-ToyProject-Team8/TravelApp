@@ -1,10 +1,10 @@
 package kr.co.fastcampus.travel.domain.itinerary.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
-import kr.co.fastcampus.travel.domain.itinerary.entity.util.TransportationConverter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Route {
 
-    @Convert(converter = TransportationConverter.class)
+    @Enumerated(EnumType.STRING)
     private Transportation transportation;
 
     @Column(length = 100)
