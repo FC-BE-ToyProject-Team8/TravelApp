@@ -9,9 +9,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.RestAssuredUtils;
-import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
-import kr.co.fastcampus.travel.domain.like.service.LikeService;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -20,8 +18,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
-import java.time.LocalDate;
 
 public class LikeControllerTest extends ApiTest {
     @Autowired
@@ -46,7 +42,7 @@ public class LikeControllerTest extends ApiTest {
 
         //when
         ExtractableResponse<Response> response
-            = RestAssuredUtils.restAssuredPostUsingParamWithToken(url);
+            = RestAssuredUtils.restAssuredPostWithToken(url);
 
 
         //then
@@ -73,7 +69,7 @@ public class LikeControllerTest extends ApiTest {
         String url = "/api/likes?tripId="+trip.getId();
 
         //when
-        RestAssuredUtils.restAssuredPostUsingParamWithToken(url);
+        RestAssuredUtils.restAssuredPostWithToken(url);
         ExtractableResponse<Response> response
             = RestAssuredUtils.restAssuredDeleteWithToken(url);
 

@@ -37,6 +37,11 @@ public class MemberService {
         return memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
     }
 
+    public Member findByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname)
+            .orElseThrow(MemberNotFoundException::new);
+    }
+
     private void validateSaveMember(MemberSaveDto dto) {
         if (memberRepository.findByEmail(dto.email()).isPresent()) {
             throw new InvalidArgumentException("이미 존재하는 이메일입니다.");

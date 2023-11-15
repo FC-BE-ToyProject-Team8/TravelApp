@@ -5,6 +5,11 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentSaveRequest;
+import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentUpdateRequest;
+import kr.co.fastcampus.travel.domain.comment.entity.Comment;
+import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentSaveDto;
+import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.LodgeSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.RouteSaveRequest;
@@ -17,6 +22,7 @@ import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Lodge;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Stay;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
@@ -38,12 +44,54 @@ public class TravelTestUtils {
     private TravelTestUtils() {
     }
 
+    public static Comment createComment(Trip trip, Member member) {
+        return Comment.builder()
+            .trip(trip)
+            .member(member)
+            .content("test comment")
+            .build();
+    }
+
+    public static CommentSaveRequest createCommentSaveRequest() {
+        return CommentSaveRequest.builder()
+            .content("test comment")
+            .build();
+    }
+
+    public static CommentUpdateRequest createCommentUpdateRequest() {
+        return CommentUpdateRequest.builder()
+            .content("update comment")
+            .build();
+    }
+
+    public static CommentSaveDto createCommentSaveDto() {
+        return CommentSaveDto.builder()
+            .content("test comment")
+            .build();
+    }
+
+    public static CommentUpdateDto createCommentUpdateDto() {
+        return CommentUpdateDto.builder()
+            .content("update comment")
+            .build();
+    }
+
     public static Member createMember() {
         return Member.builder()
             .email("test@email.com")
             .name("tester")
             .nickname("testNick")
             .password("123")
+            .build();
+    }
+
+    public static Trip createTripWithMember(Member member) {
+        return Trip.builder()
+            .name("tripName")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(1))
+            .isForeign(true)
+            .member(member)
             .build();
     }
 
@@ -78,9 +126,9 @@ public class TravelTestUtils {
     }
 
     public static ItinerarySaveDto createItinerarySaveDto(
-            RouteSaveDto route,
-            LodgeSaveDto lodge,
-            StaySaveDto stay
+        RouteSaveDto route,
+        LodgeSaveDto lodge,
+        StaySaveDto stay
     ) {
         return new ItinerarySaveDto(route, lodge, stay);
     }
@@ -90,9 +138,9 @@ public class TravelTestUtils {
     }
 
     public static ItineraryUpdateDto createItineraryUpdateDto(
-            RouteUpdateDto route,
-            LodgeUpdateDto lodge,
-            StayUpdateDto stay
+        RouteUpdateDto route,
+        LodgeUpdateDto lodge,
+        StayUpdateDto stay
     ) {
         return new ItineraryUpdateDto(route, lodge, stay);
     }
@@ -102,9 +150,9 @@ public class TravelTestUtils {
     }
 
     public static ItinerarySaveRequest createItinerarySaveRequest(
-            RouteSaveRequest route,
-            LodgeSaveRequest lodge,
-            StaySaveRequest stay
+        RouteSaveRequest route,
+        LodgeSaveRequest lodge,
+        StaySaveRequest stay
     ) {
         return new ItinerarySaveRequest(route, lodge, stay);
     }
@@ -114,27 +162,27 @@ public class TravelTestUtils {
     }
 
     public static ItineraryUpdateRequest createItineraryUpdateRequest(
-            RouteUpdateRequest route,
-            LodgeUpdateRequest lodge,
-            StayUpdateRequest stay
+        RouteUpdateRequest route,
+        LodgeUpdateRequest lodge,
+        StayUpdateRequest stay
     ) {
         return new ItineraryUpdateRequest(route, lodge, stay);
     }
 
     public static ExtractableResponse<Response> putAndExtractResponse(
-            Long itineraryId,
-            ItineraryUpdateRequest request,
-            String url
+        Long itineraryId,
+        ItineraryUpdateRequest request,
+        String url
     ) {
         return RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParams("itineraryId", itineraryId)
-                .body(request)
-                .when()
-                .put(url)
-                .then().log().all()
-                .extract();
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .pathParams("itineraryId", itineraryId)
+            .body(request)
+            .when()
+            .put(url)
+            .then().log().all()
+            .extract();
     }
 
     public static Itinerary createItinerary(Trip trip) {
@@ -143,27 +191,27 @@ public class TravelTestUtils {
         Stay stay = createStay();
 
         Itinerary itinerary = Itinerary.builder()
-                .route(route)
-                .lodge(lodge)
-                .stay(stay)
-                .build();
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
+            .build();
         itinerary.registerTrip(trip);
         return itinerary;
     }
 
     public static Itinerary createItinerary(Trip trip, Route route, Lodge lodge, Stay stay) {
         Itinerary itinerary = Itinerary.builder()
-                .route(route)
-                .lodge(lodge)
-                .stay(stay)
-                .build();
+            .route(route)
+            .lodge(lodge)
+            .stay(stay)
+            .build();
         itinerary.registerTrip(trip);
         return itinerary;
     }
 
     public static Route createRoute() {
         return Route.builder()
-                .transportation("지하철")
+                .transportation(Transportation.BUS)
                 .departurePlaceName("우리집")
                 .departureAddress("서울")
                 .destinationPlaceName("해운대")
@@ -175,25 +223,25 @@ public class TravelTestUtils {
 
     public static Lodge createLodge() {
         return Lodge.builder()
-                .placeName("호텔")
-                .address("부산 @@@")
-                .checkInAt(LocalDateTime.of(2023, 1, 1, 15, 0))
-                .checkOutAt(LocalDateTime.of(2023, 1, 2, 11, 0))
-                .build();
+            .placeName("호텔")
+            .address("부산 @@@")
+            .checkInAt(LocalDateTime.of(2023, 1, 1, 11, 0))
+            .checkOutAt(LocalDateTime.of(2023, 1, 2, 15, 0))
+            .build();
     }
 
     public static Stay createStay() {
         return Stay.builder()
-                .placeName("한국")
-                .address("대한민국")
-                .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-                .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 40))
-                .build();
+            .placeName("한국")
+            .address("대한민국")
+            .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+            .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+            .build();
     }
 
     public static RouteSaveDto createRouteSaveDto() {
         return new RouteSaveDto(
-                "지하철",
+                Transportation.BUS,
                 "우리집",
                 "서울",
                 "해운대",
@@ -205,25 +253,25 @@ public class TravelTestUtils {
 
     public static LodgeSaveDto createLodgeSaveDto() {
         return new LodgeSaveDto(
-                "호텔",
-                "부산 @@@",
-                LocalDateTime.of(2023, 1, 1, 15, 0),
-                LocalDateTime.of(2023, 1, 2, 11, 0)
+            "호텔",
+            "부산 @@@",
+            LocalDateTime.of(2023, 1, 1, 15, 0),
+            LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StaySaveDto createStaySaveDto() {
         return new StaySaveDto(
-                "한국",
-                "대한민국",
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+            "한국",
+            "대한민국",
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static RouteUpdateDto createRouteUpdateDto() {
         return new RouteUpdateDto(
-                "이동수단 업데이트",
+                Transportation.SUBWAY,
                 "출발지 업데이트",
                 "출발 주소 업데이트",
                 "목적지 업데이트",
@@ -235,25 +283,25 @@ public class TravelTestUtils {
 
     public static LodgeUpdateDto createLodgeUpdateDto() {
         return new LodgeUpdateDto(
-                "장소 업데이트",
-                "주소 업데이트",
-                LocalDateTime.of(2023, 1, 1, 15, 0),
-                LocalDateTime.of(2023, 1, 2, 11, 0)
+            "장소 업데이트",
+            "주소 업데이트",
+            LocalDateTime.of(2023, 1, 1, 15, 0),
+            LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StayUpdateDto createStayUpdateDto() {
         return new StayUpdateDto(
-                "장소 업데이트",
-                "주소 업데이트",
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+            "장소 업데이트",
+            "주소 업데이트",
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static RouteSaveRequest createRouteSaveRequest() {
         return new RouteSaveRequest(
-                "지하철",
+                Transportation.BUS,
                 "우리집",
                 "서울",
                 "해운대",
@@ -265,25 +313,25 @@ public class TravelTestUtils {
 
     public static LodgeSaveRequest createLodgeSaveRequest() {
         return new LodgeSaveRequest(
-                "호텔",
-                "부산 @@@",
-                LocalDateTime.of(2023, 1, 1, 15, 0),
-                LocalDateTime.of(2023, 1, 2, 11, 0)
+            "호텔",
+            "부산 @@@",
+            LocalDateTime.of(2023, 1, 1, 15, 0),
+            LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StaySaveRequest createStaySaveRequest() {
         return new StaySaveRequest(
-                "한국",
-                "대한민국",
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+            "한국",
+            "대한민국",
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static RouteUpdateRequest createRouteUpdateRequest() {
         return new RouteUpdateRequest(
-                "이동수단 업데이트",
+                Transportation.SUBWAY,
                 "출발지 업데이트",
                 "출발 주소 업데이트",
                 "목적지 업데이트",
@@ -295,37 +343,37 @@ public class TravelTestUtils {
 
     public static LodgeUpdateRequest createLodgeUpdateRequest() {
         return new LodgeUpdateRequest(
-                "장소 업데이트",
-                "주소 업데이트",
-                LocalDateTime.of(2023, 1, 1, 15, 0),
-                LocalDateTime.of(2023, 1, 2, 11, 0)
+            "장소 업데이트",
+            "주소 업데이트",
+            LocalDateTime.of(2023, 1, 1, 15, 0),
+            LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StayUpdateRequest createStayUpdateRequest() {
         return new StayUpdateRequest(
-                "장소 업데이트",
-                "주소 업데이트",
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+            "장소 업데이트",
+            "주소 업데이트",
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static ExtractableResponse<Response> requestFindAllTripApi() {
         return RestAssured
-                .given().log().all()
-                .when().get(API_TRIPS_ENDPOINT)
-                .then().log().all()
-                .extract();
+            .given().log().all()
+            .when().get(API_TRIPS_ENDPOINT)
+            .then().log().all()
+            .extract();
 
     }
 
     public static ExtractableResponse<Response> requestDeleteApi(String url) {
         return RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete(url)
-                .then().log().all()
-                .extract();
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete(url)
+            .then().log().all()
+            .extract();
     }
 }
