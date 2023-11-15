@@ -3,6 +3,7 @@ package kr.co.fastcampus.travel.domain.itinerary.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,10 @@ public class Lodge {
         LocalDateTime checkInAt,
         LocalDateTime checkOutAt
     ) {
+        if (checkOutAt.isBefore(checkInAt)) {
+            throw new InvalidDateSequenceException();
+        }
+
         this.placeName = placeName;
         this.address = address;
         this.checkInAt = checkInAt;

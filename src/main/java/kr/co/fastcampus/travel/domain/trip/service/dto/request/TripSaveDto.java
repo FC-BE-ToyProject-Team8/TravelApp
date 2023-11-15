@@ -9,7 +9,7 @@ public record TripSaveDto(
     String name,
     LocalDate startDate,
     LocalDate endDate,
-    Boolean isForeign
+    boolean isForeign
 ) {
 
     public Trip toEntity() {
