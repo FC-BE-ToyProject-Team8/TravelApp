@@ -50,6 +50,9 @@ public class SecurityConfig {
                 .requestMatchers(
                     new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
                 ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/api/search-place", HttpMethod.GET.name())
+                ).permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated())
         ;
