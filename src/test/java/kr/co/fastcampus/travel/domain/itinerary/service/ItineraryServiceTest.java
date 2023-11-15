@@ -3,6 +3,7 @@ package kr.co.fastcampus.travel.domain.itinerary.service;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeUpdateDto;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createStayUpdateDto;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
@@ -28,6 +30,8 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.Lodge
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.RouteUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.StayUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +42,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ItineraryServiceTest {
+
+    @Mock
+    private MemberService memberService;
 
     @Mock
     private ItineraryRepository itineraryRepository;
@@ -115,14 +122,35 @@ class ItineraryServiceTest {
     void deleteItinerary() {
         //given
         Trip trip = createTrip();
+        Member member = createMember();
+        trip.setMember(member);
         Itinerary itinerary = createItinerary(trip);
         when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary));
 
         //when
-        itineraryService.deleteById(itinerary.getId());
+        itineraryService.deleteById(itinerary.getId(), "test@email.com");
 
         //then
         verify(itineraryRepository).delete(itinerary);
+    }
+
+    @Test
+    @DisplayName("작성자가 아닌 여정 삭제 예외")
+    void deleteItineraryNotWriter() {
+        //given
+        Trip trip = createTrip();
+        Member member = createMember();
+        trip.setMember(member);
+        Itinerary itinerary = createItinerary(trip);
+        when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary));
+
+        //when
+        MemberMismatchException e =
+            assertThrows(MemberMismatchException.class,
+                () -> itineraryService.deleteById(itinerary.getId(), "notwriter@email.com"));
+
+        // then
+        assertThat(e.getMessage()).isEqualTo("작성자가 아니므로 해당 권한이 없습니다.");
     }
 
     @Test
@@ -133,7 +161,8 @@ class ItineraryServiceTest {
 
         // when
         EntityNotFoundException e =
-            assertThrows(EntityNotFoundException.class, () -> itineraryService.deleteById(2L));
+            assertThrows(EntityNotFoundException.class,
+                () -> itineraryService.deleteById(2L, null));
 
         // then
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 엔티티입니다.");
