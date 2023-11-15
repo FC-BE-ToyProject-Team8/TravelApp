@@ -85,7 +85,7 @@ public class TripService {
     public List<ItineraryDto> addItineraries(Long id, List<ItinerarySaveDto> dto) {
         var trip = findById(id);
         dto.stream()
-            .map(ItinerarySaveDto -> ItinerarySaveDto.toEntity(trip))
+            .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
             .forEach(trip::addItinerary);
         return trip.getItineraries().stream()
             .map(ItineraryDto::from)
