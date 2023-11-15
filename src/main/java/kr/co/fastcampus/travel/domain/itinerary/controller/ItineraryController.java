@@ -2,6 +2,7 @@ package kr.co.fastcampus.travel.domain.itinerary.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.ItineraryDtoMapper;
@@ -51,8 +52,12 @@ public class ItineraryController {
 
     @DeleteMapping("/{itineraryId}")
     @Operation(summary = "여정 삭제")
-    public ResponseBody<Void> deleteItinerary(@PathVariable Long itineraryId) {
-        itineraryService.deleteById(itineraryId);
+    public ResponseBody<Void> deleteItinerary(
+        @PathVariable Long itineraryId,
+        Principal principal
+    ) {
+        String memberEmail = principal.getName();
+        itineraryService.deleteById(itineraryId, memberEmail);
         return ResponseBody.ok();
     }
 }
