@@ -26,15 +26,15 @@ import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.Lo
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.RouteUpdateRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.StayUpdateRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
-public class ItineraryControllerTest extends ApiTest {
+public class ItineraryControllerTestChang extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
@@ -77,9 +77,9 @@ public class ItineraryControllerTest extends ApiTest {
         ItineraryResponse data = jsonPath.getObject("data", ItineraryResponse.class);
 
         assertSoftly((softly) -> {
-            softly.assertThat(status).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.id()).isNotNull();
-            softly.assertThat(data.route().transportation()).isEqualTo("이동수단 업데이트");
+            softly.assertThat(data.route().transportation()).isEqualTo(Transportation.SUBWAY);
             softly.assertThat(data.route().departurePlaceName()).isEqualTo("출발지 업데이트");
             softly.assertThat(data.lodge().placeName()).isEqualTo("장소 업데이트");
             softly.assertThat(data.lodge().checkOutAt()).isEqualTo("2023-01-02T11:00");
