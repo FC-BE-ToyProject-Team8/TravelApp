@@ -12,6 +12,7 @@ public record TripResponse(
     LocalDate startDate,
     LocalDate endDate,
     boolean isForeign,
+    Long likeCount,
     List<ItineraryResponse> itineraries
 ) {
 

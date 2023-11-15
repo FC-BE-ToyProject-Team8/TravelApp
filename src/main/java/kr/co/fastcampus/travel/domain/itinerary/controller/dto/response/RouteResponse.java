@@ -2,11 +2,12 @@ package kr.co.fastcampus.travel.domain.itinerary.controller.dto.response;
 
 import java.time.LocalDateTime;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import lombok.Builder;
 
 @Builder
 public record RouteResponse(
-        String transportation,
+        Transportation transportation,
         String departurePlaceName,
         String departureAddress,
         String destinationPlaceName,

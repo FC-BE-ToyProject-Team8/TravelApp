@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,6 +37,9 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    @Version
+    private Long version;
 
     @Builder
     private Member(String email, String name, String nickname, String password) {

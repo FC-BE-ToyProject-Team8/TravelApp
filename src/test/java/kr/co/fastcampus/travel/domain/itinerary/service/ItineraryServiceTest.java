@@ -15,10 +15,13 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.ItineraryUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.LodgeUpdateDto;
@@ -86,7 +89,7 @@ class ItineraryServiceTest {
         ItineraryDto editItinerary = itineraryService.editItinerary(id, request);
 
         // then
-        assertThat(editItinerary.route().transportation()).isEqualTo("이동수단 업데이트");
+        assertThat(editItinerary.route().transportation()).isEqualTo(Transportation.SUBWAY);
         assertThat(editItinerary.route().departurePlaceName()).isEqualTo("출발지 업데이트");
         assertThat(editItinerary.lodge()).isNull();
         assertThat(editItinerary.stay()).isNull();
@@ -134,5 +137,77 @@ class ItineraryServiceTest {
 
         // then
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 엔티티입니다.");
+    }
+
+    @Test
+    @DisplayName("여정 수정 시 Lodge 종료일시가 시작일시보다 앞서면 예외")
+    void editItinerary_Lodge_InvalidDateSequence() {
+        // given
+        Long id = -1L;
+        Trip trip = createTrip();
+        Route route = createRoute();
+        Itinerary givneItinerary = createItinerary(trip, route, null, null);
+
+        given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
+
+        LodgeUpdateDto lodgeUpdateDto = new LodgeUpdateDto("이름",
+            "주소",
+            LocalDateTime.of(2010, 1, 2, 0, 0),
+            LocalDateTime.of(2010, 1, 1, 0, 0)
+        );
+        ItineraryUpdateDto request = createItineraryUpdateDto(null, lodgeUpdateDto, null);
+
+        // when, then
+        assertThatThrownBy(() -> itineraryService.editItinerary(id, request))
+            .isInstanceOf(InvalidDateSequenceException.class);
+    }
+
+    @Test
+    @DisplayName("여정 수정 시 Route 종료일시가 시작일시보다 앞서면 예외")
+    void editItinerary_Route_InvalidDateSequence() {
+        // given
+        Long id = -1L;
+        Trip trip = createTrip();
+        Route route = createRoute();
+        Itinerary givneItinerary = createItinerary(trip, route, null, null);
+
+        given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
+
+        RouteUpdateDto routeUpdateDto = new RouteUpdateDto(Transportation.BUS,
+            "출발지 이름",
+            "출발지 주소",
+            "도착지 이름",
+            "도착지 주소",
+            LocalDateTime.of(2010, 1, 2, 0, 0),
+            LocalDateTime.of(2010, 1, 1, 0, 0)
+        );
+        ItineraryUpdateDto request = createItineraryUpdateDto(routeUpdateDto, null, null);
+
+        // when, then
+        assertThatThrownBy(() -> itineraryService.editItinerary(id, request))
+            .isInstanceOf(InvalidDateSequenceException.class);
+    }
+
+    @Test
+    @DisplayName("여정 수정 시 Stay 종료일시가 시작일시보다 앞서면 예외")
+    void editItinerary_Stay_InvalidDateSequence() {
+        // given
+        Long id = -1L;
+        Trip trip = createTrip();
+        Route route = createRoute();
+        Itinerary givneItinerary = createItinerary(trip, route, null, null);
+
+        given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
+
+        StayUpdateDto stayUpdateDto = new StayUpdateDto("이름",
+            "주소",
+            LocalDateTime.of(2010, 1, 2, 0, 0),
+            LocalDateTime.of(2010, 1, 1, 0, 0)
+        );
+        ItineraryUpdateDto request = createItineraryUpdateDto(null, null, stayUpdateDto);
+
+        // when, then
+        assertThatThrownBy(() -> itineraryService.editItinerary(id, request))
+            .isInstanceOf(InvalidDateSequenceException.class);
     }
 }

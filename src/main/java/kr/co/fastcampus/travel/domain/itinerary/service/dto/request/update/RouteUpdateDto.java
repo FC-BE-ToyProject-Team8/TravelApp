@@ -2,9 +2,10 @@ package kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update;
 
 import java.time.LocalDateTime;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 
 public record RouteUpdateDto(
-    String transportation,
+    Transportation transportation,
     String departurePlaceName,
     String departureAddress,
     String destinationPlaceName,
