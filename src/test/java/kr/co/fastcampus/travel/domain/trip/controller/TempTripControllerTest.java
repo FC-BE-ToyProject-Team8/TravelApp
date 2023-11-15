@@ -1,63 +1,62 @@
-package kr.co.fastcampus.travel.domain.trip.controller;
-
-import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.time.LocalDate;
-import kr.co.fastcampus.travel.common.ApiTest;
-import kr.co.fastcampus.travel.common.RestAssuredUtils;
-import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
-import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
-import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-
-public class TempTripControllerTest extends ApiTest {
-
-    @Autowired
-    private TripRepository tripRepository;
-
-    @Test
-    @DisplayName("여행 등록")
-    void addTrip() {
-        // given
-        String url = "/api/trips";
-        TripSaveRequest request = new TripSaveRequest(
-            "이름",
-            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
-            false
-        );
-
-        // when
-        ExtractableResponse<Response> response
-            = RestAssuredUtils.restAssuredPostWithToken(url, request);
-
-        // then
-        JsonPath jsonPath = response.jsonPath();
-        String status = jsonPath.getString("status");
-        TripResponse data = jsonPath.getObject("data", TripResponse.class);
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-
-        assertSoftly((softly) -> {
-            softly.assertThat(status).isEqualTo("SUCCESS");
-            softly.assertThat(data.id()).isNotNull();
-            softly.assertThat(data.name()).isEqualTo("이름");
-            softly.assertThat(data.startDate().toString()).isEqualTo("2010-01-01");
-            softly.assertThat(data.endDate().toString()).isEqualTo("2010-01-02");
-            softly.assertThat(data.isForeign()).isEqualTo(false);
-            softly.assertThat(
-                tripRepository.findById(data.id()).orElseThrow().getMember().getEmail()
-            ).isEqualTo(EMAIL);
-        });
-    }
-
+//package kr.co.fastcampus.travel.domain.trip.controller;
+//
+//import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
+//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.SoftAssertions.assertSoftly;
+//
+//import io.restassured.path.json.JsonPath;
+//import io.restassured.response.ExtractableResponse;
+//import io.restassured.response.Response;
+//import java.time.LocalDate;
+//import kr.co.fastcampus.travel.common.ApiTest;
+//import kr.co.fastcampus.travel.common.RestAssuredUtils;
+//import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
+//import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
+//import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
+//import org.junit.jupiter.api.DisplayName;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//
+//public class TempTripControllerTest extends ApiTest {
+//
+//    @Autowired
+//    private TripRepository tripRepository;
+//
+//    @Test
+//    @DisplayName("여행 등록")
+//    void addTrip() {
+//        // given
+//        String url = "/api/trips";
+//        TripSaveRequest request = new TripSaveRequest(
+//            "이름",
+//            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
+//            false
+//        );
+//
+//        // when
+//        ExtractableResponse<Response> response
+//            = RestAssuredUtils.restAssuredPostWithToken(url, request);
+//
+//        // then
+//        JsonPath jsonPath = response.jsonPath();
+//        String status = jsonPath.getString("status");
+//        TripResponse data = jsonPath.getObject("data", TripResponse.class);
+//
+//        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+//
+//        assertSoftly((softly) -> {
+//            softly.assertThat(status).isEqualTo("SUCCESS");
+//            softly.assertThat(data.id()).isNotNull();
+//            softly.assertThat(data.name()).isEqualTo("이름");
+//            softly.assertThat(data.startDate().toString()).isEqualTo("2010-01-01");
+//            softly.assertThat(data.endDate().toString()).isEqualTo("2010-01-02");
+//            softly.assertThat(data.isForeign()).isEqualTo(false);
+//            softly.assertThat(
+//                tripRepository.findById(data.id()).orElseThrow().getMember().getEmail()
+//            ).isEqualTo(EMAIL);
+//        });
+//    }
 //    @Test
 //    @DisplayName("여정 없는 여행 조회")
 //    void getOnlyTrip() {
@@ -312,4 +311,4 @@ public class TempTripControllerTest extends ApiTest {
 //        Itinerary itinerary = createItinerary(trip);
 //        return itineraryRepository.save(itinerary);
 //    }
-}
+//}

@@ -85,9 +85,9 @@ class TripControllerTest extends ApiTest {
 
         String query = "이름";
         Pageable pageable = PageRequest.of(0, 3);
-        String url = API_TRIPS_ENDPOINT +
-            String.format("/search-by-trip-name?query=%s&page=%d&size=%d",
-                query, pageable.getPageNumber(), pageable.getPageSize());
+        String url = API_TRIPS_ENDPOINT
+            + String.format("/search-by-trip-name?query=%s&page=%d&size=%d",
+            query, pageable.getPageNumber(), pageable.getPageSize());
 
         //when
         ExtractableResponse<Response> response = restAssuredGetWithToken(url);
