@@ -1,29 +1,22 @@
 package kr.co.fastcampus.travel.domain.trip.controller;
 
 import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
-import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
-import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
-import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
 import kr.co.fastcampus.travel.common.ApiTest;
-import kr.co.fastcampus.travel.domain.member.controller.dto.request.MemberSaveRequest;
-import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
+import kr.co.fastcampus.travel.common.RestAssuredUtils;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 public class TripControllerTest extends ApiTest {
 
@@ -32,25 +25,6 @@ public class TripControllerTest extends ApiTest {
 
 //    @Autowired
 //    private ItineraryRepository itineraryRepository;
-
-    private String authorization;
-
-
-    @BeforeEach
-    void setUp() {
-        this.authorization = signupAndLogin();
-    }
-
-    private String signupAndLogin() {
-        MemberSaveRequest memberSaveRequest = createMemberSaveReqeust();
-        restAssuredPostBody("/signup", memberSaveRequest);
-
-        LoginReqeust loginRequest = new LoginReqeust(EMAIL, PASSWORD);
-        ExtractableResponse<Response> loginResponse = restAssuredPostBody("/login", loginRequest);
-
-        JsonPath jsonPath = loginResponse.jsonPath();
-        return "Bearer " + jsonPath.getString("data.accessToken");
-    }
 
     @Test
     @DisplayName("여행 등록")
@@ -64,15 +38,7 @@ public class TripControllerTest extends ApiTest {
         );
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .header("Authorization", authorization)
-            .body(request)
-            .when()
-            .post(url)
-            .then().log().all()
-            .extract();
+        ExtractableResponse<Response> response = RestAssuredUtils.restAssuredPostWithToken(url, request);
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -93,7 +59,7 @@ public class TripControllerTest extends ApiTest {
             ).isEqualTo(EMAIL);
         });
     }
-//
+
 //    @Test
 //    @DisplayName("여정 없는 여행 조회")
 //    void getOnlyTrip() {
