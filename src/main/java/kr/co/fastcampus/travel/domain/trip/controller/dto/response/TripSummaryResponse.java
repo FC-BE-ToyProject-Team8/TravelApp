@@ -11,7 +11,8 @@ public record TripSummaryResponse(
     String name,
     LocalDate startDate,
     LocalDate endDate,
-    boolean isForeign
+    boolean isForeign,
+    Long likeCount
 ) {
 
     public static TripSummaryResponse from(Trip trip) {

@@ -24,9 +24,8 @@ public interface TripRepository extends CrudRepository<Trip, Long> {
     @Override
     List<Trip> findAll();
 
-    @Override
     @Lock(LockModeType.OPTIMISTIC)
-    Optional<Trip> findById(Long id);
+    Optional<Trip> findWithOptimisticLockById(Long id);
 
     Page<Trip> findTripByMember(Member member, Pageable pageable);
 }

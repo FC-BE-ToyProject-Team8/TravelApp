@@ -2,6 +2,7 @@ package kr.co.fastcampus.travel.domain.trip.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
@@ -42,9 +43,11 @@ public class TripController {
     @PostMapping
     @Operation(summary = "여행 등록")
     public ResponseBody<TripSummaryResponse> addTrip(
-        @Valid @RequestBody TripSaveRequest request
+        @Valid @RequestBody TripSaveRequest request,
+        Principal principal
     ) {
-        var response = tripService.addTrip(mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = tripService.addTrip(mapper.of(request), memberEmail);
         return ResponseBody.ok(mapper.of(response));
     }
 
