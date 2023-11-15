@@ -13,6 +13,8 @@ public record TripSaveRequest(
     LocalDate endDate,
     @NotNull
     Boolean isForeign
+//    @NotNull
+//    Long likeCount
 ) {
 
 }

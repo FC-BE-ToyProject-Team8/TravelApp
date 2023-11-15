@@ -9,7 +9,8 @@ public record TripSummaryResponse(
     String name,
     LocalDate startDate,
     LocalDate endDate,
-    boolean isForeign
+    boolean isForeign,
+    Long likeCount
 ) {
 
 }
