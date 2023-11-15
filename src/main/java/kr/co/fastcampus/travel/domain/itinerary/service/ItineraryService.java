@@ -30,7 +30,7 @@ public class ItineraryService {
 
     public ItineraryDto editItinerary(Long id, String memberEmail, ItineraryUpdateDto dto) {
         var itinerary = findById(id);
-        validateMemberMatch(memberEmail,itinerary);
+        validateMemberMatch(memberEmail, itinerary);
         Itinerary updateItinerary = dto.toEntity();
         itinerary.update(updateItinerary);
         return ItineraryDto.from(itinerary);
