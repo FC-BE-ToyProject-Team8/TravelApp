@@ -10,7 +10,8 @@ public record TripInfoDto(
     String name,
     LocalDate startDate,
     LocalDate endDate,
-    boolean isForeign
+    boolean isForeign,
+    Long likeCount
 ) {
 
     public static TripInfoDto from(Trip trip) {
@@ -20,6 +21,7 @@ public record TripInfoDto(
                 .startDate(trip.getStartDate())
                 .endDate(trip.getEndDate())
                 .isForeign(trip.isForeign())
+                .likeCount(trip.getLikeCount())
                 .build();
     }
 }

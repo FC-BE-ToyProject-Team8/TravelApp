@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,35 +33,36 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS));
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)
+            .headers(header -> header.frameOptions(FrameOptionsConfig::disable).disable())
+            .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS));
 
         http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/login", HttpMethod.POST.name())
-                        ).permitAll()
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/signup", HttpMethod.POST.name())
-                        ).permitAll()
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
-                        ).permitAll()
-                        .requestMatchers(
-                            new AntPathRequestMatcher("/api/search-place", HttpMethod.GET.name())
-                        ).permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .anyRequest().authenticated())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(
+                    new AntPathRequestMatcher("/login", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/signup", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/api/search-place", HttpMethod.GET.name())
+                ).permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                .anyRequest().authenticated())
         ;
 
         http
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedHandler(new TokenAccessDeniedHandler())
-                        .authenticationEntryPoint(new TokenAuthenticationEntryPoint())
-                )
-                .apply(new SecurityConfigAdapter(jwtProvider));
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedHandler(new TokenAccessDeniedHandler())
+                .authenticationEntryPoint(new TokenAuthenticationEntryPoint())
+            )
+            .apply(new SecurityConfigAdapter(jwtProvider));
 
         return http.getOrBuild();
     }

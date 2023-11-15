@@ -1,12 +1,14 @@
 package kr.co.fastcampus.travel.domain.member.service.dto.request;
 
 import kr.co.fastcampus.travel.domain.member.entity.Member;
+import lombok.Builder;
 
+@Builder
 public record MemberSaveDto(
-        String email,
-        String name,
-        String nickname,
-        String password
+    String email,
+    String name,
+    String nickname,
+    String password
 ) {
 
     public Member toEntity(String encodePassword) {

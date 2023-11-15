@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.domain.trip.repository;
 
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -26,15 +27,11 @@ class TripRepositoryTest {
     @DisplayName("여행 + 여정 조회 검증")
     void findContainTrip() {
         // given
-        Trip trip = Trip.builder()
-            .name("여행")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(7))
-            .build();
+        Trip trip = createTrip();
 
         IntStream.range(0, 3)
             .forEach(i -> {
-                Itinerary itinerary = Itinerary.builder().build();
+                Itinerary itinerary = createItinerary(trip);
                 itinerary.registerTrip(trip);
             });
 
@@ -53,11 +50,7 @@ class TripRepositoryTest {
     @DisplayName("여정 없는 여행 조회 검증")
     void findOnlyTrip() {
         // given
-        Trip trip = Trip.builder()
-            .name("여행")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(7))
-            .build();
+        Trip trip = createTrip();
 
         tripRepository.save(trip);
 
