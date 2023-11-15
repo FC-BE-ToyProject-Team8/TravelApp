@@ -7,13 +7,11 @@ import lombok.Builder;
 
 @Builder
 public record LikeSaveDto(
-    Long id,
     Member member,
     Trip trip
 ) {
     public Like toEntity() {
         return Like.builder()
-            .id(id)
             .member(member)
             .trip(trip)
             .build();

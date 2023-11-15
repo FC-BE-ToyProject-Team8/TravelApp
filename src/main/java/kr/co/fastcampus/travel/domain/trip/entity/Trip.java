@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +48,17 @@ public class Trip extends BaseEntity {
     @Column(nullable = false)
     private boolean isForeign;
 
+    @Column(nullable = false)
+    private Long likeCount;
+
     @OneToMany(
         fetch = FetchType.LAZY, mappedBy = "trip",
         cascade = CascadeType.PERSIST, orphanRemoval = true
     )
     private List<Itinerary> itineraries = new ArrayList<>();
+
+    @Version
+    private Long version;
 
     @Builder
     private Trip(
@@ -59,17 +66,18 @@ public class Trip extends BaseEntity {
         LocalDate startDate,
         LocalDate endDate,
         boolean isForeign,
+        Long likeCount,
         Member member
     ) {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDateSequenceException();
         }
-
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
         this.member = member;
+        this.likeCount = likeCount;
     }
 
     public void update(Trip tripToBeUpdated) {
@@ -77,6 +85,10 @@ public class Trip extends BaseEntity {
         this.startDate = tripToBeUpdated.getStartDate();
         this.endDate = tripToBeUpdated.getEndDate();
         this.isForeign = tripToBeUpdated.isForeign();
+    }
+
+    public void updateLikeCount(Long changedLikeCount) {
+        this.likeCount = changedLikeCount;
     }
 
     public void addItinerary(Itinerary itinerary) {

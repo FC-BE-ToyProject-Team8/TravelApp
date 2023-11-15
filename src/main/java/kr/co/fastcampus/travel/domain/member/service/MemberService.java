@@ -33,6 +33,10 @@ public class MemberService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+    }
+
     public Member findByNickname(String nickname) {
         return memberRepository.findByNickname(nickname)
             .orElseThrow(MemberNotFoundException::new);
