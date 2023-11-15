@@ -39,14 +39,15 @@ public class GlobalExceptionHandler {
         BindingResult bindingResult = e.getBindingResult();
         List<FieldError> fieldErrors = getSortedFieldErrors(bindingResult);
 
-        String sb = "[Request error] "
+        String response = "[Request error] "
             + fieldErrors.stream()
-            .map(fieldError
-                -> fieldError.getDefaultMessage()
-                + " (" + fieldError.getField() + "=" + fieldError.getRejectedValue() + ")"
-            )
-            .collect(Collectors.joining(", "));
-        return ResponseBody.fail(sb);
+            .map(fieldError -> String.format("%s (%s=%s)",
+                fieldError.getDefaultMessage(),
+                fieldError.getField(),
+                fieldError.getRejectedValue()
+                )
+            ).collect(Collectors.joining());
+        return ResponseBody.fail(response);
     }
 
     private List<FieldError> getSortedFieldErrors(BindingResult bindingResult) {
