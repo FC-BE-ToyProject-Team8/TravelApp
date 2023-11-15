@@ -66,7 +66,7 @@ public class Trip extends BaseEntity {
         LocalDate startDate,
         LocalDate endDate,
         boolean isForeign,
-        Long likeCount
+        Long likeCount,
         Member member
     ) {
         if (endDate.isBefore(startDate)) {
