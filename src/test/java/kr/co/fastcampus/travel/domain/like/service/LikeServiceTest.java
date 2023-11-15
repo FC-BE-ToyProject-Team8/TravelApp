@@ -41,7 +41,7 @@ class LikeServiceTest {
     @DisplayName("좋아요 등록")
     void saveLike() throws InterruptedException {
         int threadCount = 10;
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         //given
