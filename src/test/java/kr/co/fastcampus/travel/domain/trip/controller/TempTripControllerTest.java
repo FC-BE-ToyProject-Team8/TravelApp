@@ -23,9 +23,6 @@ public class TempTripControllerTest extends ApiTest {
     @Autowired
     private TripRepository tripRepository;
 
-//    @Autowired
-//    private ItineraryRepository itineraryRepository;
-
     @Test
     @DisplayName("여행 등록")
     void addTrip() {
