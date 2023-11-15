@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
@@ -118,6 +119,29 @@ class ItineraryServiceTest {
         assertThatThrownBy(
             () -> itineraryService.editItinerary(noExistId, member.getEmail(), request))
             .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("여정 수정시 여행을 등록한 사람이 아닌 사람이 수정할 경우")
+    void editItineraryByDifferentMember() {
+        // given
+        Long id = -1L;
+        String newMemberEmail = "otherEmail";
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
+        Itinerary givenItinerary = createItinerary(trip);
+        given(itineraryRepository.findById(id)).willReturn(Optional.of(givenItinerary));
+
+        RouteUpdateDto route = createRouteUpdateDto();
+        LodgeUpdateDto lodge = createLodgeUpdateDto();
+        StayUpdateDto stay = createStayUpdateDto();
+
+        ItineraryUpdateDto request = createItineraryUpdateDto(route, lodge, stay);
+
+        // when, then
+        assertThatThrownBy(() ->
+            itineraryService.editItinerary(id, newMemberEmail, request))
+            .isInstanceOf(CommentMemberMismatchException.class);
     }
 
     @Test
