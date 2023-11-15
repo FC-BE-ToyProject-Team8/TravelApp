@@ -42,8 +42,6 @@ public class TripControllerTest extends ApiTest {
     @Autowired
     private MemberRepository memberRepository;
 
-//    @Autowired
-//    private ItineraryRepository itineraryRepository;
 
     @Test
     @DisplayName("여행 등록")
@@ -296,9 +294,8 @@ public class TripControllerTest extends ApiTest {
         memberRepository.save(member);
         List<Trip> saveTrips = IntStream.range(0, 10)
             .mapToObj(i -> saveTripWithMember(member)).toList();
-        String url = "/api/trips/search-by-nickname?query="
-            + member.getNickname() +
-            "&page=" + 0;
+        String url =
+            "/api/trips/search-by-nickname?query=" + member.getNickname() + "&page=" + 0;
 
         // when
         ExtractableResponse<Response> response
@@ -307,7 +304,8 @@ public class TripControllerTest extends ApiTest {
         // then
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
-        List<TripSummaryResponse> content = jsonPath.getList("data.content", TripSummaryResponse.class);
+        List<TripSummaryResponse> content =
+            jsonPath.getList("data.content", TripSummaryResponse.class);
         int totalPages = jsonPath.getInt("data.totalPages");
         int totalElements = jsonPath.getInt("data.totalElements");
 

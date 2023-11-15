@@ -2,7 +2,6 @@ package kr.co.fastcampus.travel.domain.itinerary.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-
 import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;

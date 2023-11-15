@@ -83,8 +83,6 @@ public class TripController {
     @Operation(summary = "사용자 닉네임으로 여행 검색")
     public ResponseBody<TripPageResponseDto> searchByNickname(
         @RequestParam String query,
-        //@RequestParam(required = false, defaultValue = "1", value = "page") int page,
-        //Pageable pageable
         @PageableDefault(size = 5) Pageable pageable
         ) {
         Page<TripInfoDto> response = tripService.findTripsByNickname(query, pageable);
