@@ -21,6 +21,9 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSa
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.StaySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -39,6 +42,8 @@ class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
+    @Mock
+    private MemberService memberService;
 
     @InjectMocks
     private TripService tripService;
@@ -201,7 +206,7 @@ class TripServiceTest {
             .build();
 
         // when, then
-        assertThatThrownBy(() -> tripService.addTrip(tripSaveDto))
+        assertThatThrownBy(() -> tripService.addTrip(null, tripSaveDto))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
 

@@ -1,86 +1,101 @@
-//package kr.co.fastcampus.travel.domain.trip.controller;
-//
-//import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredGetWithToken;
-//import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
-//import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
-//import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
-//import static kr.co.fastcampus.travel.common.TravelTestUtils.requestDeleteApi;
-//import static kr.co.fastcampus.travel.common.TravelTestUtils.requestFindAllTripApi;
-//import static kr.co.fastcampus.travel.common.response.Status.FAIL;
-//import static kr.co.fastcampus.travel.common.response.Status.SUCCESS;
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.assertj.core.api.SoftAssertions.assertSoftly;
-//import static org.junit.jupiter.api.Assertions.assertAll;
-//
-//import io.restassured.RestAssured;
-//import io.restassured.path.json.JsonPath;
-//import io.restassured.response.ExtractableResponse;
-//import io.restassured.response.Response;
-//import java.time.LocalDate;
-//import java.util.List;
-//import java.util.stream.IntStream;
-//import kr.co.fastcampus.travel.common.ApiTest;
-//import kr.co.fastcampus.travel.common.response.Status;
-//import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
-//import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
-//import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
-//import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
-//import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
-//import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
-//import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
-//import kr.co.fastcampus.travel.domain.trip.entity.Trip;
-//import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
-//
-//public class TripControllerTest extends ApiTest {
-//
-//    @Autowired
-//    private TripRepository tripRepository;
-//
+package kr.co.fastcampus.travel.domain.trip.controller;
+
+import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
+import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.time.LocalDate;
+import kr.co.fastcampus.travel.common.ApiTest;
+import kr.co.fastcampus.travel.domain.member.controller.dto.request.MemberSaveRequest;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
+import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
+public class TripControllerTest extends ApiTest {
+
+    @Autowired
+    private TripRepository tripRepository;
+
 //    @Autowired
 //    private ItineraryRepository itineraryRepository;
-//
-//    @Test
-//    @DisplayName("여행 등록")
-//    void addTrip() {
-//        // given
-//        String url = "/api/trips";
-//        TripSaveRequest request = new TripSaveRequest(
-//            "이름",
-//            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
-//            false
-//        );
-//
-//        // when
-//        ExtractableResponse<Response> response = RestAssured
-//            .given().log().all()
-//            .contentType(MediaType.APPLICATION_JSON_VALUE)
-//            .body(request)
-//            .when()
-//            .post(url)
-//            .then().log().all()
-//            .extract();
-//
-//        // then
-//        JsonPath jsonPath = response.jsonPath();
-//        String status = jsonPath.getString("status");
-//        TripResponse data = jsonPath.getObject("data", TripResponse.class);
-//
-//        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-//
-//        assertSoftly((softly) -> {
-//            softly.assertThat(status).isEqualTo("SUCCESS");
-//            softly.assertThat(data.id()).isNotNull();
-//            softly.assertThat(data.name()).isEqualTo("이름");
-//            softly.assertThat(data.startDate().toString()).isEqualTo("2010-01-01");
-//            softly.assertThat(data.endDate().toString()).isEqualTo("2010-01-02");
-//            softly.assertThat(data.isForeign()).isEqualTo(false);
-//        });
-//    }
+
+    private String authorization;
+
+
+    @BeforeEach
+    void setUp() {
+        this.authorization = signupAndLogin();
+    }
+
+    private String signupAndLogin() {
+        MemberSaveRequest memberSaveRequest = createMemberSaveReqeust();
+        restAssuredPostBody("/signup", memberSaveRequest);
+
+        LoginReqeust loginRequest = new LoginReqeust(EMAIL, PASSWORD);
+        ExtractableResponse<Response> loginResponse = restAssuredPostBody("/login", loginRequest);
+
+        JsonPath jsonPath = loginResponse.jsonPath();
+        return "Bearer " + jsonPath.getString("data.accessToken");
+    }
+
+    @Test
+    @DisplayName("여행 등록")
+    void addTrip() {
+        // given
+        String url = "/api/trips";
+        TripSaveRequest request = new TripSaveRequest(
+            "이름",
+            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
+            false
+        );
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("Authorization", authorization)
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        TripResponse data = jsonPath.getObject("data", TripResponse.class);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        assertSoftly((softly) -> {
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.id()).isNotNull();
+            softly.assertThat(data.name()).isEqualTo("이름");
+            softly.assertThat(data.startDate().toString()).isEqualTo("2010-01-01");
+            softly.assertThat(data.endDate().toString()).isEqualTo("2010-01-02");
+            softly.assertThat(data.isForeign()).isEqualTo(false);
+            softly.assertThat(
+                tripRepository.findById(data.id()).orElseThrow().getMember().getEmail()
+            ).isEqualTo(EMAIL);
+        });
+    }
 //
 //    @Test
 //    @DisplayName("여정 없는 여행 조회")
@@ -299,4 +314,4 @@
 //        Itinerary itinerary = createItinerary(trip);
 //        return itineraryRepository.save(itinerary);
 //    }
-//}
+}
