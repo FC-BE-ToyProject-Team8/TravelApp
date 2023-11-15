@@ -1,6 +1,5 @@
 package kr.co.fastcampus.travel.domain.trip.service;
 
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeSaveDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,6 +20,7 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.Itinera
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.StaySaveDto;
+import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -166,11 +166,11 @@ class TripServiceTest {
                 .willReturn(Optional.of(trip));
 
         //when
-        TripItineraryInfoDto returnedTrip = tripService.addItineraries(trip.getId(), requests);
+        List<ItineraryDto> returnedItineraries = tripService.addItineraries(trip.getId(), requests);
 
         //then
-        assertThat(returnedTrip).isNotNull();
-        assertThat(returnedTrip.itineraries().size()).isEqualTo(3);
+        assertThat(returnedItineraries).isNotNull();
+        assertThat(returnedItineraries.size()).isEqualTo(3);
     }
 
     @Test
