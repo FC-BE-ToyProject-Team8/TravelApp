@@ -20,25 +20,9 @@ public record CommentResponse(
     public static CommentResponse from(Comment comment) {
         return CommentResponse.builder()
             .id(comment.getId())
-            .member(getMember(comment.getMember()))
-            .trip(getTrip(comment.getTrip()))
+            .member(MemberResponse.from(comment.getMember()))
+            .trip(TripSummaryResponse.from(comment.getTrip()))
             .content(comment.getContent())
             .build();
-    }
-
-    private static MemberResponse getMember(Member member) {
-        if (Objects.isNull(member)) {
-            return null;
-        }
-
-        return MemberResponse.from(member);
-    }
-
-    private static TripSummaryResponse getTrip(Trip trip) {
-        if (Objects.isNull(trip)) {
-            return null;
-        }
-
-        return TripSummaryResponse.from(trip);
     }
 }
