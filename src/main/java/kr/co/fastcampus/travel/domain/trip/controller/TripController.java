@@ -84,7 +84,7 @@ public class TripController {
     public ResponseBody<TripPageResponseDto> searchByNickname(
         @RequestParam String query,
         @PageableDefault(size = 5) Pageable pageable
-        ) {
+    ) {
         Page<TripInfoDto> response = tripService.findTripsByNickname(query, pageable);
         return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
     }
