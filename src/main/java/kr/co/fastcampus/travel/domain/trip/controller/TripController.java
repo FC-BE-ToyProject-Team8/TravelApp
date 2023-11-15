@@ -66,9 +66,11 @@ public class TripController {
     @Operation(summary = "여행 수정")
     public ResponseBody<TripSummaryResponse> editTrip(
         @PathVariable Long tripId,
+        Principal principal,
         @Valid @RequestBody TripUpdateRequest request
     ) {
-        var response = tripService.editTrip(tripId, mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = tripService.editTrip(tripId, mapper.of(request), memberEmail);
         return ResponseBody.ok(mapper.of(response));
     }
 
