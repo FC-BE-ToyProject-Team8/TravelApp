@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
-import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
@@ -49,9 +48,8 @@ public class TripService {
             .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<TripInfoDto> findAllTrips(String email) {
-        Member member = memberService.findMemberByEmail(email);
-        List<Trip> trips = tripRepository.findAllByMember(member);
+    public List<TripInfoDto> findAllTrips() {
+        List<Trip> trips = tripRepository.findAll();
         return trips.stream()
             .map(TripInfoDto::from)
             .collect(Collectors.toList());

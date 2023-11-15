@@ -4,7 +4,6 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -83,11 +82,10 @@ class TripServiceTest {
         List<Trip> trips = new ArrayList<>();
         trips.add(trip1);
         trips.add(trip2);
-        given(memberService.findMemberByEmail(any())).willReturn(null);
-        given(tripRepository.findAllByMember(any())).willReturn(trips);
+        given(tripRepository.findAll()).willReturn(trips);
 
         // when
-        List<TripInfoDto> findTrips = tripService.findAllTrips(null);
+        List<TripInfoDto> findTrips = tripService.findAllTrips();
 
         // then
         assertSoftly(softly -> {
