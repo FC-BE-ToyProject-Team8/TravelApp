@@ -18,6 +18,10 @@ public record CommentResponse(
 ) {
 
     public static CommentResponse from(Comment comment) {
+        if(Objects.isNull(comment)){
+            return null;
+        }
+
         return CommentResponse.builder()
             .id(comment.getId())
             .member(MemberResponse.from(comment.getMember()))
