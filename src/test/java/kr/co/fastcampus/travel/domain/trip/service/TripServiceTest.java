@@ -199,7 +199,7 @@ class TripServiceTest {
             .map(TripInfoDto::from)
             .toList();
 
-        when(tripRepository.findAllByNameStartingWith(query, pageable))
+        when(tripRepository.findAllByNameContainingIgnoreCase(query, pageable))
             .thenReturn(new PageImpl<>(trips, pageable, trips.size()));
 
         // When
@@ -218,9 +218,9 @@ class TripServiceTest {
     @DisplayName("여행 이름으로 여행 검색 결과 X")
     void searchByTripNameNoResult() {
         // Given
-        String query = "no trip";
+        String query = "no result";
         Pageable pageable = PageRequest.of(0, 3);
-        when(tripRepository.findAllByNameStartingWith(query, pageable))
+        when(tripRepository.findAllByNameContainingIgnoreCase(query, pageable))
             .thenReturn(Page.empty());
 
         // When

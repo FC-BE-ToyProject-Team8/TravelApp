@@ -81,7 +81,7 @@ public class TripService {
     }
 
     public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
-        Page<Trip> trips = tripRepository.findAllByNameStartingWith(tripName, pageable);
+        Page<Trip> trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
         return trips.map(TripInfoDto::from);
     }
 }
