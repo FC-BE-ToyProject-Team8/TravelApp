@@ -39,7 +39,8 @@ public class Itinerary extends BaseEntity {
     private Trip trip;
 
     @Builder
-    private Itinerary(Route route, Lodge lodge, Stay stay) {
+    private Itinerary(Trip trip, Route route, Lodge lodge, Stay stay) {
+        this.trip = trip;
         this.route = route;
         this.lodge = lodge;
         this.stay = stay;
