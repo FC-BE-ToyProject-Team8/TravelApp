@@ -7,7 +7,8 @@ public record TripUpdateDto(
         String name,
         LocalDate startDate,
         LocalDate endDate,
-        Boolean isForeign
+        Boolean isForeign,
+        Long likeCount
 ) {
 
     public Trip toEntity() {
@@ -16,6 +17,7 @@ public record TripUpdateDto(
                 .startDate(startDate)
                 .endDate(endDate)
                 .isForeign(isForeign)
+                .likeCount(likeCount)
                 .build();
     }
 }

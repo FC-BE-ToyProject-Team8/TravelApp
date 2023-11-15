@@ -20,8 +20,8 @@ public class LikeController {
 
     @PostMapping
     public ResponseBody<Void> likeTrip(@RequestParam("tripId") Long tripId, Principal principal) {
-        Long memberId = Long.parseLong(principal.getName());
-        likeService.saveLike(tripId, memberId);
+        String memberEmail = principal.getName();
+        likeService.saveLike(tripId, memberEmail);
         return ResponseBody.ok();
     }
 }
