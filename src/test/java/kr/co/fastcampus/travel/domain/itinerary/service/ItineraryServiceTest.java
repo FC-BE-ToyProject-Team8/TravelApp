@@ -1,9 +1,9 @@
 package kr.co.fastcampus.travel.domain.itinerary.service;
 
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeUpdateDto;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createStayUpdateDto;
