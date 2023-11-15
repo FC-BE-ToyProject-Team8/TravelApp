@@ -75,6 +75,7 @@ public class PlaceSearchServiceTest {
         assertThatThrownBy(() -> placeSearchService.searchByKakaoApiKeyword(query, pageable))
             .isInstanceOf(ApiUnauthorizedException.class);
     }
+
     @Test
     @DisplayName("API 키워드 장소 검색 인가 실패")
     public void searchByKakaoApiRequestFail() {
