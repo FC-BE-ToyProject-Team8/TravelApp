@@ -21,6 +21,7 @@ import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.ItineraryUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.LodgeUpdateDto;
@@ -88,7 +89,7 @@ class ItineraryServiceTest {
         ItineraryDto editItinerary = itineraryService.editItinerary(id, request);
 
         // then
-        assertThat(editItinerary.route().transportation()).isEqualTo("이동수단 업데이트");
+        assertThat(editItinerary.route().transportation()).isEqualTo(Transportation.SUBWAY);
         assertThat(editItinerary.route().departurePlaceName()).isEqualTo("출발지 업데이트");
         assertThat(editItinerary.lodge()).isNull();
         assertThat(editItinerary.stay()).isNull();
@@ -172,7 +173,7 @@ class ItineraryServiceTest {
 
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
 
-        RouteUpdateDto routeUpdateDto = new RouteUpdateDto("교통수단",
+        RouteUpdateDto routeUpdateDto = new RouteUpdateDto(Transportation.BUS,
             "출발지 이름",
             "출발지 주소",
             "도착지 이름",

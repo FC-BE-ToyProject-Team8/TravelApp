@@ -22,6 +22,7 @@ import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Lodge;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Stay;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
@@ -210,14 +211,14 @@ public class TravelTestUtils {
 
     public static Route createRoute() {
         return Route.builder()
-            .transportation("지하철")
-            .departurePlaceName("우리집")
-            .departureAddress("서울")
-            .destinationPlaceName("해운대")
-            .destinationAddress("부산")
-            .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 40, 30))
-            .build();
+                .transportation(Transportation.BUS)
+                .departurePlaceName("우리집")
+                .departureAddress("서울")
+                .destinationPlaceName("해운대")
+                .destinationAddress("부산")
+                .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+                .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 30, 40))
+                .build();
     }
 
     public static Lodge createLodge() {
@@ -240,13 +241,13 @@ public class TravelTestUtils {
 
     public static RouteSaveDto createRouteSaveDto() {
         return new RouteSaveDto(
-            "지하철",
-            "우리집",
-            "서울",
-            "해운대",
-            "부산",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.BUS,
+                "우리집",
+                "서울",
+                "해운대",
+                "부산",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
@@ -270,13 +271,13 @@ public class TravelTestUtils {
 
     public static RouteUpdateDto createRouteUpdateDto() {
         return new RouteUpdateDto(
-            "이동수단 업데이트",
-            "출발지 업데이트",
-            "출발 주소 업데이트",
-            "목적지 업데이트",
-            "목적지 주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.SUBWAY,
+                "출발지 업데이트",
+                "출발 주소 업데이트",
+                "목적지 업데이트",
+                "목적지 주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
@@ -300,13 +301,13 @@ public class TravelTestUtils {
 
     public static RouteSaveRequest createRouteSaveRequest() {
         return new RouteSaveRequest(
-            "지하철",
-            "우리집",
-            "서울",
-            "해운대",
-            "부산",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.BUS,
+                "우리집",
+                "서울",
+                "해운대",
+                "부산",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
@@ -330,13 +331,13 @@ public class TravelTestUtils {
 
     public static RouteUpdateRequest createRouteUpdateRequest() {
         return new RouteUpdateRequest(
-            "이동수단 업데이트",
-            "출발지 업데이트",
-            "출발 주소 업데이트",
-            "목적지 업데이트",
-            "목적지 주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.SUBWAY,
+                "출발지 업데이트",
+                "출발 주소 업데이트",
+                "목적지 업데이트",
+                "목적지 주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 

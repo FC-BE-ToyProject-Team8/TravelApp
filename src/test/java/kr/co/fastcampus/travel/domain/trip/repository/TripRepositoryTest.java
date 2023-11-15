@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.domain.trip.repository;
 
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -30,7 +31,7 @@ class TripRepositoryTest {
 
         IntStream.range(0, 3)
             .forEach(i -> {
-                Itinerary itinerary = Itinerary.builder().build();
+                Itinerary itinerary = createItinerary(trip);
                 itinerary.registerTrip(trip);
             });
 
