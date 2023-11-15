@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.domain.trip.service;
 
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,6 +22,8 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSa
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.StaySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -39,6 +42,9 @@ class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
+
+    @Mock
+    private MemberService memberService;
 
     @InjectMocks
     private TripService tripService;
@@ -194,6 +200,7 @@ class TripServiceTest {
     @Test
     @DisplayName("여행 등록 시 종료일자가 시작일자보다 앞서면 예외")
     void addTrip_InvalidDatesequence() {
+        Member member = createMember();
         // given
         TripSaveDto tripSaveDto = TripSaveDto.builder()
             .name("이름")
@@ -202,8 +209,10 @@ class TripServiceTest {
             .isForeign(false)
             .build();
 
+        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+
         // when, then
-        assertThatThrownBy(() -> tripService.addTrip(tripSaveDto))
+        assertThatThrownBy(() -> tripService.addTrip(tripSaveDto, member.getEmail()))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
 
@@ -223,7 +232,8 @@ class TripServiceTest {
             "이름2",
             LocalDate.parse("2011-01-02"),
             LocalDate.parse("2011-01-01"),
-            true
+            true,
+            0L
         );
 
         // when, then
