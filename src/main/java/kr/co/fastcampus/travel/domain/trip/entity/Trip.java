@@ -62,11 +62,6 @@ public class Trip extends BaseEntity {
     @Version
     private Long version;
 
-//    @PrePersist
-//    private void setLikeCount() {
-//        this.likeCount = this.likeCount == null ? 0 : this.likeCount;
-//    }
-
     @Builder
     private Trip(
         String name,

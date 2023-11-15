@@ -1,8 +1,7 @@
 package kr.co.fastcampus.travel.domain.like.controller;
 
-import java.security.Principal;
-
 import io.swagger.v3.oas.annotations.Operation;
+import java.security.Principal;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.like.service.LikeService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,9 @@ public class LikeController {
 
     @PostMapping
     @Operation(summary = "좋아요 등록")
-    public ResponseBody<Void> likeTrip(@RequestParam("tripId") Long tripId, Principal principal) {
+    public ResponseBody<Void> likeTrip(
+        @RequestParam("tripId") Long tripId, Principal principal
+    ) {
         String memberEmail = principal.getName();
         likeService.saveLike(tripId, memberEmail);
         return ResponseBody.ok();
@@ -31,7 +32,9 @@ public class LikeController {
 
     @DeleteMapping
     @Operation(summary = "좋아요 취소")
-    public ResponseBody<Void> cancelLikeTrip(@RequestParam("tripId") Long tripId, Principal principal) {
+    public ResponseBody<Void> cancelLikeTrip(
+        @RequestParam("tripId") Long tripId, Principal principal
+    ) {
         String memberEmail = principal.getName();
         likeService.deleteLike(tripId, memberEmail);
         return ResponseBody.ok();

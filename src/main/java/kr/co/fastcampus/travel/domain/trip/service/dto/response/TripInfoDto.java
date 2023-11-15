@@ -15,7 +15,6 @@ public record TripInfoDto(
 ) {
 
     public static TripInfoDto from(Trip trip) {
-        System.out.println("dto 담기 전 여행객체 " +trip.getLikeCount());
         return TripInfoDto.builder()
                 .id(trip.getId())
                 .name(trip.getName())

@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
 import kr.co.fastcampus.travel.common.exception.InvalidLikeCancelException;
 import kr.co.fastcampus.travel.domain.like.entity.Like;
