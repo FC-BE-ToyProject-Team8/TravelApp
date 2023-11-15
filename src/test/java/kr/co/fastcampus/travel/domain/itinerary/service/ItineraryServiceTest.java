@@ -173,7 +173,7 @@ class ItineraryServiceTest {
 
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
 
-        RouteUpdateDto routeUpdateDto = new RouteUpdateDto("교통수단",
+        RouteUpdateDto routeUpdateDto = new RouteUpdateDto(Transportation.BUS,
             "출발지 이름",
             "출발지 주소",
             "도착지 이름",

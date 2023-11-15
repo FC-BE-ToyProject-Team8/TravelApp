@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
@@ -259,7 +260,7 @@ class TripServiceTest {
         given(tripRepository.findById(trip.getId()))
             .willReturn(Optional.of(trip));
 
-        RouteSaveDto routeSaveDto = new RouteSaveDto("교통수단",
+        RouteSaveDto routeSaveDto = new RouteSaveDto(Transportation.BUS,
             "출발지 이름",
             "출발지 주소",
             "도착지 이름",
