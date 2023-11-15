@@ -32,12 +32,10 @@ public class CommentControllerTest extends ApiTest {
     @Autowired
     private MemberRepository memberRepository;
 
-
     @Test
     @DisplayName("댓글달기")
     void save() {
         // given
-        String url = "/api/comments";
         CommentSaveRequest request = createCommentSaveRequest();
 
         TripSaveRequest saveTrip = new TripSaveRequest(
@@ -53,10 +51,12 @@ public class CommentControllerTest extends ApiTest {
         restAssuredPostWithToken(API_TRIPS_ENDPOINT, saveTrip);
         restAssuredPostWithToken(memberSignUpUrl, saveMember);
 
+        String url = "/api/comments";
+
         // when
         ExtractableResponse<Response> response = restAssuredPostWithToken(url, request);
 
-        //then
+        // then
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
         CommentResponse data = jsonPath.getObject("data", CommentResponse.class);
@@ -67,5 +67,4 @@ public class CommentControllerTest extends ApiTest {
             softly.assertThat(data.content()).isEqualTo(request.content());
         });
     }
-
 }

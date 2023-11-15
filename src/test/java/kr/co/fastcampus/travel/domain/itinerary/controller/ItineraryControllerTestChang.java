@@ -86,54 +86,5 @@ public class ItineraryControllerTestChang extends ApiTest {
             softly.assertThat(data.stay().startAt()).isEqualTo("2023-01-01T11:30:30");
             softly.assertThat(data.stay().placeName()).isEqualTo("장소 업데이트");
         });
-//    @Test
-//    @DisplayName("여정 삭제")
-//    void deleteItinerary() {
-//        //given
-//        Trip trip = saveTrip();
-//        saveItinerary(trip);
-//        Itinerary itinerary = saveItinerary(trip);
-//
-//        //when
-//        String url = "/api/itineraries/" + itinerary.getId();
-//        requestDeleteApi(url);
-//
-//        //then
-//        Trip findTrip = tripRepository.findFetchItineraryById(trip.getId()).get();
-//        List<Itinerary> itineraries = findTrip.getItineraries();
-//        assertThat(itineraries.size()).isEqualTo(1);
-//    }
-//
-//    @Test
-//    @DisplayName("존재하지 않는 여정 삭제")
-//    void deleteNoneItinerary() {
-//        //given
-//        Trip trip = saveTrip();
-//        saveItinerary(trip);
-//        saveItinerary(trip);
-//
-//        //when
-//        String url = "/api/itineraries/-1";
-//        ExtractableResponse<Response> response = requestDeleteApi(url);
-//
-//        //then
-//        assertSoftly(softly -> {
-//            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-//            softly.assertThat(response.jsonPath().getString("status")).isEqualTo("FAIL");
-//            softly.assertThat(response.jsonPath().getString("errorMessage"))
-//                    .isEqualTo("존재하지 않는 엔티티입니다.");
-//        });
-//
-//    }
-//
-//    private Trip saveTrip() {
-//        Trip trip = createTrip();
-//        return tripRepository.save(trip);
-//    }
-//
-//    private Itinerary saveItinerary(Trip trip) {
-//        Itinerary itinerary = createItinerary(trip);
-//        return itineraryRepository.save(itinerary);
-//    }
     }
 }
