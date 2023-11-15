@@ -19,9 +19,9 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
@@ -141,7 +141,7 @@ class ItineraryServiceTest {
         // when, then
         assertThatThrownBy(() ->
             itineraryService.editItinerary(id, newMemberEmail, request))
-            .isInstanceOf(CommentMemberMismatchException.class);
+            .isInstanceOf(MemberMismatchException.class);
     }
 
     @Test

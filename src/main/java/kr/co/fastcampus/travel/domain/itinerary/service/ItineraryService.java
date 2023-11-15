@@ -1,12 +1,11 @@
 package kr.co.fastcampus.travel.domain.itinerary.service;
 
-import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.ItineraryUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
-import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +47,7 @@ public class ItineraryService {
 
     private void validateMemberMatch(String memberEmail, Itinerary itinerary) {
         if (!itinerary.getTrip().getMember().getEmail().equals(memberEmail)) {
-            throw new CommentMemberMismatchException();
+            throw new MemberMismatchException();
         }
     }
 }
