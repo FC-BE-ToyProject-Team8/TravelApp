@@ -66,7 +66,7 @@ public class LikeControllerTest extends ApiTest {
         Trip trip = createTrip();
         tripRepository.save(trip);
 
-        String url = "/api/likes?tripId="+trip.getId();
+        String url = "/api/likes?tripId=" + trip.getId();
 
         //when
         RestAssuredUtils.restAssuredPostWithToken(url);

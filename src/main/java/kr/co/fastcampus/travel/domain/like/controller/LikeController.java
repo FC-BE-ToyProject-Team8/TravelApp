@@ -33,7 +33,7 @@ public class LikeController {
     @DeleteMapping
     @Operation(summary = "좋아요 취소")
     public ResponseBody<Void> cancelLikeTrip(
-        @RequestParam("tripId") Long tripId, Principal principal
+        @RequestParam Long tripId, Principal principal
     ) {
         String memberEmail = principal.getName();
         likeService.deleteLike(tripId, memberEmail);
