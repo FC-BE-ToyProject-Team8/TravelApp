@@ -24,6 +24,14 @@ public final class TokenUtils {
                 .getString("data.accessToken");
     }
 
+    public static String getAccessToken(MemberSaveRequest member) {
+        String url = "/login";
+        LoginReqeust request = new LoginReqeust(member.email(), member.password());
+        return GRANT_TYPE + restAssuredPostBody(url, request)
+            .jsonPath()
+            .getString("data.accessToken");
+    }
+
     private static void createMember() {
         String url = "/signup";
         MemberSaveRequest request = createMemberSaveReqeust();

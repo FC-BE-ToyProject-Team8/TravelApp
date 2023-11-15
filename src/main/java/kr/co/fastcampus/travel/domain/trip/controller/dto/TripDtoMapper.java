@@ -12,6 +12,7 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInf
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
 @Mapper(
         componentModel = "spring",
@@ -31,4 +32,8 @@ public interface TripDtoMapper {
     TripSummaryResponse of(TripInfoDto dto);
 
     List<TripSummaryResponse> of(List<TripInfoDto> dto);
+
+    default Page<TripSummaryResponse> of(Page<TripInfoDto> dto) {
+        return dto.map(this::of);
+    }
 }

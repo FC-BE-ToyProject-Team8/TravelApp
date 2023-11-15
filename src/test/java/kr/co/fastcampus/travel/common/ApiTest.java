@@ -14,7 +14,7 @@ public class ApiTest {
     int port;
 
     @BeforeEach
-    void setUp() {
+    void setUpDefault() {
         RestAssured.port = port;
     }
 }
