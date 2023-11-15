@@ -58,7 +58,8 @@ public class Trip extends BaseEntity {
         String name,
         LocalDate startDate,
         LocalDate endDate,
-        boolean isForeign
+        boolean isForeign,
+        Member member
     ) {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDateSequenceException();
@@ -68,6 +69,7 @@ public class Trip extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
+        this.member = member;
     }
 
     public void update(Trip tripToBeUpdated) {

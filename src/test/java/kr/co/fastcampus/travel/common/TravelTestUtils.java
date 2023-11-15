@@ -25,6 +25,7 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.Itine
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.LodgeUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.RouteUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.StayUpdateDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import org.springframework.http.MediaType;
 
@@ -33,6 +34,25 @@ public class TravelTestUtils {
     public static final String API_TRIPS_ENDPOINT = "/api/trips";
 
     private TravelTestUtils() {
+    }
+
+    public static Member createMember() {
+        return Member.builder()
+            .email("test@email.com")
+            .name("tester")
+            .nickname("testNick")
+            .password("123")
+            .build();
+    }
+
+    public static Trip createTripWithMember(Member member) {
+        return Trip.builder()
+            .name("tripName")
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(1))
+            .isForeign(true)
+            .member(member)
+            .build();
     }
 
     public static Trip createTrip() {
