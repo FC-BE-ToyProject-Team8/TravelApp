@@ -2,6 +2,7 @@ package kr.co.fastcampus.travel.domain.trip.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
@@ -12,6 +13,7 @@ import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryRe
 import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -40,9 +43,11 @@ public class TripController {
     @PostMapping
     @Operation(summary = "여행 등록")
     public ResponseBody<TripSummaryResponse> addTrip(
-        @Valid @RequestBody TripSaveRequest request
+        @Valid @RequestBody TripSaveRequest request,
+        Principal principal
     ) {
-        var response = tripService.addTrip(mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = tripService.addTrip(mapper.of(request), memberEmail);
         return ResponseBody.ok(mapper.of(response));
     }
 
@@ -68,5 +73,15 @@ public class TripController {
     public ResponseBody<Void> deleteTrip(@PathVariable Long tripId) {
         tripService.deleteTrip(tripId);
         return ResponseBody.ok();
+    }
+
+    @GetMapping("/search-by-nickname")
+    @Operation(summary = "사용자 닉네임으로 여행 검색")
+    public ResponseBody<List<TripSummaryResponse>> searchByNickname(
+        @RequestParam("query") String query,
+        @RequestParam(required = false, defaultValue = "1", value = "page") int page,
+        Pageable pageable) {
+        var response = tripService.findTripsByNickname(query, page, pageable);
+        return ResponseBody.ok(mapper.of(response));
     }
 }

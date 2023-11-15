@@ -57,14 +57,25 @@ public final class RestAssuredUtils {
     }
 
     public static ExtractableResponse<Response> restAssuredPostWithToken(
-        String url,
-        Object request,
-        String accessToken
+        String url
     ) {
+        String accessToken = TokenUtils.getAccessToken();
+
         return restAssuredWithToken(accessToken)
-            .body(request)
             .when()
             .post(url)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredDeleteWithToken(
+        String url
+    ) {
+        String accessToken = TokenUtils.getAccessToken();
+
+        return restAssuredWithToken(accessToken)
+            .when()
+            .delete(url)
             .then().log().all()
             .extract();
     }

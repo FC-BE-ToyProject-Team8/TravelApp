@@ -13,6 +13,7 @@ public record TripSaveRequest(
     LocalDate endDate,
     @NotNull(message = "isForeign은 필수로 입력하셔야 합니다.")
     Boolean isForeign
+
 ) {
 
 }

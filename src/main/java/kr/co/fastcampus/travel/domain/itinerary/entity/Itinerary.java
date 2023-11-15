@@ -47,7 +47,7 @@ public class Itinerary extends BaseEntity {
 
     @Builder
     private Itinerary(
-        String transportation,
+        Transportation transportation,
         String departurePlaceName,
         String departureAddress,
         String destinationPlaceName,

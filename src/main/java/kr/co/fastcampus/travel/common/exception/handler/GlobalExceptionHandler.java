@@ -15,6 +15,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -74,5 +75,14 @@ public class GlobalExceptionHandler {
     public ResponseBody<Void> httpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("[HttpMessageNotReadableException] Message = {}", e.getMessage());
         return ResponseBody.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseBody<Void> missingServletRequestParameterException(
+        MissingServletRequestParameterException e
+    ) {
+        log.error("[MissingServletRequestParameterException] Message = {}", e.getMessage());
+        return ResponseBody.fail(e.getParameterName() + " 파라미터 입력이 필요합니다.");
     }
 }
