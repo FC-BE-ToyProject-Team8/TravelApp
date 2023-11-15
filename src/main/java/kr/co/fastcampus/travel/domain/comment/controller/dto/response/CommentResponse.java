@@ -18,7 +18,7 @@ public record CommentResponse(
 ) {
 
     public static CommentResponse from(Comment comment) {
-        if(Objects.isNull(comment)){
+        if (Objects.isNull(comment)) {
             return null;
         }
 
