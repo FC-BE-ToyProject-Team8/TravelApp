@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -24,9 +26,12 @@ public class TripService {
 
     private final TripRepository tripRepository;
 
+    private final MemberService memberService;
+
     @Transactional
-    public TripInfoDto addTrip(TripSaveDto dto) {
-        var trip = tripRepository.save(dto.toEntity());
+    public TripInfoDto addTrip(TripSaveDto dto, String memberEmail) {
+        Member member = findMember(memberEmail);
+        var trip = tripRepository.save(dto.toEntity(member));
         return TripInfoDto.from(trip);
     }
 
@@ -43,6 +48,11 @@ public class TripService {
 
     public Trip findById(Long id) {
         return tripRepository.findById(id)
+            .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public Trip findByIdForUpdate(Long id) {
+        return tripRepository.findWithOptimisticLockById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -76,5 +86,9 @@ public class TripService {
         return trip.getItineraries().stream()
             .map(ItineraryDto::from)
             .collect(Collectors.toList());
+    }
+
+    private Member findMember(String memberEmail) {
+        return memberService.findByEmail(memberEmail);
     }
 }
