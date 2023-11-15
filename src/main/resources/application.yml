@@ -20,3 +20,7 @@ jwt:
   secret: SpringSecurity Java Web Token Secret Key
   grand-type: Bearer
   token-validate-in-seconds: 3600
+
+kakao:
+  api:
+    key: dd0c848e81e9871630e66d93e2e51d64

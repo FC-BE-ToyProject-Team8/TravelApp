@@ -10,10 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Version;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
@@ -24,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,7 +53,7 @@ public class Trip extends BaseEntity {
     @Column(nullable = false)
     private boolean isForeign;
 
-    @Column(nullable = false)
+    @ColumnDefault("0")
     private Long likeCount;
 
     @OneToMany(
@@ -80,12 +83,14 @@ public class Trip extends BaseEntity {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDateSequenceException();
         }
+
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
         this.member = member;
         this.likeCount = likeCount;
+        this.member = member;
     }
 
     public void update(Trip tripToBeUpdated) {
@@ -93,6 +98,7 @@ public class Trip extends BaseEntity {
         this.startDate = tripToBeUpdated.getStartDate();
         this.endDate = tripToBeUpdated.getEndDate();
         this.isForeign = tripToBeUpdated.isForeign();
+        this.likeCount = tripToBeUpdated.getLikeCount();
     }
 
     public void updateLikeCount(Long changedLikeCount) {
@@ -101,5 +107,9 @@ public class Trip extends BaseEntity {
 
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

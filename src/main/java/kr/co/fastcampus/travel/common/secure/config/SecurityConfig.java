@@ -33,11 +33,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .httpBasic(AbstractHttpConfigurer::disable)
-            .csrf(AbstractHttpConfigurer::disable)
-            .headers(header -> header.frameOptions(FrameOptionsConfig::disable).disable())
-            .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
-                SessionCreationPolicy.STATELESS));
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(header -> header.frameOptions(FrameOptionsConfig::disable).disable())
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS));
 
         http
             .authorizeHttpRequests(authorize -> authorize
@@ -49,6 +49,9 @@ public class SecurityConfig {
                 ).permitAll()
                 .requestMatchers(
                     new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/api/search-place", HttpMethod.GET.name())
                 ).permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated())
