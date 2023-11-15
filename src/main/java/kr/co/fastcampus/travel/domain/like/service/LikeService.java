@@ -1,6 +1,7 @@
 package kr.co.fastcampus.travel.domain.like.service;
 
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
+import kr.co.fastcampus.travel.common.exception.InvalidLikeCancelException;
 import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
@@ -36,8 +37,20 @@ public class LikeService {
         trip.updateLikeCount(trip.getLikeCount() + 1);
     }
 
+    @Transactional
+    public void deleteLike(Long tripId, String memberEmail) {
+        Trip trip = findTrip(tripId);
+        Member member = findMember(memberEmail);
+        if (isExisted(trip, member)) {
+            likeRepository.deleteByTripAndMember(trip, member);
+            trip.updateLikeCount(trip.getLikeCount() - 1);
+        } else {
+            throw new InvalidLikeCancelException();
+        }
+    }
+
     private Trip findTrip(Long tripId) {
-        return tripService.findById(tripId);
+        return tripService.findByIdForUpdate(tripId);
     }
 
     private Like createLike(Trip trip, Member member) {

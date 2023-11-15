@@ -18,8 +18,7 @@ import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
-import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
-import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
@@ -68,7 +67,7 @@ class TripServiceTest {
         // when
         // then
         assertThatThrownBy(() -> tripService.findTripItineraryById(-1L))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -76,7 +75,7 @@ class TripServiceTest {
     void findTripById_success() {
         // given
         when(tripRepository.findFetchItineraryById(-1L))
-                .thenReturn(Optional.of(createTrip()));
+            .thenReturn(Optional.of(createTrip()));
 
         // when
         TripItineraryInfoDto result = tripService.findTripItineraryById(-1L);
@@ -113,18 +112,18 @@ class TripServiceTest {
         // given
         Long tripId = 1L;
         Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
-                .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
-                .build();
+            .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .build();
 
         given(tripRepository.findById(tripId))
-                .willReturn(Optional.of(givenTrip));
+            .willReturn(Optional.of(givenTrip));
 
         TripUpdateDto dto = new TripUpdateDto(
-                "이름2",
-                LocalDate.parse("2011-01-01"),
-                LocalDate.parse("2011-01-02"),
-                true,
-                0L
+            "이름2",
+            LocalDate.parse("2011-01-01"),
+            LocalDate.parse("2011-01-02"),
+            true,
+            0L
         );
 
         // when
@@ -143,19 +142,19 @@ class TripServiceTest {
         // given
         Long notExistingTripId = 1L;
         given(tripRepository.findById(notExistingTripId))
-                .willReturn(Optional.empty());
+            .willReturn(Optional.empty());
 
         TripUpdateDto request = new TripUpdateDto(
-                null,
-                null,
-                null,
-                true,
-                0L
+            null,
+            null,
+            null,
+            true,
+            0L
         );
 
         // when, then
         assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -163,12 +162,12 @@ class TripServiceTest {
     void findById_failure() {
         // given
         when(tripRepository.findById(-1L))
-                .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
         // when
         // then
         assertThatThrownBy(() -> tripService.deleteTrip(-1L))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
@@ -181,7 +180,7 @@ class TripServiceTest {
             .toList();
 
         given(tripRepository.findById(trip.getId()))
-                .willReturn(Optional.of(trip));
+            .willReturn(Optional.of(trip));
 
         //when
         List<ItineraryDto> returnedItineraries = tripService.addItineraries(trip.getId(), requests);
@@ -199,16 +198,19 @@ class TripServiceTest {
         List<ItinerarySaveDto> requests = List.of();
 
         given(tripRepository.findById(trip.getId()))
-                .willReturn(Optional.empty());
+            .willReturn(Optional.empty());
 
         //when
         //then
         assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), requests))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
     }
-  
+
+    @Test
     @DisplayName("여행 등록 시 종료일자가 시작일자보다 앞서면 예외")
     void addTrip_InvalidDatesequence() {
+        Member member = createMember();
+  
         // given
         TripSaveDto tripSaveDto = TripSaveDto.builder()
             .name("이름")
@@ -217,8 +219,10 @@ class TripServiceTest {
             .isForeign(false)
             .build();
 
+        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+
         // when, then
-        assertThatThrownBy(() -> tripService.addTrip(null, tripSaveDto))
+        assertThatThrownBy(() -> tripService.addTrip(tripSaveDto, member.getEmail()))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
 
@@ -277,7 +281,7 @@ class TripServiceTest {
         given(tripRepository.findById(trip.getId()))
             .willReturn(Optional.of(trip));
 
-        RouteSaveDto routeSaveDto = new RouteSaveDto("교통수단",
+        RouteSaveDto routeSaveDto = new RouteSaveDto(Transportation.BUS,
             "출발지 이름",
             "출발지 주소",
             "도착지 이름",
@@ -315,7 +319,7 @@ class TripServiceTest {
         assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), List.of(saveDto)))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
-  
+
     @Test
     @DisplayName("사용자 닉네임으로 여행 검색")
     void findTripsByNickname() {

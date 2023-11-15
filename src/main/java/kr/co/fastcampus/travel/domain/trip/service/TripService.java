@@ -32,13 +32,10 @@ public class TripService {
     private final int pageSize = 5;
 
     @Transactional
-    public TripInfoDto addTrip(String email, TripSaveDto dto) {
-        Trip trip = dto.toEntity();
-        var member = memberService.findMemberByEmail(email);
-        trip.setMember(member);
-
-        var savedTrip = tripRepository.save(trip);
-        return TripInfoDto.from(savedTrip);
+    public TripInfoDto addTrip(TripSaveDto dto, String memberEmail) {
+        Member member = findMember(memberEmail);
+        var trip = tripRepository.save(dto.toEntity(member));
+        return TripInfoDto.from(trip);
     }
 
     public TripItineraryInfoDto findTripItineraryById(Long id) {
@@ -54,6 +51,11 @@ public class TripService {
 
     public Trip findById(Long id) {
         return tripRepository.findById(id)
+            .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public Trip findByIdForUpdate(Long id) {
+        return tripRepository.findWithOptimisticLockById(id)
             .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -82,8 +84,8 @@ public class TripService {
     public List<ItineraryDto> addItineraries(Long id, List<ItinerarySaveDto> dto) {
         var trip = findById(id);
         dto.stream()
-                .map(ItinerarySaveDto::toEntity)
-                .forEach(trip::addItinerary);
+            .map(ItinerarySaveDto::toEntity)
+            .forEach(trip::addItinerary);
         return trip.getItineraries().stream()
             .map(ItineraryDto::from)
             .collect(Collectors.toList());
@@ -101,5 +103,9 @@ public class TripService {
 
     public Member findMemberByNickname(String nickname) {
         return memberService.findByNickname(nickname);
+    }
+
+    private Member findMember(String memberEmail) {
+        return memberService.findByEmail(memberEmail);
     }
 }

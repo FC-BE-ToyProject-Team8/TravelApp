@@ -47,7 +47,7 @@ public class TripController {
         Principal principal
     ) {
         String memberEmail = principal.getName();
-        var response = tripService.addTrip(memberEmail, mapper.of(request));
+        var response = tripService.addTrip(mapper.of(request), memberEmail);
         return ResponseBody.ok(mapper.of(response));
     }
 
