@@ -82,6 +82,7 @@ public class Trip extends BaseEntity {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDateSequenceException();
         }
+
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
