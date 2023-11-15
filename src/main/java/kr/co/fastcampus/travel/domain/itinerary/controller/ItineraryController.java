@@ -2,6 +2,8 @@ package kr.co.fastcampus.travel.domain.itinerary.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+
+import java.security.Principal;
 import java.util.List;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.ItineraryDtoMapper;
@@ -33,9 +35,13 @@ public class ItineraryController {
     @PostMapping
     @Operation(summary = "여정 복수 등록")
     public ResponseBody<List<ItineraryResponse>> saveItineraries(
-        @RequestBody ItinerariesSaveRequest request
+        @RequestBody ItinerariesSaveRequest request,
+        Principal principal
     ) {
-        var response = tripService.addItineraries(request.tripId(), mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = tripService.addItineraries(
+            request.tripId(), mapper.of(request), memberEmail
+        );
         return ResponseBody.ok(mapper.of(response));
     }
 
