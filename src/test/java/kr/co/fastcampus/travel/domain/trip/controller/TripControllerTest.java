@@ -267,10 +267,47 @@ public class TripControllerTest extends ApiTest {
 //            softly.assertThat(data.size()).isEqualTo(3);
 //        });
 //    }
+
+//  @Test
+//  @DisplayName("사용자 닉네임으로 여행 검색")
+//    void searchByNickname() {
+//        // given
+//        Member member = createMember();
+//        memberRepository.save(member);
+//        List<Trip> saveTrips = IntStream.range(0, 10)
+//    .mapToObj(i -> saveTripWithMember(member)).toList();
+//    String url = "/api/trips/search-by-nickname?query={query}&page={page}";
+//
+//    // when
+//    ExtractableResponse<Response> response = RestAssured
+//    .given().log().all()
+//    .pathParams("query", member.getNickname(), "page", 1)
+//    .when().get(url)
+//    .then().log().all()
+//    .extract();
+//
+//    // then
+//    JsonPath jsonPath = response.jsonPath();
+//    String status = jsonPath.getString("status");
+//    List<TripSummaryResponse> data = jsonPath.getList("data", TripSummaryResponse.class);
+//
+//    assertSoftly(softly -> {
+//    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+//    softly.assertThat(status).isEqualTo("SUCCESS");
+//    softly.assertThat(data.size()).isEqualTo(5);
+//    softly.assertThat(data).contains(createTripSummaryResponse(saveTrips.get(0)));
+//    softly.assertThat(data).contains(createTripSummaryResponse(saveTrips.get(1)));
+//    });
+//    }
 //
 //    private Trip saveTrip() {
 //        Trip trip = createTrip();
 //        return tripRepository.save(trip);
+//    }
+//
+//  private Trip saveTripWithMember(Member member) {
+//    Trip trip = createTripWithMember(member);
+//    return tripRepository.save(trip);
 //    }
 //
 //    private Itinerary saveItinerary(Trip trip) {
