@@ -6,7 +6,8 @@ public record TripUpdateRequest(
     String name,
     LocalDate startDate,
     LocalDate endDate,
-    Boolean isForeign
+    Boolean isForeign,
+    Long likeCount
 ) {
 
 }
