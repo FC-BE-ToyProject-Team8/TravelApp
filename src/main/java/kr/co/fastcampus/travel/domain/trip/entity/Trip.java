@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
+import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
+
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import lombok.AccessLevel;
@@ -66,6 +68,10 @@ public class Trip extends BaseEntity {
         LocalDate endDate,
         boolean isForeign
     ) {
+        if (endDate.isBefore(startDate)) {
+            throw new InvalidDateSequenceException();
+        }
+
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
