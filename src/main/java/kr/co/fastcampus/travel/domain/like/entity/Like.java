@@ -32,8 +32,7 @@ public class Like extends BaseEntity {
     private Trip trip;
 
     @Builder
-    private Like(Long id, Member member, Trip trip) {
-        this.id = id;
+    private Like(Member member, Trip trip) {
         this.member = member;
         this.trip = trip;
     }

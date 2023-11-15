@@ -30,8 +30,10 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.Itine
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.LodgeUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.RouteUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.StayUpdateDto;
+import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
+import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
 import org.springframework.http.MediaType;
 
 public class TravelTestUtils {
@@ -94,6 +96,23 @@ public class TravelTestUtils {
 
     public static Trip createTrip() {
         return Trip.builder()
+                .name("tripName")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .isForeign(true)
+                .likeCount(0L)
+                .build();
+    }
+
+    public static Like createLike(Trip trip, Member member) {
+        return Like.builder()
+            .trip(trip)
+            .member(member)
+            .build();
+    }
+
+    public static TripSaveDto createTripSaveDto() {
+        return TripSaveDto.builder()
             .name("tripName")
             .startDate(LocalDate.now())
             .endDate(LocalDate.now().plusDays(1))

@@ -14,6 +14,7 @@ public record TripItineraryInfoDto(
     LocalDate startDate,
     LocalDate endDate,
     boolean isForeign,
+    Long likeCount,
     List<ItineraryResponse> itineraries
 ) {
 
@@ -24,6 +25,7 @@ public record TripItineraryInfoDto(
                 .startDate(trip.getStartDate())
                 .endDate(trip.getEndDate())
                 .isForeign(trip.isForeign())
+                .likeCount(trip.getLikeCount())
                 .itineraries(getItineraries(trip))
                 .build();
     }

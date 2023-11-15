@@ -1,41 +1,57 @@
 package kr.co.fastcampus.travel.domain.like.service;
 
-import jakarta.transaction.Transactional;
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
-import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
-import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
-import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
+import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Slf4j
+@Transactional(readOnly = true)
 public class LikeService {
 
-    private final TripRepository tripRepository;
+    private final TripService tripService;
 
     private final LikeRepository likeRepository;
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    public void saveLike(Long tripId, Long memberId) {
-        Trip trip = tripRepository.findById(tripId).orElseThrow(EntityNotFoundException::new);
-        if (likeRepository.existsByTripAndMemberId(trip, memberId)) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void saveLike(Long tripId, String memberEmail) {
+        Trip trip = findTrip(tripId);
+        Member member = findMember(memberEmail);
+        if (isExisted(trip, member)) {
             throw new DuplicatedLikeException();
         }
-        Like like = Like.builder()
-            .trip(trip)
-            .member(memberRepository.findById(memberId).get())
-            .build();
-        likeRepository.save(like);
-        updateLikeCount(trip, 1);
+        likeRepository.save(createLike(trip, member));
+        trip.updateLikeCount(trip.getLikeCount() + 1);
     }
 
-    public void updateLikeCount(Trip trip, int plusNumber){
+    private Trip findTrip(Long tripId) {
+        return tripService.findById(tripId);
+    }
 
+    private Like createLike(Trip trip, Member member) {
+        return Like.builder()
+            .trip(trip)
+            .member(member)
+            .build();
+    }
+
+    private Member findMember(String memberEmail) {
+        return memberService.findByEmail(memberEmail);
+    }
+
+    private boolean isExisted(Trip trip, Member member) {
+        return likeRepository.existsByTripAndMember(trip, member);
     }
 }
