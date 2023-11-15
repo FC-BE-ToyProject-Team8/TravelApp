@@ -6,7 +6,6 @@ import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.ItineraryUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
-import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +35,9 @@ public class ItineraryService {
     }
 
     public void deleteById(Long id, String email) {
-        Member member = memberService.findMemberByEmail(email);
         var itinerary = findById(id);
-        if (itinerary.getTrip().getMember() != member) {
+        String writerEmail = itinerary.getTrip().getMember().getEmail();
+        if (!writerEmail.equals(email)) {
             throw new MemberMismatchException();
         }
         itineraryRepository.delete(itinerary);
