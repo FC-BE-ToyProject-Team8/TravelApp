@@ -101,7 +101,8 @@ class TripServiceTest {
                 "이름2",
                 LocalDate.parse("2011-01-01"),
                 LocalDate.parse("2011-01-02"),
-                true
+                true,
+                0L
         );
 
         // when
@@ -126,7 +127,8 @@ class TripServiceTest {
                 null,
                 null,
                 null,
-                true
+                true,
+                0L
         );
 
         // when, then
