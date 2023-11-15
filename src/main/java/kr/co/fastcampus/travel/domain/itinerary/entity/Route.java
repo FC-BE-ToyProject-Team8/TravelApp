@@ -3,6 +3,7 @@ package kr.co.fastcampus.travel.domain.itinerary.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
+import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,6 +43,10 @@ public class Route {
         LocalDateTime departureAt,
         LocalDateTime arriveAt
     ) {
+        if (arriveAt.isBefore(departureAt)) {
+            throw new InvalidDateSequenceException();
+        }
+
         this.transportation = transportation;
         this.departurePlaceName = departurePlaceName;
         this.departureAddress = departureAddress;
