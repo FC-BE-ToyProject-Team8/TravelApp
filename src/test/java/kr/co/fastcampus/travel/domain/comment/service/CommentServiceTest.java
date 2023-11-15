@@ -128,7 +128,7 @@ public class CommentServiceTest {
     @DisplayName("댓글 삭제 - 실패 (댓글이 없는 경우)")
     void deleteCommentNotFound() {
         // given
-        Long commentId = 1L;
+        Long commentId = -1L;
         Member member = createMember();
         given(commentRepository.findById(commentId)).willReturn(Optional.empty());
 

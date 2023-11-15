@@ -187,7 +187,7 @@ public class TravelTestUtils {
             .destinationPlaceName("해운대")
             .destinationAddress("부산")
             .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+            .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 40, 30))
             .build();
     }
 
@@ -195,8 +195,8 @@ public class TravelTestUtils {
         return Lodge.builder()
             .placeName("호텔")
             .address("부산 @@@")
-            .checkOutAt(LocalDateTime.of(2023, 1, 1, 15, 0))
-            .checkInAt(LocalDateTime.of(2023, 1, 2, 11, 0))
+            .checkInAt(LocalDateTime.of(2023, 1, 1, 11, 0))
+            .checkOutAt(LocalDateTime.of(2023, 1, 2, 15, 0))
             .build();
     }
 
