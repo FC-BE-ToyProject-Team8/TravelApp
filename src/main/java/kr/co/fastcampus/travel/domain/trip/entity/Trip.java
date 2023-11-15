@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
+import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
