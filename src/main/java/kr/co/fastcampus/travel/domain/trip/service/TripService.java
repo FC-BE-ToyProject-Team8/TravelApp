@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TripService {
 
     private final TripRepository tripRepository;
-
     private final MemberService memberService;
 
     private final int pageSize = 5;

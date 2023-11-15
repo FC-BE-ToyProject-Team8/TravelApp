@@ -49,7 +49,6 @@ class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
-
     @Mock
     private MemberService memberService;
 

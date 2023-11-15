@@ -15,6 +15,7 @@ import jakarta.persistence.Version;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
@@ -106,5 +107,9 @@ public class Trip extends BaseEntity {
 
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
