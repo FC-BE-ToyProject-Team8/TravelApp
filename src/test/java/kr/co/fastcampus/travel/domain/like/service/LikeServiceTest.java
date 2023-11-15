@@ -6,10 +6,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDate;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
+import kr.co.fastcampus.travel.common.exception.InvalidLikeCancelException;
+import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
@@ -41,13 +45,13 @@ class LikeServiceTest {
     @DisplayName("좋아요 등록")
     void saveLike() throws InterruptedException {
         int threadCount = 10;
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         //given
         Long tripId = 1L;
         Trip trip = createTrip();
-        given(tripService.findById(tripId)).willReturn(trip);
+        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
 
         //when
         for (int i = 0; i < threadCount; i++) {
@@ -73,7 +77,7 @@ class LikeServiceTest {
         //given
         Long tripId = 1L;
         Trip trip = createTrip();
-        given(tripService.findById(tripId)).willReturn(trip);
+        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
         Member member = createMember();
         given(memberService.findByEmail(member.getEmail())).willReturn(member);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
@@ -82,5 +86,47 @@ class LikeServiceTest {
         //then
         assertThatThrownBy(() -> likeService.saveLike(tripId, member.getEmail()))
             .isInstanceOf(DuplicatedLikeException.class);
+    }
+
+    @Test
+    @DisplayName("좋아요 취소")
+    void deleteLike() throws InterruptedException {
+
+        //given
+        Long tripId = 1L;
+        Member member = createMember();
+        Trip trip = Trip.builder()
+            .name("test")
+            .startDate(LocalDate.parse("2023-01-01"))
+            .endDate(LocalDate.parse("2023-01-01"))
+            .isForeign(false)
+            .likeCount(1L)
+            .build();
+        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
+        Like like = Like.builder().member(member).trip(trip).build();
+        given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
+        likeService.deleteLike(tripId, member.getEmail());
+
+        //then
+        assertThat(trip.getLikeCount()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("좋아요 취소 실패")
+    void deleteLike_fail() {
+
+        //given
+        Long tripId = 1L;
+        Trip trip = createTrip();
+        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
+        Member member = createMember();
+        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+        given(likeRepository.existsByTripAndMember(trip, member)).willReturn(false);
+
+        //when
+        //then
+        assertThatThrownBy(() -> likeService.deleteLike(tripId, member.getEmail()))
+            .isInstanceOf(InvalidLikeCancelException.class);
     }
 }
