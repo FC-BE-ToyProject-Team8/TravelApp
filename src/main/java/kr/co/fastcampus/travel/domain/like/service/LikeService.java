@@ -36,22 +36,22 @@ public class LikeService {
         trip.updateLikeCount(trip.getLikeCount() + 1);
     }
 
-    public Trip findTrip(Long tripId) {
+    private Trip findTrip(Long tripId) {
         return tripService.findById(tripId);
     }
 
-    public Like createLike(Trip trip, Member member) {
+    private Like createLike(Trip trip, Member member) {
         return Like.builder()
             .trip(trip)
             .member(member)
             .build();
     }
 
-    public Member findMember(String memberEmail) {
+    private Member findMember(String memberEmail) {
         return memberService.findByEmail(memberEmail);
     }
 
-    public boolean isExisted(Trip trip, Member member) {
+    private boolean isExisted(Trip trip, Member member) {
         return likeRepository.existsByTripAndMember(trip, member);
     }
 }
