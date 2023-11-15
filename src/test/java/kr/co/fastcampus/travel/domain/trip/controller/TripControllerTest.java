@@ -4,11 +4,8 @@ import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
