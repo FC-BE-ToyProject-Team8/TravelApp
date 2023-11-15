@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import kr.co.fastcampus.travel.common.baseentity.BaseEntity;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
-import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
@@ -66,7 +65,8 @@ public class Trip extends BaseEntity {
         String name,
         LocalDate startDate,
         LocalDate endDate,
-        boolean isForeign
+        boolean isForeign,
+        Member member
     ) {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDateSequenceException();
@@ -76,6 +76,7 @@ public class Trip extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
+        this.member = member;
     }
 
     public void update(Trip tripToBeUpdated) {

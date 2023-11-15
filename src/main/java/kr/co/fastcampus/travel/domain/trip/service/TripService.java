@@ -3,8 +3,12 @@ package kr.co.fastcampus.travel.domain.trip.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -13,6 +17,8 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class TripService {
 
     private final TripRepository tripRepository;
+
+    private final MemberService memberService;
+
+    private final int pageSize = 5;
 
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto) {
@@ -76,5 +86,19 @@ public class TripService {
         return trip.getItineraries().stream()
             .map(ItineraryDto::from)
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<TripInfoDto> findTripsByNickname(String nickname, int page, Pageable pageable) {
+        Member member = findMemberByNickname(nickname);
+        pageable = PageRequest.of(page - 1, pageSize);
+        var trips = tripRepository.findTripByMember(member, pageable);
+        return trips.stream()
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
+    }
+
+    public Member findMemberByNickname(String nickname) {
+        return memberService.findByNickname(nickname);
     }
 }
