@@ -79,7 +79,7 @@ class TripRepositoryTest {
             .toList();
 
         // when
-        List<Trip> trips = tripRepository.findAll();
+        List<Trip> trips = tripRepository.findAllByMember(null);
 
         // then
         assertSoftly(softly -> {

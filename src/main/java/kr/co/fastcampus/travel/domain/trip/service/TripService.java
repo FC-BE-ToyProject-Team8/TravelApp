@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TripService {
 
     private final TripRepository tripRepository;
+    private final MemberService memberService;
 
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto) {
@@ -46,11 +49,12 @@ public class TripService {
             .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<TripInfoDto> findAllTrips() {
-        var trips = tripRepository.findAll();
+    public List<TripInfoDto> findAllTrips(String email) {
+        Member member = memberService.findMemberByEmail(email);
+        List<Trip> trips = tripRepository.findAllByMember(member);
         return trips.stream()
-                .map(TripInfoDto::from)
-                .collect(Collectors.toList());
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional

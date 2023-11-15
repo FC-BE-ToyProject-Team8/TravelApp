@@ -4,6 +4,7 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -21,6 +22,7 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSa
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.StaySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
@@ -42,6 +44,9 @@ class TripServiceTest {
 
     @InjectMocks
     private TripService tripService;
+
+    @Mock
+    private MemberService memberService;
 
     @Test
     @DisplayName("여행 + 여정 조회 결과 없음")
@@ -78,10 +83,11 @@ class TripServiceTest {
         List<Trip> trips = new ArrayList<>();
         trips.add(trip1);
         trips.add(trip2);
-        given(tripRepository.findAll()).willReturn(trips);
+        given(memberService.findMemberByEmail(any())).willReturn(null);
+        given(tripRepository.findAllByMember(any())).willReturn(trips);
 
         // when
-        List<TripInfoDto> findTrips = tripService.findAllTrips();
+        List<TripInfoDto> findTrips = tripService.findAllTrips(null);
 
         // then
         assertSoftly(softly -> {
