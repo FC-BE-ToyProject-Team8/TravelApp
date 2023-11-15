@@ -38,7 +38,8 @@ public class TripControllerTest extends ApiTest {
         );
 
         // when
-        ExtractableResponse<Response> response = RestAssuredUtils.restAssuredPostWithToken(url, request);
+        ExtractableResponse<Response> response
+            = RestAssuredUtils.restAssuredPostWithToken(url, request);
 
         // then
         JsonPath jsonPath = response.jsonPath();
