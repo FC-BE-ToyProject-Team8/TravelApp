@@ -5,14 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record TripSaveRequest(
-    @NotBlank
+    @NotBlank(message = "name은 필수로 입력하셔야 합니다.")
     String name,
-    @NotNull
+    @NotNull(message = "startDate는 필수로 입력하셔야 합니다.")
     LocalDate startDate,
-    @NotNull
+    @NotNull(message = "endDate는 필수로 입력하셔야 합니다.")
     LocalDate endDate,
-    @NotNull
+    @NotNull(message = "isForeign은 필수로 입력하셔야 합니다.")
     Boolean isForeign
+
 ) {
 
 }

@@ -40,26 +40,26 @@ public class SecurityConfig {
                         SessionCreationPolicy.STATELESS));
 
         http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/login", HttpMethod.POST.name())
-                        ).permitAll()
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/signup", HttpMethod.POST.name())
-                        ).permitAll()
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
-                        ).permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .anyRequest().authenticated())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(
+                    new AntPathRequestMatcher("/login", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/signup", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
+                ).permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                .anyRequest().authenticated())
         ;
 
         http
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedHandler(new TokenAccessDeniedHandler())
-                        .authenticationEntryPoint(new TokenAuthenticationEntryPoint())
-                )
-                .apply(new SecurityConfigAdapter(jwtProvider));
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedHandler(new TokenAccessDeniedHandler())
+                .authenticationEntryPoint(new TokenAuthenticationEntryPoint())
+            )
+            .apply(new SecurityConfigAdapter(jwtProvider));
 
         return http.getOrBuild();
     }
