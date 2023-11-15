@@ -66,13 +66,12 @@ public class Trip extends BaseEntity {
         LocalDate startDate,
         LocalDate endDate,
         boolean isForeign,
-        Member member,
-        Long likeCount
+        Long likeCount,
+        Member member
     ) {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDateSequenceException();
         }
-
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
