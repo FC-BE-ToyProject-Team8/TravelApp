@@ -328,4 +328,26 @@ class TripServiceTest {
         // Then
         assertThat(actualResult.isEmpty()).isEqualTo(true);
     }
+
+    @Test
+    @DisplayName("사용자 닉네임으로 여행 검색")
+    void findTripsByLike() {
+        //given
+        Member member = createMember();
+        List<Trip> trips = IntStream.range(0, 2)
+                .mapToObj(i -> createTripWithMember(member))
+                .toList();
+        Pageable pageable = PageRequest.of(0, 5);
+        given(memberService.findMemberByEmail(member.getEmail()))
+                .willReturn(member);
+        Page<Trip> pageTrips = new PageImpl<>(trips, pageable, trips.size());
+        given(tripRepository.findByLike(member, pageable))
+                .willReturn(pageTrips);
+
+        //when
+        List<TripInfoDto> result = tripService.findTripsByLike(member.getEmail(), pageable);
+
+        //then
+        assertThat(result.size()).isEqualTo(2);
+    }
 }
