@@ -11,7 +11,6 @@ import kr.co.fastcampus.travel.domain.trip.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -24,7 +23,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final MemberService memberService;
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional
     public void saveLike(Long tripId, String memberEmail) {
         Trip trip = findTrip(tripId);
         Member member = findMember(memberEmail);
@@ -48,7 +47,7 @@ public class LikeService {
     }
 
     private Trip findTrip(Long tripId) {
-        return tripService.findByIdForUpdate(tripId);
+        return tripService.findById(tripId);
     }
 
     private Like createLike(Trip trip, Member member) {

@@ -38,9 +38,6 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    @Version
-    private Long version;
-
     @Builder
     private Member(String email, String name, String nickname, String password) {
         this.email = email;
