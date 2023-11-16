@@ -12,10 +12,10 @@ public record LodgeUpdateDto(
 
     public Lodge toEntity() {
         return Lodge.builder()
-                .placeName(placeName())
-                .address(address())
-                .checkInAt(checkInAt())
-                .checkOutAt(checkOutAt())
-                .build();
+            .placeName(placeName())
+            .address(address())
+            .checkInAt(checkInAt())
+            .checkOutAt(checkOutAt())
+            .build();
     }
 }

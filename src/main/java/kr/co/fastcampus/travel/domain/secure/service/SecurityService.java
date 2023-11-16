@@ -38,7 +38,7 @@ public class SecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var member = memberService.findMemberByEmail(username);
         List<SimpleGrantedAuthority> grantedAuthorities
-                = List.of(new SimpleGrantedAuthority(member.getRole().name()));
+            = List.of(new SimpleGrantedAuthority(member.getRole().name()));
         return new PrincipalDetails(member.getEmail(), grantedAuthorities);
     }
 

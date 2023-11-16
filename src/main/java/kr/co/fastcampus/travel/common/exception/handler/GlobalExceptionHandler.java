@@ -43,9 +43,9 @@ public class GlobalExceptionHandler {
         String response = "[Request error] "
             + fieldErrors.stream()
             .map(fieldError -> String.format("%s (%s=%s)",
-                fieldError.getDefaultMessage(),
-                fieldError.getField(),
-                fieldError.getRejectedValue()
+                    fieldError.getDefaultMessage(),
+                    fieldError.getField(),
+                    fieldError.getRejectedValue()
                 )
             ).collect(Collectors.joining());
         return ResponseBody.fail(response);

@@ -248,7 +248,7 @@
 // //        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 // //        assertThat(jsonPath.getString("status")).isEqualTo(SUCCESS.name());
 // //    }  
-    
+
 //     @Test
 //     @DisplayName("여정 복수 등록")
 //     void addItineraries() {
@@ -358,7 +358,7 @@
 //             softly.assertThat(data.totalElements()).isEqualTo(2);
 //         });
 //     }
-    
+
 //     private Trip saveTripWithMember(Member member) {
 //         Trip trip = createTripWithMember(member);
 //         return tripRepository.save(trip);

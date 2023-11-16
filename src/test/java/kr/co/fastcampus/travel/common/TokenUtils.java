@@ -20,8 +20,8 @@ public final class TokenUtils {
         String url = "/login";
         LoginReqeust request = new LoginReqeust(EMAIL, PASSWORD);
         return GRANT_TYPE + restAssuredPostBody(url, request)
-                .jsonPath()
-                .getString("data.accessToken");
+            .jsonPath()
+            .getString("data.accessToken");
     }
 
     public static String getAccessToken(MemberSaveRequest member) {

@@ -19,7 +19,6 @@ import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
-import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
@@ -235,7 +234,7 @@ class TripServiceTest {
     @DisplayName("여행 등록 시 종료일자가 시작일자보다 앞서면 예외")
     void addTrip_InvalidDatesequence() {
         Member member = createMember();
-  
+
         // given
         TripSaveDto tripSaveDto = TripSaveDto.builder()
             .name("이름")

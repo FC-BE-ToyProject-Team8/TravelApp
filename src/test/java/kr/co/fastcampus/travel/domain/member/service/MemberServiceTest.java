@@ -38,20 +38,20 @@ class MemberServiceTest {
     void save_failureDuplicateEmail() {
         // given
         MemberSaveDto dto = new MemberSaveDto(
-                "email",
-                "name",
-                "nickname",
-                "password"
+            "email",
+            "name",
+            "nickname",
+            "password"
         );
 
         given(memberRepository.findByEmail(dto.email()))
-                .willReturn(Optional.of(Member.builder().build()));
+            .willReturn(Optional.of(Member.builder().build()));
 
         // when
         // then
         assertThatThrownBy(() -> memberService.save(dto))
-                .isInstanceOf(InvalidArgumentException.class)
-                .hasMessage("이미 존재하는 이메일입니다.");
+            .isInstanceOf(InvalidArgumentException.class)
+            .hasMessage("이미 존재하는 이메일입니다.");
     }
 
     @Test
@@ -59,22 +59,22 @@ class MemberServiceTest {
     void save_failureDuplicateNickname() {
         // given
         MemberSaveDto dto = new MemberSaveDto(
-                "email",
-                "name",
-                "nickname",
-                "password"
+            "email",
+            "name",
+            "nickname",
+            "password"
         );
 
         given(memberRepository.findByEmail(dto.email()))
-                .willReturn(Optional.empty());
+            .willReturn(Optional.empty());
         given(memberRepository.findByNickname(dto.nickname()))
-                .willReturn(Optional.of(Member.builder().build()));
+            .willReturn(Optional.of(Member.builder().build()));
 
         // when
         // then
         assertThatThrownBy(() -> memberService.save(dto))
-                .isInstanceOf(InvalidArgumentException.class)
-                .hasMessage("이미 존재하는 닉네임입니다.");
+            .isInstanceOf(InvalidArgumentException.class)
+            .hasMessage("이미 존재하는 닉네임입니다.");
     }
 
     @Test
@@ -82,21 +82,21 @@ class MemberServiceTest {
     void saveMember() {
         // given
         MemberSaveDto dto = new MemberSaveDto(
-                "email",
-                "name",
-                "nickname",
-                "password"
+            "email",
+            "name",
+            "nickname",
+            "password"
         );
         String encodePassword = "encodedPassword";
 
         given(memberRepository.findByEmail(dto.email()))
-                .willReturn(Optional.empty());
+            .willReturn(Optional.empty());
         given(memberRepository.findByNickname(dto.nickname()))
-                .willReturn(Optional.empty());
+            .willReturn(Optional.empty());
         given(passwordEncoder.encode(dto.password()))
-                .willReturn(encodePassword);
+            .willReturn(encodePassword);
         given(memberRepository.save(any(Member.class)))
-                .willReturn(Member.builder().build());
+            .willReturn(Member.builder().build());
 
         // when
         MemberDto result = memberService.save(dto);

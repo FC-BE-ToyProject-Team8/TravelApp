@@ -40,14 +40,20 @@ public class JwtProvider {
     private final long refreshTokenExpiredTime;
 
     public JwtProvider(
-            @Value("${jwt.secret}") String secretKey,
-            @Value("${jwt.grand-type}") String grantType,
-            @Value("${jwt.token-validate-in-seconds}") long tokenValidateSeconds
+        @Value("${jwt.secret}") String secretKey,
+        @Value("${jwt.grand-type}") String grantType,
+        @Value("${jwt.token-validate-in-seconds}") long tokenValidateSeconds
     ) {
         this.key = getSecretKey(secretKey);
         this.grantType = grantType;
         this.accessTokenExpiredTime = tokenValidateSeconds * MILLISECONDS_TO_SECONDS;
         this.refreshTokenExpiredTime = tokenValidateSeconds * TOKEN_REFRESH_INTERVAL;
+    }
+
+    private static Collection<? extends GrantedAuthority> getGrantedAuthorities(Claims claims) {
+        return Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
     }
 
     private SecretKey getSecretKey(String secretKey) {
@@ -61,10 +67,10 @@ public class JwtProvider {
         String refreshToken = createToken(email, role, refreshTokenExpiredTime);
 
         return Token.builder()
-                .grantType(grantType)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+            .grantType(grantType)
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .build();
     }
 
     public String resolveToken(String token) {
@@ -100,25 +106,19 @@ public class JwtProvider {
 
     private String createToken(String email, String role, long expiredTime) {
         return Jwts.builder()
-                .setSubject(email)
-                .claim(AUTHORITIES_KEY, role)
-                .setExpiration(new Date(System.currentTimeMillis() + expiredTime))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+            .setSubject(email)
+            .claim(AUTHORITIES_KEY, role)
+            .setExpiration(new Date(System.currentTimeMillis() + expiredTime))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
     }
 
     private Claims getClaims(String token) {
         return Jwts
-                .parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    private static Collection<? extends GrantedAuthority> getGrantedAuthorities(Claims claims) {
-        return Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+            .parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
     }
 }

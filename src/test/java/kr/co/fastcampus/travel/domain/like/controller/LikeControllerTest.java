@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 public class LikeControllerTest extends ApiTest {
+
     @Autowired
     private TripRepository tripRepository;
 
@@ -43,7 +44,6 @@ public class LikeControllerTest extends ApiTest {
         //when
         ExtractableResponse<Response> response
             = RestAssuredUtils.restAssuredPostWithToken(url);
-
 
         //then
         JsonPath jsonPath = response.jsonPath();
@@ -72,7 +72,6 @@ public class LikeControllerTest extends ApiTest {
         RestAssuredUtils.restAssuredPostWithToken(url);
         ExtractableResponse<Response> response
             = RestAssuredUtils.restAssuredDeleteWithToken(url);
-
 
         //then
         JsonPath jsonPath = response.jsonPath();

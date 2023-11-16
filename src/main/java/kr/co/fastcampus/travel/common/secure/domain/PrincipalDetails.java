@@ -5,8 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public record PrincipalDetails(
-        String email,
-        Collection<? extends GrantedAuthority> authorities
+    String email,
+    Collection<? extends GrantedAuthority> authorities
 ) implements UserDetails {
 
     @Override

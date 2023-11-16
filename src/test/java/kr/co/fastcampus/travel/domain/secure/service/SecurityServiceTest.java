@@ -45,15 +45,15 @@ class SecurityServiceTest {
         LoginDto dto = new LoginDto(EMAIL, "otherPassword");
         Member member = createMember();
         given(memberService.findMemberByEmail(dto.email()))
-                .willReturn(member);
+            .willReturn(member);
         given(passwordEncoder.matches(dto.password(), member.getPassword()))
-                .willReturn(false);
+            .willReturn(false);
 
         // when
         // then
         assertThatThrownBy(() -> securityService.login(dto))
-                .isInstanceOf(InvalidArgumentException.class)
-                .hasMessage("잘못된 비밀번호 입니다.");
+            .isInstanceOf(InvalidArgumentException.class)
+            .hasMessage("잘못된 비밀번호 입니다.");
     }
 
     @Test
@@ -63,11 +63,11 @@ class SecurityServiceTest {
         LoginDto dto = new LoginDto(EMAIL, PASSWORD);
         Member member = createMember();
         given(memberService.findMemberByEmail(dto.email()))
-                .willReturn(member);
+            .willReturn(member);
         given(passwordEncoder.matches(dto.password(), member.getPassword()))
-                .willReturn(true);
+            .willReturn(true);
         given(jwtProvider.generateToken(member.getEmail(), member.getRole().name()))
-                .willReturn(Token.builder().build());
+            .willReturn(Token.builder().build());
 
         // when
         TokenDto result = securityService.login(dto);

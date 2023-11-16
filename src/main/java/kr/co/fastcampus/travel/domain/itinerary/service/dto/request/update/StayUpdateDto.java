@@ -4,19 +4,19 @@ import java.time.LocalDateTime;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Stay;
 
 public record StayUpdateDto(
-        String placeName,
-        String address,
-        LocalDateTime startAt,
-        LocalDateTime endAt
+    String placeName,
+    String address,
+    LocalDateTime startAt,
+    LocalDateTime endAt
 
 ) {
 
     public Stay toEntity() {
         return Stay.builder()
-                .placeName(placeName())
-                .address(address())
-                .startAt(startAt())
-                .endAt(endAt())
-                .build();
+            .placeName(placeName())
+            .address(address())
+            .startAt(startAt())
+            .endAt(endAt())
+            .build();
     }
 }

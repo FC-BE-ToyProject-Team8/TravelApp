@@ -16,9 +16,9 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException authException
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AuthenticationException authException
     ) throws IOException {
         Object errorMessage = request.getAttribute(TOKEN_EXPIRED);
 
@@ -30,7 +30,7 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
     }
 
     private void sendErrorResponse(HttpServletResponse response, String errorMessage)
-            throws IOException {
+        throws IOException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

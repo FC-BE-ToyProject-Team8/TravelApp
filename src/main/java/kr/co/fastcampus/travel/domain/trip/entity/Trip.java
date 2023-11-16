@@ -57,13 +57,13 @@ public class Trip extends BaseEntity {
         fetch = FetchType.LAZY, mappedBy = "trip",
         cascade = CascadeType.PERSIST, orphanRemoval = true
     )
-    private List<Itinerary> itineraries = new ArrayList<>();
+    private final List<Itinerary> itineraries = new ArrayList<>();
 
     @OneToMany(
         fetch = FetchType.LAZY, mappedBy = "trip",
         cascade = CascadeType.PERSIST, orphanRemoval = true
     )
-    private List<Comment> comments = new ArrayList<>();
+    private final List<Comment> comments = new ArrayList<>();
 
     @Version
     private Long version;

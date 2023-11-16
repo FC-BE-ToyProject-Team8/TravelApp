@@ -9,19 +9,19 @@ import lombok.Builder;
 
 @Builder
 public record ItineraryResponse(
-        Long id,
-        RouteResponse route,
-        LodgeResponse lodge,
-        StayResponse stay
+    Long id,
+    RouteResponse route,
+    LodgeResponse lodge,
+    StayResponse stay
 ) {
 
     public static ItineraryResponse from(Itinerary itinerary) {
         return ItineraryResponse.builder()
-                .id(itinerary.getId())
-                .route(getRoute(itinerary.getRoute()))
-                .lodge(getLodge(itinerary.getLodge()))
-                .stay(getStay(itinerary.getStay()))
-                .build();
+            .id(itinerary.getId())
+            .route(getRoute(itinerary.getRoute()))
+            .lodge(getLodge(itinerary.getLodge()))
+            .stay(getStay(itinerary.getStay()))
+            .build();
     }
 
     private static RouteResponse getRoute(Route route) {

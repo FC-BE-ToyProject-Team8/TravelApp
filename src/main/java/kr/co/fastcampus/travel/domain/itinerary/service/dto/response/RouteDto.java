@@ -7,24 +7,24 @@ import lombok.Builder;
 
 @Builder
 public record RouteDto(
-        Transportation transportation,
-        String departurePlaceName,
-        String departureAddress,
-        String destinationPlaceName,
-        String destinationAddress,
-        LocalDateTime departureAt,
-        LocalDateTime arriveAt
+    Transportation transportation,
+    String departurePlaceName,
+    String departureAddress,
+    String destinationPlaceName,
+    String destinationAddress,
+    LocalDateTime departureAt,
+    LocalDateTime arriveAt
 ) {
 
     public static RouteDto from(Route route) {
         return RouteDto.builder()
-                .transportation(route.getTransportation())
-                .departurePlaceName(route.getDeparturePlaceName())
-                .departureAddress(route.getDepartureAddress())
-                .destinationPlaceName(route.getDestinationPlaceName())
-                .destinationAddress(route.getDestinationAddress())
-                .departureAt(route.getDepartureAt())
-                .arriveAt(route.getArriveAt())
-                .build();
+            .transportation(route.getTransportation())
+            .departurePlaceName(route.getDeparturePlaceName())
+            .departureAddress(route.getDepartureAddress())
+            .destinationPlaceName(route.getDestinationPlaceName())
+            .destinationAddress(route.getDestinationAddress())
+            .departureAt(route.getDepartureAt())
+            .arriveAt(route.getArriveAt())
+            .build();
     }
 }
