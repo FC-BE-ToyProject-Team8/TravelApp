@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.BaseException;
+import kr.co.fastcampus.travel.common.exception.InvalidAuthenticationException;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
@@ -84,5 +85,14 @@ public class GlobalExceptionHandler {
     ) {
         log.error("[MissingServletRequestParameterException] Message = {}", e.getMessage());
         return ResponseBody.fail(e.getParameterName() + " 파라미터 입력이 필요합니다.");
+    }
+
+    @ExceptionHandler(InvalidAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseBody<Void> invalidAuthenticationException(
+            MissingServletRequestParameterException e
+    ) {
+        log.error("[InvalidAuthenticationException] Message = {}", e.getMessage());
+        return ResponseBody.fail(e.getMessage());
     }
 }
