@@ -39,8 +39,12 @@ public class ItineraryService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(Long id, String email) {
         var itinerary = findById(id);
+        String writerEmail = itinerary.getTrip().getMember().getEmail();
+        if (!writerEmail.equals(email)) {
+            throw new MemberMismatchException();
+        }
         itineraryRepository.delete(itinerary);
     }
 }
