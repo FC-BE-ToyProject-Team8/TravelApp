@@ -22,15 +22,20 @@ public class EmbeddedRedisConfig {
 
     @PostConstruct
     public void startRedis() throws IOException {
-        int port = isRedisRunning() ? findAvailablePort() : redisPort;
-        if (isArmArchitecture()) {
-            redisServer = new RedisServer(Objects.requireNonNull(getRedisServerExecutable()), port);
-        } else {
-            redisServer = RedisServer.builder()
-                    .port(port)
-                    .build();
+        try {
+            int port = isRedisRunning() ? findAvailablePort() : redisPort;
+            if (isArmArchitecture()) {
+                redisServer = new RedisServer(Objects.requireNonNull(getRedisServerExecutable()),
+                        port);
+            } else {
+                redisServer = RedisServer.builder()
+                        .port(port)
+                        .build();
+            }
+            redisServer.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        redisServer.start();
     }
 
     @PreDestroy
