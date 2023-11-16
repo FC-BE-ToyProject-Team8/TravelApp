@@ -89,24 +89,27 @@ public class TripService {
     }
 
     @Transactional
-    public List<ItineraryDto> addItineraries(Long id, List<ItinerarySaveDto> dto) {
+    public List<ItineraryDto> addItineraries(
+        Long id, List<ItinerarySaveDto> dto, String memberEmail
+    ) {
         var trip = findById(id);
-        dto.stream()
-            .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
-            .forEach(trip::addItinerary);
-        return trip.getItineraries().stream()
-            .map(ItineraryDto::from)
-            .collect(Collectors.toList());
+        if (trip.getMember().getEmail().equals(memberEmail)) {
+            dto.stream()
+                .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
+                .forEach(trip::addItinerary);
+            return trip.getItineraries().stream()
+                .map(ItineraryDto::from)
+                .collect(Collectors.toList());
+        } else {
+            throw new MemberMismatchException();
+        }
     }
 
     @Transactional
-    public List<TripInfoDto> findTripsByNickname(String nickname, int page, Pageable pageable) {
+    public Page<TripInfoDto> findTripsByNickname(String nickname, Pageable pageable) {
         Member member = findMemberByNickname(nickname);
-        pageable = PageRequest.of(page - 1, pageSize);
-        var trips = tripRepository.findTripByMember(member, pageable);
-        return trips.stream()
-            .map(TripInfoDto::from)
-            .collect(Collectors.toList());
+        Page<Trip> trips = tripRepository.findTripByMember(member, pageable);
+        return trips.map(TripInfoDto::from);
     }
 
     public Member findMemberByNickname(String nickname) {

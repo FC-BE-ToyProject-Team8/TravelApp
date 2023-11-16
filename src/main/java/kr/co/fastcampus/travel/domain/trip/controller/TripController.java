@@ -83,12 +83,12 @@ public class TripController {
 
     @GetMapping("/search-by-nickname")
     @Operation(summary = "사용자 닉네임으로 여행 검색")
-    public ResponseBody<List<TripSummaryResponse>> searchByNickname(
-        @RequestParam("query") String query,
-        @RequestParam(required = false, defaultValue = "1", value = "page") int page,
-        Pageable pageable) {
-        var response = tripService.findTripsByNickname(query, page, pageable);
-        return ResponseBody.ok(mapper.of(response));
+    public ResponseBody<TripPageResponseDto> searchByNickname(
+        @RequestParam String query,
+        @PageableDefault(size = 5) Pageable pageable
+    ) {
+        Page<TripInfoDto> response = tripService.findTripsByNickname(query, pageable);
+        return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
     }
 
     @GetMapping("/search-by-trip-name")

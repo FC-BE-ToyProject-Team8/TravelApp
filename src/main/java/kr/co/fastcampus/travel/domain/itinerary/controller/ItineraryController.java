@@ -34,9 +34,13 @@ public class ItineraryController {
     @PostMapping
     @Operation(summary = "여정 복수 등록")
     public ResponseBody<List<ItineraryResponse>> saveItineraries(
-        @RequestBody ItinerariesSaveRequest request
+        @RequestBody ItinerariesSaveRequest request,
+        Principal principal
     ) {
-        var response = tripService.addItineraries(request.tripId(), mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = tripService.addItineraries(
+            request.tripId(), mapper.of(request), memberEmail
+        );
         return ResponseBody.ok(mapper.of(response));
     }
 
