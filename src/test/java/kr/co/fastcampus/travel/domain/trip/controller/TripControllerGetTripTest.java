@@ -9,6 +9,7 @@ import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWit
 import static kr.co.fastcampus.travel.common.TravelTestUtils.API_TRIPS_ENDPOINT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
@@ -17,8 +18,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
+import kr.co.fastcampus.travel.common.response.Status;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
+import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,6 +59,39 @@ class TripControllerGetTripTest extends ApiTest {
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(data.size()).isEqualTo(2);
         });
+    }
+
+    @Test
+    @DisplayName("여정 포함 여행 조회")
+    void getContainTrip() {
+        // given
+        Trip trip = Trip.builder()
+                .name("여행")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(7))
+                .build();
+
+        IntStream.range(0, 3)
+                .forEach(i -> {
+                    Itinerary itinerary = Itinerary.builder().build();
+                    itinerary.registerTrip(trip);
+                });
+
+        tripRepository.save(trip);
+
+        String url = "/api/trips/" + trip.getId();
+
+        // when
+        ExtractableResponse<Response> response = restAssuredGetWithToken(url);
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertAll(
+                () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
+                () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
+                () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
+        );
     }
 
     @Test
