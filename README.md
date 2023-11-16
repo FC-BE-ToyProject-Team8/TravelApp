@@ -3,29 +3,25 @@
 ## 📍 소개
 
 ***
-**프로젝트 내용**: 여행 여정을 기록,관리하는 SNS서비스
+**프로젝트 내용**: 여행 여정을 기록, 관리하는 SNS 서비스
 
 **프로젝트 주제 및 필수 구현 기능 제안**: 야놀자
 
-**프로젝트 목적**: Spring Boot, DB 설계, DB 트랜잭션, RESTful API설계 능력 향상
+**프로젝트 목적**: Spring Security, JWT, JUnit, OpenApi 활용
 
-**프로젝트 기간**: 2023년 10월 23일(월)~10월 29일(일)
+**프로젝트 기간**: 2023년 11월 10일 (월) ~ 11월 16일(목)
 
 ### 기술 스택
 
 - **언어**: Java 17
 - **개발 환경**: IntelliJ, Gradle, Spring Boot
-- **라이브러리**: Spring web, JPA, JUnit5, lombok
-- **CI**: GitHub Actions,
+- **라이브러리**: Spring web, Spring Security, JPA, JUnit5, Lombok, MapStruct
+- **CI**: GitHub Actions
 - **API 명세** : Swagger
 
 ### API 명세
-
-![img.png](URI사진.png)
-
-### 서버 배포
-
-- AWS EC2를 사용해 develop, main 브랜치 자동 배포를 진행했습니다.
+![api명세1.png](resultimage/api명세1.png)
+![api명세2.png](resultimage/api명세2.png)
 
 ### 로컬 데이터베이스 H2 접속 경로
 
@@ -33,14 +29,9 @@
 2. 아래 정보대로 입력 칸을 채우고 Connect를 누른다.
 
 - Driver Class: org.h2.Driver
-- JDBC URL: jdbc:h2:mem:testdb;MODE=MYSQL
+- JDBC URL: jdbc:h2:mem:test;MODE=MYSQL
 - User Name: sa
 - Password: (빈칸)
-
-### Swagger 접속 경로
-
-- 실제 서버에 배포된 API의 Swagger
-- http://ec2-13-125-249-31.ap-northeast-2.compute.amazonaws.com/swagger-ui/index.html
 
 ## ⚖️ [컨벤션](https://github.com/FC-BE-ToyProject-Team8/TravelApp/wiki)
 
@@ -50,11 +41,10 @@
 
 - 커스텀 구글 코딩 컨벤션을 사용합니다.
 
-### 2. API 설계,
+### 2. API 설계
 
-- 해당 링크에 잘 정의되어있습니다!
-    - WIKI :  https://github.com/FC-BE-ToyProject-Team8/TravelApp/wiki/API-%EC%84%A4%EA%B3%84
-    - Swagger : http://ec2-13-125-249-31.ap-northeast-2.compute.amazonaws.com/swagger-ui/index.html
+- WIKI :  https://github.com/FC-BE-ToyProject-Team8/TravelApp/wiki/API-%EC%84%A4%EA%B3%84
+- Swagger : http://localhost:8080/swagger-ui/index.html
 
 ### 3. Git Flow
 
@@ -68,21 +58,21 @@
 
 - 실제 작업을 하는 브랜치
 - 이슈 번호가 1이라면 feature/1로 만들면 된다.
-- 'develop'을 베이스 브랜치로 하여 만들어야 한다. (브랜치 생성은 베이스 브랜치[체크아웃돼있는 브랜치]를 기준으로 만들어진다)
+- 'develop'을 베이스 브랜치로 하여 만들어야 한다.
+    - ( 브랜치 생성은 베이스 브랜치[ 체크아웃되어있는 브랜치 ]를 기준으로 만들어진다.)
 - 작업이 완료되면 develop으로 Pull Request를 날린다.
 - 4명의 Approve를 받았다면 Merge한다.
 
 ### `develop`
 
-- Push 시 '테스트 서버'에 자동배포가 되는 브랜치
-- 자동 배포되도록 한 뒤, 테스트 서버에서 작성한 기능이 잘 작동되는지 확인하고, main으로 PR 및 Merge를 하면 된다.
+- 다음 버전 개발을 위해 main으로 가기 전 기능 코드들을 모아두는 브랜치
+- 작성한 기능이 잘 작동되는지 확인하고, main으로 PR 및 Merge를 하면 된다.
 - main으로 Pull Request를 날릴때는 Approve 받는 것은 선택사항이다.
-- 내 컴퓨터에서는 잘 작동했는데, 서버에서는 잘 작동하지 않아 추가적으로 수정한 코드가 있을 경우에만 따로 리뷰를 요청한다.
 
 ### `main`
 
-- Push 시 '메인 서버'에 자동배포가 되는 브랜치
-- main에 배포가 되고 나서도 메인 서버에서 작성한 기능이 잘 작동하는지 확인해야 한다.
+- 실제 서비스를 운영할 수 있는 브랜치
+- main에 배포가 되고 나서도 기능이 잘 작동하는지 확인해야 한다.
 
 ### 4. 테스트 코드
 
@@ -94,6 +84,8 @@
 
 - **200** : 모든 성공
 - **400** : 클라이언트가 입력을 잘못한 경우
+- **401** : 인증 정보가 없는 경우
+- **403** : 접근 권한이 없는 경우
 - **500** : 서버 내부 에러
 
 ### 6. 기타 합의사항
@@ -113,95 +105,127 @@
 
 ## ERD
 
-![img.png](resultimage/ERD.png)
-
-- `create_at`/`update_at` 컬럼은 자동으로 값을 넣어주기 위해, `JPA Auditing` 기능을 사용하였습니다.<br>
-  이때 자동으로  `create_at`/`update_at` 데이터는 `TIMESTAMP` 타입으로 데이터가 추가되는데,<br> 해당
-  타입은 [2038년 문제](https://namu.wiki/w/2038%EB%85%84%20%EB%AC%B8%EC%A0%9C) 를 가지고 있기에 다음
-  프로젝트에서 `DATETIME` 타입으로 바꿀 예정입니다.
+![img.png](resultimage/ERD.JPG)
+- `create_at`/`update_at` 컬럼은 자동으로 값을 넣어주기 위해`JPA Auditing` 기능을 사용하였습니다.
 
 ## 초기 실행 화면
 
 ![img.png](resultimage/스프링부트초기실행화면.png)
 
 ## API 테스트
+### `POST /signup`
+회원가입 (요청/응답 - 성공)
 
-### `POST /trips` 여행 등록 (요청/응답 - 성공)
+![회원가입.png](resultimage/member/회원가입.png)
+![회원가입db.JPG](resultimage/member/회원가입db.JPG)
 
-![img.png](resultimage/여행등록요청1.png)
-![img_1.png](resultimage/여행등록응답성공.png)
-![img_2.png](resultimage/여행등록성공DB확인.png)
+회원가입 (요청/응답 - 실패 *이미 존재하는 닉네임*)
+![중복닉네임.png](resultimage/member/중복닉네임.png)
 
-### `POST /trips` 여행 등록 (요청/응답 - 실패 *notNull)
+회원가입 (요청/응답 - 실패 *이미 존재하는 이메일*)
+![중복닉네임.png](resultimage/member/중복이메일.png)
 
-![img_4.png](resultimage/여행등록요청2.png)
-![img_3.png](resultimage/여행등록응답실패.png)
-![img.png](resultimage/여행등록실패로그.png)
------
+### `POST /login`
+로그인 (요청/응답 - 성공)
 
-### `GET /trips` 여행 목록 조회 (요청/응답 - 성공)
+![로그인.png](resultimage/member/로그인.png)
 
-![img_2.png](resultimage/여행테이블확인.png)
-![img.png](resultimage/여행목록조회요청.png)
-![img_1.png](resultimage/여행목록조회응답성공.png)
+로그인 (요청/응답 - 실패 *잘못된 비밀번호*)
+![잘못된비밀번호.png](resultimage/member/잘못된비밀번호.png)
+### `POST /trips` 
+여행 등록 (요청/응답)
 
+![여행등록.png](resultimage/trip/여행등록.png)
+![여행등록db.JPG](resultimage/trip/여행등록db.JPG)
+
+### `POST /itineraries` 
+여정 복수 추가 (요청/응답)
+
+![여정등록요청.png](resultimage/itinerary/여정등록요청.png)
+![여정등록응답.png](resultimage/itinerary/여정등록응답.png)
+![여정등록db.JPG](resultimage/itinerary/여정등록db.JPG)
+
+### `PUT /trips/{tripId}` 
+여행 수정 (요청/응답)'
+
+![여행수정.png](resultimage/trip/여행수정.png)
+![여행수정db.png](resultimage/trip/여행수정db.png)
+### `PUT /itineraries/{itineraryId}` 
+여정 수정 (요청/응답)
+
+![여정수정요청.png](resultimage/itinerary/여정수정요청.png)
+![여정수정응답.png](resultimage/itinerary/여정수정응답.png)
+여정 수정 (요청/응답)
+
+### `GET /trips` 
+여행 목록 조회 (요청/응답)
+
+![여행목록.png](resultimage/trip/여행목록.png)
+
+### `GET /trips/{tripid}` 
+여행+여정 조회 (요청/응답)
+
+![여행조회.png](resultimage/trip/여행조회.png)
+
+
+### `DELETE /trips/{tripId}` 
+여행 삭제 (요청/응답)
+
+![여행삭제이전db.png](resultimage/trip/여행삭제이전db.png)
+![여행삭제.png](resultimage/trip/여행삭제.png)
+![여행삭제이후db.png](resultimage/trip/여행삭제이후db.png)
+
+### `DELETE /itineraries/{itineraryId}` 
+여정 삭제 (요청/응답)
+
+![여정삭제이전db.JPG](resultimage/itinerary/여정삭제이전db.JPG)
+![여정삭제.png](resultimage/itinerary/여정삭제.png)
+![여정삭제이후db.JPG](resultimage/itinerary/여정삭제이후db.JPG)
+
+### `POST /likes?tripId={tripId}`
+좋아요 등록 (요청/응답)
+
+![좋아요등록.png](resultimage/like/좋아요등록.png)
+![좋아요결과.png](resultimage/like/좋아요결과.png)
+
+### `DELETE /likes?tripId={tripId}`
+좋아요 삭제 (요청/응답)
+
+![좋아요삭제.png](resultimage/like/좋아요삭제.png)
+![좋아요삭제결과.png](resultimage/search/좋아요삭제결과.png)
+
+### `POST /comments?tripId={tripId}`
+댓글 등록 (요청/응답)
+
+![댓글 작성.png](resultimage/comment/댓글작성.png)
+
+### `PUT /comments/{commentId}`
+댓글 수정 (요청/응답)
+
+![댓글 수정.png](resultimage/comment/댓글수정.png)
+
+### `DELETE /comments/{commentId}` 
+댓글 삭제 (요청/응답)
+
+![댓글삭제.png](resultimage/comment/댓글삭제.png)
+
+### `GET /trips/search-by-nickname?query={query}&page={page}` 
+사용자 닉네임으로 여행 검색 (요청/응답)
+
+![닉네임찾기요청.png](resultimage/search/닉네임찾기요청.png)
+![닉네임찾기응답.png](resultimage/search/닉네임찾기응답.png)
+
+### `GET /trips/search-by-trip-name?query={query}&page={page}` 
+여행 이름으로 여행 검색 (요청/응답)
+
+![여행이름검색1.png](resultimage/trip/여행이름검색1.png)
+![여행이름검색2.png](resultimage/trip/여행이름검색2.png)
+
+### `GET /search-place?query={query}&page={page}&size={size}` 
+카카오 OpenApi를 이용한 키워드를 통한 장소 검색 (요청/응답)
+
+![카카오장소검색.png](resultimage/search/카카오장소검색.png)
 ----
-
-### `DELETE /trips/{tripId}` 여행 삭제 (요청/응답 - 성공)
-
-![img_1.png](resultimage/여행삭제요청1.png)
-![img_2.png](resultimage/여행삭제응답성공.png)
-
-----
-
-### `POST /trips/{tripId}/itineraries` 여정 복수 추가 (요청/응답 - 성공)
-
-![img_3.png](resultimage/여정복수추가요청1.png)
-![img_4.png](resultimage/여정복수추가응답성공.png)
-![img_5.png](resultimage/여정복수추가성공DB확인.png)
-
-### `POST /trips/{tripId}/itineraries` 여정 복수 추가 (요청/응답 - 실패 * 없는 여행 ID)
-
-![img_1.png](resultimage/여정복수추가요청2.png)
-![img_1.png](resultimage/여정복수추가응답실패.png)
-![img_1.png](resultimage/여정복수등록실패로그.png)
-----
-
-### `PUT /itineraries/{itineraryId}` 여정 수정 (요청/응답 - 성공)
-
-![img_1.png](resultimage/여정수정요청1.png)
-![img_2.png](resultimage/여정수정응답성공.png)
-![img.png](resultimage/여정수정성공DB확인.png)
-
-### `PUT /itineraries/{itineraryId}` 여정 수정 (요청/응답 - 실패 *날짜 유효성)
-
-![img_3.png](resultimage/여정수정요청2.png)
-![img_4.png](resultimage/여정수정응답실패.png)
-![img_1.png](resultimage/여정수정실패로그.png)
-
-----
-
-### `DELETE /itineraries/{itineraryId}` 여정 삭제 (요청/응답 - 성공)
-
-![img_5.png](resultimage/여정삭제요청1.png)
-![img_6.png](resultimage/여정삭제응답성공.png)
-![img_7.png](resultimage/여정삭제성공DB확인.png)
-
-### `DELETE /itineraries/{itineraryId}` 여정 삭제 (요청/응답 - 실패 *없는 여정 ID)
-
-![img_5.png](resultimage/여정삭제요청2.png)
-![img_1.png](resultimage/여정삭제응답실패.png)
-----
-
-### `GET /trips/{tripid}` 여행+여정 조회 (요청/응답 - 성공)
-
-![img.png](resultimage/여행+여정조회요청1.png)
-![img_1.png](resultimage/여행+여정조회응답성공.png)
-
-### `GET /trips/{tripId}` 여행+여정 조회 (요청/응답 - 실패 *없는 여행 ID)
-
-![img_2.png](resultimage/여행+여정조회요청2.png)
-![img_1.png](resultimage/여행+여정조회응답실패.png)
 
 ## 🖥 평가항목 별 커멘트
 
