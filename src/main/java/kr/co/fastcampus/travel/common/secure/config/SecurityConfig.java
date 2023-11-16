@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.common.secure.config;
 
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import java.util.Arrays;
 import kr.co.fastcampus.travel.common.secure.config.handler.TokenAccessDeniedHandler;
 import kr.co.fastcampus.travel.common.secure.config.handler.TokenAuthenticationEntryPoint;
@@ -8,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,11 +25,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
-    private static final String[] WHITELIST_URLS = {
+    private static final String[] WHITELIST_FOR_ALL_METHOD = {
         "/api/login", "/api/signup", "/api/reissue",
         "/api/search-place", "/api/trips", "/api/trips/search-by-trip-name",
         "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
         "/api/trips/search-by-nickname"
+    };
+    private static final String[] WHITELIST_FOR_GET_METHOD = {
+        "/api/trips", "/api/search-place", "/api/trips/search-by-trip-name"
     };
 
     @Bean
@@ -49,8 +52,15 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(
-                    Arrays.stream(WHITELIST_URLS)
+                    Arrays.stream(WHITELIST_FOR_ALL_METHOD)
                         .map(AntPathRequestMatcher::new)
+                        .toArray(AntPathRequestMatcher[]::new)
+                ).permitAll()
+                .requestMatchers(
+                    Arrays.stream(WHITELIST_FOR_GET_METHOD)
+                        .map(
+                            whitelist -> new AntPathRequestMatcher(whitelist, HttpMethod.GET.name())
+                        )
                         .toArray(AntPathRequestMatcher[]::new)
                 ).permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()

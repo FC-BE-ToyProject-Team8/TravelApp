@@ -1,6 +1,7 @@
 package kr.co.fastcampus.travel.domain.trip.controller;
 
 import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveRequest;
+import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredGet;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredGetWithToken;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithToken;
@@ -42,7 +43,7 @@ class TripControllerGetTripTest extends ApiTest {
         restAssuredPostWithToken(API_TRIPS_ENDPOINT, request);
 
         // when
-        ExtractableResponse<Response> response = restAssuredGetWithToken(API_TRIPS_ENDPOINT);
+        ExtractableResponse<Response> response = restAssuredGet(API_TRIPS_ENDPOINT);
 
         // then
         JsonPath jsonPath = response.jsonPath();
