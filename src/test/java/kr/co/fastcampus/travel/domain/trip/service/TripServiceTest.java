@@ -10,21 +10,13 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
-import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
-import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSaveDto;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.StaySaveDto;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -327,5 +319,27 @@ class TripServiceTest {
 
         // Then
         assertThat(actualResult.isEmpty()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("사용자 닉네임으로 여행 검색")
+    void findTripsByLike() {
+        //given
+        Member member = createMember();
+        List<Trip> trips = IntStream.range(0, 2)
+                .mapToObj(i -> createTripWithMember(member))
+                .toList();
+        Pageable pageable = PageRequest.of(0, 5);
+        given(memberService.findMemberByEmail(member.getEmail()))
+                .willReturn(member);
+        Page<Trip> pageTrips = new PageImpl<>(trips, pageable, trips.size());
+        given(tripRepository.findByLike(member, pageable))
+                .willReturn(pageTrips);
+
+        //when
+        List<TripInfoDto> result = tripService.findTripsByLike(member.getEmail(), pageable);
+
+        //then
+        assertThat(result.size()).isEqualTo(2);
     }
 }

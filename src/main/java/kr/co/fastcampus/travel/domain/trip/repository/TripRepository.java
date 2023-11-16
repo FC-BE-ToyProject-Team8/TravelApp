@@ -13,10 +13,10 @@ import org.springframework.data.repository.query.Param;
 public interface TripRepository extends CrudRepository<Trip, Long> {
 
     @Query(
-        "select t "
-            + "from Trip t "
-            + "left join fetch t.itineraries i "
-            + "where t.id = :id"
+        "SELECT t "
+            + "FROM Trip t "
+            + "LEFT JOIN FETCH t.itineraries i "
+            + "WHERE t.id = :id"
     )
     Optional<Trip> findFetchItineraryById(@Param("id") Long id);
 
@@ -26,4 +26,11 @@ public interface TripRepository extends CrudRepository<Trip, Long> {
     Page<Trip> findTripByMember(Member member, Pageable pageable);
 
     Page<Trip> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    @Query(
+        "SELECT DISTINCT t FROM Trip t "
+                + "LEFT JOIN FETCH Like l ON t = l.trip "
+                + "WHERE l.member = :member"
+    )
+    Page<Trip> findByLike(@Param("member") Member member, Pageable pageable);
 }

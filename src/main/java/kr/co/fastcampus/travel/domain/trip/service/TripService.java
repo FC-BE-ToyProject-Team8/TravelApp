@@ -87,6 +87,14 @@ public class TripService {
         return trips.map(TripInfoDto::from);
     }
 
+    public List<TripInfoDto> findTripsByLike(String email, Pageable pageable) {
+        var member = memberService.findMemberByEmail(email);
+        var trips = tripRepository.findByLike(member, pageable);
+        return trips.stream()
+                .map(TripInfoDto::from)
+                .collect(Collectors.toList());
+    }
+
     public Trip findById(Long id) {
         return tripRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
