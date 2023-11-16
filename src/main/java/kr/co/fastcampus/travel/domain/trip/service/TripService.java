@@ -95,11 +95,6 @@ public class TripService {
                 .collect(Collectors.toList());
     }
 
-    public Trip findByIdForUpdate(Long id) {
-        return tripRepository.findWithOptimisticLockById(id)
-            .orElseThrow(EntityNotFoundException::new);
-    }
-
     public Trip findById(Long id) {
         return tripRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);

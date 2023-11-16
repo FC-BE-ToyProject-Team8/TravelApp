@@ -28,7 +28,8 @@ public class SecurityConfig {
     private static final String[] WHITELIST_URLS = {
         "/api/login", "/api/signup", "/api/reissue",
         "/api/search-place", "/api/trips", "/api/trips/search-by-trip-name",
-        "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
+        "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+        "/api/trips/search-by-nickname"
     };
 
     @Bean
