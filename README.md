@@ -1,5 +1,13 @@
 # TravelApp
 
+## 프로젝트 실행을 위한 환경 세팅
+
+```shell
+docker run -d -p 6379:6379 --name my-redis redis
+```
+
+- 6379 포트로 Redis가 실행중이어야 SpringBootApplication 및 테스트가 정상 실행됩니다!
+
 ## 📍 소개
 
 ***
