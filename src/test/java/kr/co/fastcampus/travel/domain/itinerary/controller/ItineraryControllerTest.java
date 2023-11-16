@@ -44,7 +44,6 @@
 //        String url = "/api/itineraries/{itineraryId}";
 //        Trip trip = createTrip();
 //        tripRepository.save(trip);
-//
 //        Itinerary itinerary = createItinerary(trip);
 //        itineraryRepository.save(itinerary);
 //
