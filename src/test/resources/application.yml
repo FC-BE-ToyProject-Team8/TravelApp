@@ -32,4 +32,4 @@ kakao:
 
 redis:
   host: localhost
-  port: 45612
+  port: 6379
