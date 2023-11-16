@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.SecurityDtoMapper;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.ReissueRequest;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.response.LoginResponse;
 import kr.co.fastcampus.travel.domain.secure.service.SecurityService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,12 @@ public class SecurityController {
     @PostMapping("/login")
     public ResponseBody<LoginResponse> login(@RequestBody @Valid LoginReqeust reqeust) {
         var response = securityService.login(mapper.of(reqeust));
+        return ResponseBody.ok(mapper.of(response));
+    }
+
+    @PostMapping("/reissue")
+    public ResponseBody<LoginResponse> reissue(@RequestBody ReissueRequest request) {
+        var response = securityService.reissue(mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
     }
 }
