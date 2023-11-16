@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
@@ -50,15 +50,6 @@ public class ItineraryService {
         return ItineraryDto.from(itinerary);
     }
 
-    public void deleteById(Long id, String email) {
-        var itinerary = findById(id);
-        String writerEmail = itinerary.getTrip().getMember().getEmail();
-        if (!writerEmail.equals(email)) {
-            throw new MemberMismatchException();
-        }
-        itineraryRepository.delete(itinerary);
-    }
-
     private Itinerary findById(Long id) {
         return itineraryRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
@@ -68,5 +59,15 @@ public class ItineraryService {
         if (!itinerary.getTrip().getMember().getEmail().equals(memberEmail)) {
             throw new MemberMismatchException();
         }
+    }
+
+    @Transactional
+    public void deleteById(Long id, String email) {
+        var itinerary = findById(id);
+        String writerEmail = itinerary.getTrip().getMember().getEmail();
+        if (!writerEmail.equals(email)) {
+            throw new MemberMismatchException();
+        }
+        itineraryRepository.delete(itinerary);
     }
 }
