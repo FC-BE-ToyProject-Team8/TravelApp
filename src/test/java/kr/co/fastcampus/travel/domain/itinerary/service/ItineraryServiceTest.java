@@ -145,14 +145,35 @@ class ItineraryServiceTest {
     void deleteItinerary() {
         //given
         Trip trip = createTrip();
+        Member member = createMember();
+        trip.setMember(member);
         Itinerary itinerary = createItinerary(trip);
         when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary));
 
         //when
-        itineraryService.deleteById(itinerary.getId());
+        itineraryService.deleteById(itinerary.getId(), "email@email.com");
 
         //then
         verify(itineraryRepository).delete(itinerary);
+    }
+
+    @Test
+    @DisplayName("작성자가 아닌 여정 삭제 예외")
+    void deleteItineraryNotWriter() {
+        //given
+        Trip trip = createTrip();
+        Member member = createMember();
+        trip.setMember(member);
+        Itinerary itinerary = createItinerary(trip);
+        when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary));
+
+        //when
+        MemberMismatchException e =
+            assertThrows(MemberMismatchException.class,
+                () -> itineraryService.deleteById(itinerary.getId(), "notwriter@email.com"));
+
+        // then
+        assertThat(e.getMessage()).isEqualTo("작성자가 아니므로 해당 권한이 없습니다.");
     }
 
     @Test
@@ -163,7 +184,8 @@ class ItineraryServiceTest {
 
         // when
         EntityNotFoundException e =
-            assertThrows(EntityNotFoundException.class, () -> itineraryService.deleteById(2L));
+            assertThrows(EntityNotFoundException.class,
+                () -> itineraryService.deleteById(2L, null));
 
         // then
         assertThat(e.getMessage()).isEqualTo("존재하지 않는 엔티티입니다.");

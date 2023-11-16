@@ -58,8 +58,12 @@ public class ItineraryController {
 
     @DeleteMapping("/{itineraryId}")
     @Operation(summary = "여정 삭제")
-    public ResponseBody<Void> deleteItinerary(@PathVariable Long itineraryId) {
-        itineraryService.deleteById(itineraryId);
+    public ResponseBody<Void> deleteItinerary(
+        @PathVariable Long itineraryId,
+        Principal principal
+    ) {
+        String memberEmail = principal.getName();
+        itineraryService.deleteById(itineraryId, memberEmail);
         return ResponseBody.ok();
     }
 }
