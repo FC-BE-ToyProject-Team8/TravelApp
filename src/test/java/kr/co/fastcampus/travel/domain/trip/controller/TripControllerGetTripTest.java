@@ -74,7 +74,7 @@ class TripControllerGetTripTest extends ApiTest {
         IntStream.range(1, 3)
                 .forEach(i -> restAssuredPostWithTokenLogin("/api/likes?tripId=" + i));
 
-        String url = API_TRIPS_ENDPOINT + "/search-by-like";
+        String url = API_TRIPS_ENDPOINT + "/my-likes";
 
         // when
         ExtractableResponse<Response> response = restAssuredGetWithToken(url);
