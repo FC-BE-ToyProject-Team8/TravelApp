@@ -32,7 +32,7 @@ public class SecurityConfig {
         "/api/trips/search-by-nickname"
     };
     private static final String[] WHITELIST_FOR_GET_METHOD = {
-        "/api/trips", "/api/search-place", "/api/trips/search-by-trip-name"
+        "/api/trips", "/api/trips/{tripId}", "/api/search-place", "/api/trips/search-by-trip-name"
     };
 
     @Bean
