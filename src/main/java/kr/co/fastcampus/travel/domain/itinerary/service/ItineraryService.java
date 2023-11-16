@@ -6,7 +6,6 @@ import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.repository.ItineraryRepository;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.ItineraryUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
-import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,13 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItineraryService {
 
     private final ItineraryRepository itineraryRepository;
-    private final MemberService memberService;
-
-    @Transactional(readOnly = true)
-    public ItineraryDto findItineraryById(Long id) {
-        var itinerary = findById(id);
-        return ItineraryDto.from(itinerary);
-    }
 
     public ItineraryDto editItinerary(Long id, String memberEmail, ItineraryUpdateDto dto) {
         var itinerary = findById(id);

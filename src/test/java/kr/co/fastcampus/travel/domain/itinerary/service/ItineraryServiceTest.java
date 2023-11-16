@@ -32,7 +32,6 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.Route
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.StayUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
-import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,9 +45,6 @@ class ItineraryServiceTest {
 
     @Mock
     private ItineraryRepository itineraryRepository;
-
-    @Mock
-    private MemberService memberService;
 
     @InjectMocks
     private ItineraryService itineraryService;

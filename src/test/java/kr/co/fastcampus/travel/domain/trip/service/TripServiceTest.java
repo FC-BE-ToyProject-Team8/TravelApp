@@ -19,7 +19,6 @@ import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
 import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
-import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
@@ -27,7 +26,6 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.RouteSa
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.StaySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
-import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
@@ -53,9 +51,6 @@ class TripServiceTest {
     private TripRepository tripRepository;
     @Mock
     private MemberService memberService;
-
-    @Mock
-    private MemberRepository memberRepository;
 
     @InjectMocks
     private TripService tripService;

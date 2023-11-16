@@ -12,5 +12,4 @@ public enum Transportation {
     TRAIN,
     SHIP,
     AIRPLANE
-    ;
 }
