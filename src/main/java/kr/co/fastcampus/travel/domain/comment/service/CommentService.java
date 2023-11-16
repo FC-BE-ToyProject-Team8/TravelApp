@@ -38,6 +38,7 @@ public class CommentService {
         Comment comment = dto.toEntity();
         comment.setMember(member);
         comment.setTrip(trip);
+        trip.addComment(comment);
 
         Comment newComment = commentRepository.save(comment);
         return CommentInfoDto.from(newComment);

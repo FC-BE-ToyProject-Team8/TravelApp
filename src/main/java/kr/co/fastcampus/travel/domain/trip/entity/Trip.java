@@ -104,6 +104,10 @@ public class Trip extends BaseEntity {
         itineraries.add(itinerary);
     }
 
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
     public void setMember(Member member) {
         this.member = member;
     }
