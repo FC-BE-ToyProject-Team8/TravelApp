@@ -94,7 +94,6 @@ public class Trip extends BaseEntity {
         this.startDate = tripToBeUpdated.getStartDate();
         this.endDate = tripToBeUpdated.getEndDate();
         this.isForeign = tripToBeUpdated.isForeign();
-        this.likeCount = tripToBeUpdated.getLikeCount();
     }
 
     public void updateLikeCount(Long changedLikeCount) {
