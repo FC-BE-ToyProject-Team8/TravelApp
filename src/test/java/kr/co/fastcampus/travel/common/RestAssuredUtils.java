@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 import org.springframework.http.MediaType;
 
 public final class RestAssuredUtils {
@@ -140,5 +141,34 @@ public final class RestAssuredUtils {
             .put(url)
             .then().log().all()
             .extract();
+    }
+
+
+    public static ExtractableResponse<Response> restAssuredPostWithToken(
+            String url,
+            LoginReqeust member
+    ) {
+        String accessToken = TokenUtils.getAccessToken(member);
+
+        return restAssuredWithToken(accessToken)
+                .when()
+                .post(url)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPostWithToken(
+            String url,
+            Object request,
+            LoginReqeust member
+            ) {
+        String accessToken = TokenUtils.getAccessToken(member);
+
+        return restAssuredWithToken(accessToken)
+                .body(request)
+                .when()
+                .post(url)
+                .then().log().all()
+                .extract();
     }
 }

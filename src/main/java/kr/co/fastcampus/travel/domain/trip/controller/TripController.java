@@ -100,4 +100,15 @@ public class TripController {
         Page<TripInfoDto> response = tripService.searchByTripName(query, pageable);
         return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
     }
+
+    @GetMapping("/search-by-like")
+    @Operation(summary = "좋아요 누른 여행 검색")
+    public ResponseBody<List<TripSummaryResponse>> searchByLike(
+            Principal principal,
+            @PageableDefault(size = 5) Pageable pageable
+    ) {
+        String email = principal.getName();
+        var response = tripService.findTripsByLike(email, pageable);
+        return ResponseBody.ok(mapper.of(response));
+    }
 }
