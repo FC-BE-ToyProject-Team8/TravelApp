@@ -172,7 +172,7 @@ class TripServiceTest {
             .isForeign(false)
             .build();
 
-        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+        given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
 
         // when, then
         assertThatThrownBy(() -> tripService.addTrip(tripSaveDto, member.getEmail()))
