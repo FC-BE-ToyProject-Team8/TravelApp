@@ -4,12 +4,15 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 import java.time.LocalDate;
-import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
 import kr.co.fastcampus.travel.common.exception.InvalidLikeCancelException;
+import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
@@ -39,20 +42,20 @@ class LikeServiceTest {
 
     @Test
     @DisplayName("좋아요 등록")
-    void saveLike() throws InterruptedException {
+    void saveLike() {
 
         //given
         Long tripId = 1L;
         Trip trip = createTrip();
+        Member member = createMember();
         given(tripService.findById(tripId)).willReturn(trip);
+        given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
 
         //when
-        IntStream.range(0, 3)
-            .mapToObj(i -> createMember())
-            .forEach(member -> likeService.saveLike(tripId, member.getEmail()));
+        likeService.saveLike(tripId, member.getEmail());
 
         //then
-        assertThat(trip.getLikeCount()).isEqualTo(3);
+        verify(likeRepository, atLeastOnce()).save(any(Like.class));
     }
 
     @Test
@@ -85,7 +88,6 @@ class LikeServiceTest {
             .startDate(LocalDate.parse("2023-01-01"))
             .endDate(LocalDate.parse("2023-01-01"))
             .isForeign(false)
-            .likeCount(1L)
             .build();
         given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
         given(tripService.findById(tripId)).willReturn(trip);
