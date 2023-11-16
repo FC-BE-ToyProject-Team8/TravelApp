@@ -12,8 +12,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
-import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
 import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentSaveDto;
@@ -104,7 +104,7 @@ public class CommentServiceTest {
         // when, then
         assertThatThrownBy(() ->
             commentService.editComment(commentId, newMemberEmail, request))
-            .isInstanceOf(CommentMemberMismatchException.class);
+            .isInstanceOf(MemberMismatchException.class);
     }
 
     @Test

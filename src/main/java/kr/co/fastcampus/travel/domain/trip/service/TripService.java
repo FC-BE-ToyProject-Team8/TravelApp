@@ -62,7 +62,7 @@ public class TripService {
     }
 
     public List<TripInfoDto> findAllTrips() {
-        var trips = tripRepository.findAll();
+        List<Trip> trips = tripRepository.findAll();
         return trips.stream()
             .map(TripInfoDto::from)
             .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class TripService {
     public List<ItineraryDto> addItineraries(Long id, List<ItinerarySaveDto> dto) {
         var trip = findById(id);
         dto.stream()
-            .map(ItinerarySaveDto::toEntity)
+            .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
             .forEach(trip::addItinerary);
         return trip.getItineraries().stream()
             .map(ItineraryDto::from)
