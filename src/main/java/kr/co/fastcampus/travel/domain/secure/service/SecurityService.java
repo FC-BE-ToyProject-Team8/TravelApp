@@ -40,7 +40,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     public TokenDto reissue(ReissueDto dto) {
-        Token findToken = tokenRedisRepository.findByEmail(dto.email())
+        Token findToken = tokenRedisRepository.findById(dto.email())
                 .orElseThrow(InvalidAuthenticationException::new);
         if (!findToken.getRefreshToken().equals(dto.refreshToken())) {
             throw new InvalidAuthenticationException();
