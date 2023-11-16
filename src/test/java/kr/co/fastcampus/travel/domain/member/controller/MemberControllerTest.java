@@ -29,7 +29,7 @@ class MemberControllerTest extends ApiTest {
     @DisplayName("회원가입")
     void save() {
         // given
-        String url = "/signup";
+        String url = "/api/signup";
         MemberSaveRequest request = createMemberSaveReqeust();
 
         // when
@@ -47,7 +47,7 @@ class MemberControllerTest extends ApiTest {
         // given
         saveMember(createMember());
 
-        String url = "/signup";
+        String url = "/api/signup";
         MemberSaveRequest request = createMemberSaveReqeust();
 
         // when
@@ -63,7 +63,7 @@ class MemberControllerTest extends ApiTest {
         // given
         saveMember(createMember());
 
-        String url = "/signup";
+        String url = "/api/signup";
         MemberSaveRequest request = new MemberSaveRequest(
             "otherEmail",
             NAME,

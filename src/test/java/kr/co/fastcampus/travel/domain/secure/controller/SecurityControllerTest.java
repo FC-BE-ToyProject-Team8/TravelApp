@@ -28,7 +28,7 @@ class SecurityControllerTest extends ApiTest {
         // given
         memberService.save(createMemberSaveDto());
 
-        String url = "/login";
+        String url = "/api/login";
         LoginReqeust request = new LoginReqeust(EMAIL, PASSWORD);
 
         // when
@@ -48,7 +48,7 @@ class SecurityControllerTest extends ApiTest {
         // given
         memberService.save(createMemberSaveDto());
 
-        String url = "/login";
+        String url = "/api/login";
         LoginReqeust request = new LoginReqeust("otherEmail", PASSWORD);
 
         // when
@@ -64,7 +64,7 @@ class SecurityControllerTest extends ApiTest {
         // given
         memberService.save(createMemberSaveDto());
 
-        String url = "/login";
+        String url = "/api/login";
         LoginReqeust request = new LoginReqeust(EMAIL, "otherPassword");
 
         // when

@@ -17,7 +17,7 @@ public final class TokenUtils {
 
     public static String getAccessToken() {
         createMember();
-        String url = "/login";
+        String url = "/api/login";
         LoginReqeust request = new LoginReqeust(EMAIL, PASSWORD);
         return GRANT_TYPE + restAssuredPostBody(url, request)
             .jsonPath()
@@ -25,7 +25,7 @@ public final class TokenUtils {
     }
 
     public static String getAccessToken(MemberSaveRequest member) {
-        String url = "/login";
+        String url = "/api/login";
         LoginReqeust request = new LoginReqeust(member.email(), member.password());
         return GRANT_TYPE + restAssuredPostBody(url, request)
             .jsonPath()
@@ -33,7 +33,7 @@ public final class TokenUtils {
     }
 
     private static void createMember() {
-        String url = "/signup";
+        String url = "/api/signup";
         MemberSaveRequest request = createMemberSaveReqeust();
         restAssuredPostBody(url, request);
     }
