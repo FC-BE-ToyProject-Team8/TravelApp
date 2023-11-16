@@ -12,7 +12,7 @@ public record TripSummaryResponse(
     LocalDate startDate,
     LocalDate endDate,
     boolean isForeign,
-    Long likeCount
+    int likeCount
 ) {
 
     public static TripSummaryResponse from(Trip trip) {

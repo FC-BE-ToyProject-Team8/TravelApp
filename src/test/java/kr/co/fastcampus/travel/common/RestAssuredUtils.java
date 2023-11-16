@@ -105,6 +105,18 @@ public final class RestAssuredUtils {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> restAssuredDeleteWithTokenLogin(
+            String url
+    ) {
+        String accessToken = TokenUtils.getAccessToken(createLoginRequest());
+
+        return restAssuredWithToken(accessToken)
+                .when()
+                .delete(url)
+                .then().log().all()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> restAssuredDeleteWithToken(
         String url,
         String accessToken

@@ -20,7 +20,6 @@ public record TripSaveDto(
             .endDate(endDate)
             .isForeign(isForeign)
             .member(member)
-            .likeCount(0L)
             .build();
     }
 }
