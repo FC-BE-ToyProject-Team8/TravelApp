@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
 import kr.co.fastcampus.travel.common.exception.InvalidLikeCancelException;
-import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
@@ -89,7 +88,7 @@ class LikeServiceTest {
 
     @Test
     @DisplayName("좋아요 취소")
-    void deleteLike() throws InterruptedException {
+    void deleteLike() {
 
         //given
         Long tripId = 1L;
@@ -103,7 +102,6 @@ class LikeServiceTest {
             .build();
         given(memberService.findByEmail(member.getEmail())).willReturn(member);
         given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
-        Like like = Like.builder().member(member).trip(trip).build();
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
         likeService.deleteLike(tripId, member.getEmail());
 

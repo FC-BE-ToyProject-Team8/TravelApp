@@ -21,9 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LikeService {
 
     private final TripService tripService;
-
     private final LikeRepository likeRepository;
-
     private final MemberService memberService;
 
     @Transactional(isolation = Isolation.READ_COMMITTED)

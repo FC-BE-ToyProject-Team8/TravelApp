@@ -1,8 +1,6 @@
 package kr.co.fastcampus.travel.domain.comment.controller;
 
-import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredDeleteWithToken;
-import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithToken;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPutWithToken;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.API_TRIPS_ENDPOINT;
@@ -19,7 +17,6 @@ import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentSaveRequest;
 import kr.co.fastcampus.travel.domain.comment.controller.dto.request.CommentUpdateRequest;
 import kr.co.fastcampus.travel.domain.comment.controller.dto.response.CommentResponse;
-import kr.co.fastcampus.travel.domain.member.controller.dto.request.MemberSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
