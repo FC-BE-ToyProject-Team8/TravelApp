@@ -87,9 +87,12 @@ public class TripService {
         return trips.map(TripInfoDto::from);
     }
 
-    public Trip findByIdForUpdate(Long id) {
-        return tripRepository.findWithOptimisticLockById(id)
-            .orElseThrow(EntityNotFoundException::new);
+    public List<TripInfoDto> findTripsByLike(String email, Pageable pageable) {
+        var member = memberService.findMemberByEmail(email);
+        var trips = tripRepository.findByLike(member, pageable);
+        return trips.stream()
+                .map(TripInfoDto::from)
+                .collect(Collectors.toList());
     }
 
     public Trip findById(Long id) {

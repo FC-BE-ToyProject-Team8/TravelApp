@@ -27,7 +27,9 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private static final String[] WHITELIST_FOR_ALL_METHOD = {
         "/api/login", "/api/signup", "/api/reissue",
-        "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
+        "/api/search-place", "/api/trips", "/api/trips/search-by-trip-name",
+        "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+        "/api/trips/search-by-nickname"
     };
     private static final String[] WHITELIST_FOR_GET_METHOD = {
         "/api/trips", "/api/search-place", "/api/trips/search-by-trip-name"
