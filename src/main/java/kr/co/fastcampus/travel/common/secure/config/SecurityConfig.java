@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.common.secure.config;
 
+import java.util.Arrays;
 import kr.co.fastcampus.travel.common.secure.config.handler.TokenAccessDeniedHandler;
 import kr.co.fastcampus.travel.common.secure.config.handler.TokenAuthenticationEntryPoint;
 import kr.co.fastcampus.travel.common.secure.domain.JwtProvider;
@@ -24,6 +25,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
+    private static final String[] WHITELIST_URLS = {
+        "/login", "/signup", "/reissue",
+        "/api/search-place", "/api/trips", "/api/trips/search-by-trip-name",
+        "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
+    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,32 +48,9 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(
-                    new AntPathRequestMatcher("/login", HttpMethod.POST.name())
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/signup", HttpMethod.POST.name())
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/reissue", HttpMethod.POST.name())
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/search-place", HttpMethod.GET.name())
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/trips", HttpMethod.GET.name())
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/trips/search-by-trip-name",
-                        HttpMethod.GET.name())
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/swagger-ui.html")
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/swagger-ui/**")
-                ).permitAll()
-                .requestMatchers(
-                    new AntPathRequestMatcher("/v3/api-docs/**")
+                    Arrays.stream(WHITELIST_URLS)
+                        .map(AntPathRequestMatcher::new)
+                        .toArray(AntPathRequestMatcher[]::new)
                 ).permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated())
