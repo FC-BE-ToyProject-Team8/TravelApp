@@ -4,12 +4,10 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.RestAssuredUtils;
-import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -27,9 +25,6 @@ public class LikeControllerTest extends ApiTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private LikeRepository likeRepository;
-
     @Test
     @DisplayName("좋아요 등록")
     void saveLike() {
@@ -46,8 +41,6 @@ public class LikeControllerTest extends ApiTest {
             = RestAssuredUtils.restAssuredPostWithToken(url);
 
         //then
-        JsonPath jsonPath = response.jsonPath();
-        String status = jsonPath.getString("status");
         Trip foundTrip = tripRepository.findById(tripId).orElseThrow();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -74,8 +67,6 @@ public class LikeControllerTest extends ApiTest {
             = RestAssuredUtils.restAssuredDeleteWithToken(url);
 
         //then
-        JsonPath jsonPath = response.jsonPath();
-        String status = jsonPath.getString("status");
         Trip foundTrip = tripRepository.findById(tripId).orElseThrow();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());

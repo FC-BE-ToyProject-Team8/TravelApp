@@ -30,8 +30,6 @@ public class TripService {
     private final TripRepository tripRepository;
     private final MemberService memberService;
 
-    private final int pageSize = 5;
-
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto, String memberEmail) {
         Member member = findMember(memberEmail);
@@ -43,11 +41,6 @@ public class TripService {
         var trip = tripRepository.findFetchItineraryById(id)
             .orElseThrow(EntityNotFoundException::new);
         return TripItineraryInfoDto.from(trip);
-    }
-
-    public TripInfoDto findTripById(Long id) {
-        var trip = findById(id);
-        return TripInfoDto.from(trip);
     }
 
     public Trip findById(Long id) {
