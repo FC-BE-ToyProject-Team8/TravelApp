@@ -50,8 +50,8 @@ public class EmbeddedRedisConfig {
     }
 
     private Process executeGrepProcessCommand(int port) throws IOException {
-        String OS = System.getProperty("os.name").toLowerCase();
-        if (OS.contains("win")) {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
             String command = String.format("netstat -nao | find \"LISTEN\" | find \"%d\"", port);
             String[] shell = {"cmd.exe", "/y", "/c", command};
             return Runtime.getRuntime().exec(shell);
@@ -70,9 +70,10 @@ public class EmbeddedRedisConfig {
             while ((line = input.readLine()) != null) {
                 pidInfo.append(line);
             }
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 
-        return !StringUtils.isEmpty(pidInfo.toString());
+        return StringUtils.hasText(pidInfo.toString());
     }
 }

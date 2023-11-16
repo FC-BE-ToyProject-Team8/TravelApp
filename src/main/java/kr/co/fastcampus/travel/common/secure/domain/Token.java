@@ -26,7 +26,13 @@ public class Token {
     private String accessToken;
 
     @Builder
-    private Token(String email, String role, String grantType, String accessToken, String refreshToken) {
+    private Token(
+            String email,
+            String role,
+            String grantType,
+            String accessToken,
+            String refreshToken
+    ) {
         this.email = email;
         this.role = role;
         this.grantType = grantType;
