@@ -9,6 +9,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
+import kr.co.fastcampus.travel.domain.comment.entity.Comment;
+import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.like.entity.Like;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
@@ -33,6 +35,8 @@ class TripRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
     private LikeRepository likeRepository;
 
     private Member member;
@@ -55,9 +59,11 @@ class TripRepositoryTest {
                 });
 
         tripRepository.save(trip);
+        saveComment(member, trip);
+        saveLike(member, trip);
 
         // when
-        Trip result = tripRepository.findFetchItineraryById(trip.getId()).orElse(null);
+        Trip result = tripRepository.findFetchDetailById(trip.getId()).orElse(null);
 
         // then
         assertThat(result).isNotNull();
@@ -74,7 +80,7 @@ class TripRepositoryTest {
         tripRepository.save(trip);
 
         // when
-        Trip result = tripRepository.findFetchItineraryById(trip.getId()).orElse(null);
+        Trip result = tripRepository.findFetchDetailById(trip.getId()).orElse(null);
 
         // then
         assertThat(result).isNotNull();
@@ -125,7 +131,6 @@ class TripRepositoryTest {
                 .startDate(LocalDate.now())
                 .endDate(LocalDate.now().plusDays(1))
                 .isForeign(true)
-                .likeCount(0L)
                 .member(member)
                 .build();
         tripRepository.save(trip);
@@ -136,6 +141,15 @@ class TripRepositoryTest {
         Member member = createMember();
         memberRepository.save(member);
         return member;
+    }
+
+    private void saveComment(Member member, Trip trip) {
+        Comment comment = Comment.builder()
+                .trip(trip)
+                .content("content")
+                .member(member)
+                .build();
+        commentRepository.save(comment);
     }
 
     private void saveLike(Member member, Trip trip) {

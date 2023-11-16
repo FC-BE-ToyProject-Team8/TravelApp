@@ -39,8 +39,8 @@ public class CommentService {
         comment.setMember(member);
         comment.setTrip(trip);
 
-        Comment newComment = commentRepository.save(comment);
-        return CommentInfoDto.from(newComment);
+        commentRepository.save(comment);
+        return CommentInfoDto.from(comment);
     }
 
     @Transactional

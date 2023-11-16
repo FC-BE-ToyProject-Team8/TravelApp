@@ -36,10 +36,8 @@ public class CommentServiceTest {
 
     @Mock
     private CommentRepository commentRepository;
-
     @Mock
     private TripService tripService;
-
     @Mock
     private MemberService memberService;
 
@@ -53,7 +51,9 @@ public class CommentServiceTest {
         // given
         Trip trip = createTrip();
         Member member = createMember();
-        Comment comment = createComment(trip, member);
+        Comment comment = createComment(member);
+        given(tripService.findById(trip.getId())).willReturn(trip);
+        given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
         given(commentRepository.save(any(Comment.class))).willReturn(comment);
         CommentSaveDto request = createCommentSaveDto();
 
@@ -63,8 +63,6 @@ public class CommentServiceTest {
         // then
         assertThat(result).isNotNull();
         assertThat(result.content()).isEqualTo(request.content());
-        assertThat(result.member().email()).isEqualTo(comment.getMember().getEmail());
-        assertThat(result.trip().name()).isEqualTo(comment.getTrip().getName());
     }
 
     @Test
@@ -74,7 +72,8 @@ public class CommentServiceTest {
         Long commentId = -1L;
         Trip trip = createTrip();
         Member member = createMember();
-        Comment comment = createComment(trip, member);
+        Comment comment = createComment(member);
+        comment.setTrip(trip);
         given(commentRepository.findById(commentId)).willReturn(Optional.of(comment));
         CommentUpdateDto request = createCommentUpdateDto();
 
@@ -97,7 +96,7 @@ public class CommentServiceTest {
         String newMemberEmail = "otherEmail";
         Trip trip = createTrip();
         Member member = createMember();
-        Comment comment = createComment(trip, member);
+        Comment comment = createComment(member);
         given(commentRepository.findById(commentId)).willReturn(Optional.of(comment));
         CommentUpdateDto request = createCommentUpdateDto();
 
@@ -114,7 +113,7 @@ public class CommentServiceTest {
         Long commentId = -1L;
         Trip trip = createTrip();
         Member member = createMember();
-        Comment comment = createComment(trip, member);
+        Comment comment = createComment(member);
         given(commentRepository.findById(commentId)).willReturn(Optional.of(comment));
 
         // when

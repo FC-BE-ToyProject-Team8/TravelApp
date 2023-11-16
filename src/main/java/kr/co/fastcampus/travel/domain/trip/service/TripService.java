@@ -10,8 +10,8 @@ import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripDetailDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
-import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -46,10 +46,10 @@ public class TripService {
         return memberService.findMemberByEmail(memberEmail);
     }
 
-    public TripItineraryInfoDto findTripItineraryById(Long id) {
-        var trip = tripRepository.findFetchItineraryById(id)
+    public TripDetailDto findTripDetailById(Long id) {
+        var trip = tripRepository.findFetchDetailById(id)
             .orElseThrow(EntityNotFoundException::new);
-        return TripItineraryInfoDto.from(trip);
+        return TripDetailDto.from(trip);
     }
 
     @Transactional

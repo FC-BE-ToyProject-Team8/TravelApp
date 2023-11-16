@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Version;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,8 +49,8 @@ public class Trip extends BaseEntity {
     @Column(nullable = false)
     private boolean isForeign;
 
-    @ColumnDefault("0")
-    private Long likeCount;
+    @Formula("(SELECT count(*) FROM like_trip l WHERE l.trip_id = id)")
+    private int likeCount;
 
     @OneToMany(
         fetch = FetchType.LAZY, mappedBy = "trip",
@@ -65,16 +64,12 @@ public class Trip extends BaseEntity {
     )
     private final List<Comment> comments = new ArrayList<>();
 
-    @Version
-    private Long version;
-
     @Builder
     private Trip(
         String name,
         LocalDate startDate,
         LocalDate endDate,
         boolean isForeign,
-        Long likeCount,
         Member member
     ) {
         if (endDate.isBefore(startDate)) {
@@ -85,7 +80,6 @@ public class Trip extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isForeign = isForeign;
-        this.likeCount = likeCount;
         this.member = member;
     }
 
@@ -96,12 +90,12 @@ public class Trip extends BaseEntity {
         this.isForeign = tripToBeUpdated.isForeign();
     }
 
-    public void updateLikeCount(Long changedLikeCount) {
-        this.likeCount = changedLikeCount;
-    }
-
     public void addItinerary(Itinerary itinerary) {
         itineraries.add(itinerary);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
     public void setMember(Member member) {

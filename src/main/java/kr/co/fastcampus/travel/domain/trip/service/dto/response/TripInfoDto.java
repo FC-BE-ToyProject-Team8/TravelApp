@@ -11,7 +11,7 @@ public record TripInfoDto(
     LocalDate startDate,
     LocalDate endDate,
     boolean isForeign,
-    Long likeCount
+    int likeCount
 ) {
 
     public static TripInfoDto from(Trip trip) {

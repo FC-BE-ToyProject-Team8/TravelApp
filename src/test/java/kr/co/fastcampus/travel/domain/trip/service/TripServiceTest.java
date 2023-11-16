@@ -23,8 +23,8 @@ import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripSaveDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.request.TripUpdateDto;
+import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripDetailDto;
 import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripInfoDto;
-import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInfoDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,11 +51,11 @@ class TripServiceTest {
     @DisplayName("여행 + 여정 조회 결과 없음")
     void findTripById_failureNotFoundException() {
         // given
-        when(tripRepository.findFetchItineraryById(-1L)).thenReturn(Optional.empty());
+        when(tripRepository.findFetchDetailById(-1L)).thenReturn(Optional.empty());
 
         // when
         // then
-        assertThatThrownBy(() -> tripService.findTripItineraryById(-1L))
+        assertThatThrownBy(() -> tripService.findTripDetailById(-1L))
             .isInstanceOf(EntityNotFoundException.class);
     }
 
@@ -63,11 +63,11 @@ class TripServiceTest {
     @DisplayName("여행 + 여정 조회")
     void findTripById_success() {
         // given
-        when(tripRepository.findFetchItineraryById(-1L))
+        when(tripRepository.findFetchDetailById(-1L))
             .thenReturn(Optional.of(createTrip()));
 
         // when
-        TripItineraryInfoDto result = tripService.findTripItineraryById(-1L);
+        TripDetailDto result = tripService.findTripDetailById(-1L);
 
         // then
         assertThat(result).isNotNull();

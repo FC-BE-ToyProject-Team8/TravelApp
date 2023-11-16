@@ -31,7 +31,6 @@ public class LikeService {
             throw new DuplicatedLikeException();
         }
         likeRepository.save(createLike(trip, member));
-        trip.updateLikeCount(trip.getLikeCount() + 1);
     }
 
     @Transactional
@@ -40,7 +39,6 @@ public class LikeService {
         Member member = findMember(memberEmail);
         if (isExisted(trip, member)) {
             likeRepository.deleteByTripAndMember(trip, member);
-            trip.updateLikeCount(trip.getLikeCount() - 1);
         } else {
             throw new InvalidLikeCancelException();
         }
