@@ -1,5 +1,6 @@
 package kr.co.fastcampus.travel.domain.itinerary.service;
 
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeUpdateDto;
@@ -7,6 +8,7 @@ import static kr.co.fastcampus.travel.common.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createStayUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTrip;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createTripWithMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
@@ -28,6 +31,8 @@ import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.Lodge
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.RouteUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.update.StayUpdateDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
+import kr.co.fastcampus.travel.domain.member.entity.Member;
+import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +47,9 @@ class ItineraryServiceTest {
     @Mock
     private ItineraryRepository itineraryRepository;
 
+    @Mock
+    private MemberService memberService;
+
     @InjectMocks
     private ItineraryService itineraryService;
 
@@ -50,9 +58,9 @@ class ItineraryServiceTest {
     void editAllItinerary() {
         // given
         Long id = -1L;
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         Itinerary givenItinerary = createItinerary(trip);
-
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givenItinerary));
 
         RouteUpdateDto route = createRouteUpdateDto();
@@ -62,9 +70,10 @@ class ItineraryServiceTest {
         ItineraryUpdateDto request = createItineraryUpdateDto(route, lodge, stay);
 
         // when
-        ItineraryDto editItinerary = itineraryService.editItinerary(id, request);
+        ItineraryDto editItinerary = itineraryService.editItinerary(id, member.getEmail(), request);
 
         // then
+        assertThat(editItinerary).isNotNull();
         assertThat(editItinerary.lodge().placeName()).isEqualTo("장소 업데이트");
         assertThat(editItinerary.lodge().address()).isEqualTo("주소 업데이트");
         assertThat(editItinerary.lodge().checkInAt()).isEqualTo("2023-01-01T15:00:00");
@@ -76,17 +85,17 @@ class ItineraryServiceTest {
     void editPartItinerary() {
         // given
         Long id = -1L;
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         Route route = createRoute();
         Itinerary givneItinerary = createItinerary(trip, route, null, null);
-
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
 
         RouteUpdateDto editRouteRequest = createRouteUpdateDto();
         ItineraryUpdateDto request = createItineraryUpdateDto(editRouteRequest, null, null);
 
         // when
-        ItineraryDto editItinerary = itineraryService.editItinerary(id, request);
+        ItineraryDto editItinerary = itineraryService.editItinerary(id, member.getEmail(), request);
 
         // then
         assertThat(editItinerary.route().transportation()).isEqualTo(Transportation.SUBWAY);
@@ -100,14 +109,39 @@ class ItineraryServiceTest {
     void editNotExistItineraryThenThrowException() {
         // given
         Long noExistId = 1L;
+        Member member = createMember();
         given(itineraryRepository.findById(noExistId))
             .willReturn(Optional.empty());
 
         ItineraryUpdateDto request = createItineraryUpdateDto();
 
         // when , then
-        assertThatThrownBy(() -> itineraryService.editItinerary(noExistId, request))
+        assertThatThrownBy(
+            () -> itineraryService.editItinerary(noExistId, member.getEmail(), request))
             .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("여정 수정시 여행을 등록한 사람이 아닌 사람이 수정할 경우")
+    void editItineraryByDifferentMember() {
+        // given
+        Long id = -1L;
+        String newMemberEmail = "otherEmail";
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
+        Itinerary givenItinerary = createItinerary(trip);
+        given(itineraryRepository.findById(id)).willReturn(Optional.of(givenItinerary));
+
+        RouteUpdateDto route = createRouteUpdateDto();
+        LodgeUpdateDto lodge = createLodgeUpdateDto();
+        StayUpdateDto stay = createStayUpdateDto();
+
+        ItineraryUpdateDto request = createItineraryUpdateDto(route, lodge, stay);
+
+        // when, then
+        assertThatThrownBy(() ->
+            itineraryService.editItinerary(id, newMemberEmail, request))
+            .isInstanceOf(MemberMismatchException.class);
     }
 
     @Test
@@ -144,10 +178,10 @@ class ItineraryServiceTest {
     void editItinerary_Lodge_InvalidDateSequence() {
         // given
         Long id = -1L;
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         Route route = createRoute();
         Itinerary givneItinerary = createItinerary(trip, route, null, null);
-
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
 
         LodgeUpdateDto lodgeUpdateDto = new LodgeUpdateDto("이름",
@@ -158,7 +192,7 @@ class ItineraryServiceTest {
         ItineraryUpdateDto request = createItineraryUpdateDto(null, lodgeUpdateDto, null);
 
         // when, then
-        assertThatThrownBy(() -> itineraryService.editItinerary(id, request))
+        assertThatThrownBy(() -> itineraryService.editItinerary(id, member.getEmail(), request))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
 
@@ -167,10 +201,10 @@ class ItineraryServiceTest {
     void editItinerary_Route_InvalidDateSequence() {
         // given
         Long id = -1L;
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         Route route = createRoute();
         Itinerary givneItinerary = createItinerary(trip, route, null, null);
-
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
 
         RouteUpdateDto routeUpdateDto = new RouteUpdateDto(Transportation.BUS,
@@ -184,7 +218,7 @@ class ItineraryServiceTest {
         ItineraryUpdateDto request = createItineraryUpdateDto(routeUpdateDto, null, null);
 
         // when, then
-        assertThatThrownBy(() -> itineraryService.editItinerary(id, request))
+        assertThatThrownBy(() -> itineraryService.editItinerary(id, member.getEmail(), request))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
 
@@ -193,10 +227,10 @@ class ItineraryServiceTest {
     void editItinerary_Stay_InvalidDateSequence() {
         // given
         Long id = -1L;
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         Route route = createRoute();
         Itinerary givneItinerary = createItinerary(trip, route, null, null);
-
         given(itineraryRepository.findById(id)).willReturn(Optional.of(givneItinerary));
 
         StayUpdateDto stayUpdateDto = new StayUpdateDto("이름",
@@ -207,7 +241,7 @@ class ItineraryServiceTest {
         ItineraryUpdateDto request = createItineraryUpdateDto(null, null, stayUpdateDto);
 
         // when, then
-        assertThatThrownBy(() -> itineraryService.editItinerary(id, request))
+        assertThatThrownBy(() -> itineraryService.editItinerary(id, member.getEmail(), request))
             .isInstanceOf(InvalidDateSequenceException.class);
     }
 }
