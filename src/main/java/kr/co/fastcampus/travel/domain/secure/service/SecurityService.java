@@ -5,6 +5,7 @@ import kr.co.fastcampus.travel.common.exception.InvalidArgumentException;
 import kr.co.fastcampus.travel.common.secure.domain.JwtProvider;
 import kr.co.fastcampus.travel.common.secure.domain.PrincipalDetails;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
+import kr.co.fastcampus.travel.domain.secure.repository.TokenRedisRepository;
 import kr.co.fastcampus.travel.domain.secure.service.reqeust.LoginDto;
 import kr.co.fastcampus.travel.domain.secure.service.response.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,13 @@ public class SecurityService implements UserDetailsService {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final TokenRedisRepository tokenRedisRepository;
 
     public TokenDto login(LoginDto dto) {
         var member = memberService.findMemberByEmail(dto.email());
         matchingPassword(dto.password(), member.getPassword());
         var token = jwtProvider.generateToken(member.getEmail(), member.getRole().name());
+        tokenRedisRepository.save(token);
         return TokenDto.from(token);
     }
 

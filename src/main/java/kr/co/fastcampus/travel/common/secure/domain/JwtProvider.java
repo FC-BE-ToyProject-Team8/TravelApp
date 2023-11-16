@@ -67,6 +67,7 @@ public class JwtProvider {
         String refreshToken = createToken(email, role, refreshTokenExpiredTime);
 
         return Token.builder()
+            .email(email)
             .grantType(grantType)
             .accessToken(accessToken)
             .refreshToken(refreshToken)
