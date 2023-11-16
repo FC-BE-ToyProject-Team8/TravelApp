@@ -82,7 +82,7 @@ class TripControllerGetTripTest extends ApiTest {
         String url = "/api/trips/" + trip.getId();
 
         // when
-        ExtractableResponse<Response> response = restAssuredGetWithToken(url);
+        ExtractableResponse<Response> response = restAssuredGet(url);
 
         // then
         JsonPath jsonPath = response.jsonPath();
