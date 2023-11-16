@@ -5,6 +5,7 @@ import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Lodge;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Route;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Stay;
+import kr.co.fastcampus.travel.domain.trip.entity.Trip;
 import lombok.Builder;
 
 @Builder
@@ -14,8 +15,9 @@ public record ItinerarySaveDto(
         StaySaveDto stay
 ) {
 
-    public Itinerary toEntity() {
+    public Itinerary toEntity(Trip trip) {
         return Itinerary.builder()
+                .trip(trip)
                 .route(getRoute())
                 .lodge(getLodge())
                 .stay(getStay())
