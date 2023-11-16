@@ -22,12 +22,14 @@ public final class RestAssuredUtils {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> restAssuredGet(String url) {
+    public static ExtractableResponse<Response> restAssuredGet(
+            String url
+    ) {
         return restAssured()
-            .when()
-            .get(url)
-            .then().log().all()
-            .extract();
+                .when()
+                .get(url)
+                .then().log().all()
+                .extract();
     }
 
     public static ExtractableResponse<Response> restAssuredGetWithToken(String url) {
