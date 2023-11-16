@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class Token {
 
-    private String grantType;
-    private String accessToken;
-    private String refreshToken;
+    private final String grantType;
+    private final String accessToken;
+    private final String refreshToken;
 
     @Builder
     private Token(String grantType, String accessToken, String refreshToken) {

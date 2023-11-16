@@ -20,19 +20,19 @@ public record TripItineraryInfoDto(
 
     public static TripItineraryInfoDto from(Trip trip) {
         return TripItineraryInfoDto.builder()
-                .id(trip.getId())
-                .name(trip.getName())
-                .startDate(trip.getStartDate())
-                .endDate(trip.getEndDate())
-                .isForeign(trip.isForeign())
-                .likeCount(trip.getLikeCount())
-                .itineraries(getItineraries(trip))
-                .build();
+            .id(trip.getId())
+            .name(trip.getName())
+            .startDate(trip.getStartDate())
+            .endDate(trip.getEndDate())
+            .isForeign(trip.isForeign())
+            .likeCount(trip.getLikeCount())
+            .itineraries(getItineraries(trip))
+            .build();
     }
 
     private static List<ItineraryResponse> getItineraries(Trip trip) {
         return trip.getItineraries().stream()
-                .map(ItineraryResponse::from)
-                .collect(Collectors.toList());
+            .map(ItineraryResponse::from)
+            .collect(Collectors.toList());
     }
 }

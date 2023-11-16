@@ -4,9 +4,9 @@ import lombok.Builder;
 
 @Builder
 public record LoginResponse(
-        String grantType,
-        String accessToken,
-        String refreshToken
+    String grantType,
+    String accessToken,
+    String refreshToken
 ) {
 
 }

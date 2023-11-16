@@ -230,7 +230,7 @@ class TripServiceTest {
     @DisplayName("여행 등록 시 종료일자가 시작일자보다 앞서면 예외")
     void addTrip_InvalidDatesequence() {
         Member member = createMember();
-  
+
         // given
         TripSaveDto tripSaveDto = TripSaveDto.builder()
             .name("이름")

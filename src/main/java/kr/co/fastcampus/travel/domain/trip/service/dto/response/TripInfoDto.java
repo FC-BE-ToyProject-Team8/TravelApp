@@ -16,12 +16,12 @@ public record TripInfoDto(
 
     public static TripInfoDto from(Trip trip) {
         return TripInfoDto.builder()
-                .id(trip.getId())
-                .name(trip.getName())
-                .startDate(trip.getStartDate())
-                .endDate(trip.getEndDate())
-                .isForeign(trip.isForeign())
-                .likeCount(trip.getLikeCount())
-                .build();
+            .id(trip.getId())
+            .name(trip.getName())
+            .startDate(trip.getStartDate())
+            .endDate(trip.getEndDate())
+            .isForeign(trip.isForeign())
+            .likeCount(trip.getLikeCount())
+            .build();
     }
 }

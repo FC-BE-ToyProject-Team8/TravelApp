@@ -5,18 +5,18 @@ import lombok.Builder;
 
 @Builder
 public record MemberDto(
-        Long id,
-        String email,
-        String name,
-        String nickname
+    Long id,
+    String email,
+    String name,
+    String nickname
 ) {
 
     public static MemberDto from(Member member) {
         return MemberDto.builder()
-                .id(member.getId())
-                .email(member.getEmail())
-                .name(member.getName())
-                .nickname(member.getNickname())
-                .build();
+            .id(member.getId())
+            .email(member.getEmail())
+            .name(member.getName())
+            .nickname(member.getNickname())
+            .build();
     }
 }

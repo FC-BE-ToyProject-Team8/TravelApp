@@ -15,12 +15,12 @@ public record TripSaveDto(
 
     public Trip toEntity(Member member) {
         return Trip.builder()
-                .name(name)
-                .startDate(startDate)
-                .endDate(endDate)
-                .isForeign(isForeign)
-                .member(member)
-                .likeCount(0L)
-                .build();
+            .name(name)
+            .startDate(startDate)
+            .endDate(endDate)
+            .isForeign(isForeign)
+            .member(member)
+            .likeCount(0L)
+            .build();
     }
 }

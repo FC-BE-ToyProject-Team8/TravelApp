@@ -15,9 +15,9 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 @Mapper(
-        componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        unmappedTargetPolicy = ReportingPolicy.ERROR
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface TripDtoMapper {
 

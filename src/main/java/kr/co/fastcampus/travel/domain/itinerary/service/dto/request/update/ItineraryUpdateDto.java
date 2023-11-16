@@ -9,17 +9,17 @@ import lombok.Builder;
 
 @Builder
 public record ItineraryUpdateDto(
-        RouteUpdateDto route,
-        LodgeUpdateDto lodge,
-        StayUpdateDto stay
+    RouteUpdateDto route,
+    LodgeUpdateDto lodge,
+    StayUpdateDto stay
 ) {
 
     public Itinerary toEntity() {
         return Itinerary.builder()
-                .route(getRoute())
-                .lodge(getLodge())
-                .stay(getStay())
-                .build();
+            .route(getRoute())
+            .lodge(getLodge())
+            .stay(getStay())
+            .build();
     }
 
     private Route getRoute() {

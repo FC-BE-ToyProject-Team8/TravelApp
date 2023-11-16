@@ -9,19 +9,19 @@ import lombok.Builder;
 
 @Builder
 public record ItineraryDto(
-        Long id,
-        RouteDto route,
-        LodgeDto lodge,
-        StayDto stay
+    Long id,
+    RouteDto route,
+    LodgeDto lodge,
+    StayDto stay
 ) {
 
     public static ItineraryDto from(Itinerary itinerary) {
         return ItineraryDto.builder()
-                .id(itinerary.getId())
-                .route(getRoute(itinerary.getRoute()))
-                .lodge(getLodge(itinerary.getLodge()))
-                .stay(getStay(itinerary.getStay()))
-                .build();
+            .id(itinerary.getId())
+            .route(getRoute(itinerary.getRoute()))
+            .lodge(getLodge(itinerary.getLodge()))
+            .stay(getStay(itinerary.getStay()))
+            .build();
     }
 
     private static RouteDto getRoute(Route route) {

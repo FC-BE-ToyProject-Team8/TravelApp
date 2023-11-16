@@ -5,16 +5,16 @@ import lombok.Builder;
 
 @Builder
 public record TokenDto(
-        String grantType,
-        String accessToken,
-        String refreshToken
+    String grantType,
+    String accessToken,
+    String refreshToken
 ) {
 
     public static TokenDto from(Token token) {
         return TokenDto.builder()
-                .grantType(token.getGrantType())
-                .refreshToken(token.getRefreshToken())
-                .accessToken(token.getAccessToken())
-                .build();
+            .grantType(token.getGrantType())
+            .refreshToken(token.getRefreshToken())
+            .accessToken(token.getAccessToken())
+            .build();
     }
 }

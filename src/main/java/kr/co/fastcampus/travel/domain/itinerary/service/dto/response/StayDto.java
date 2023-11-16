@@ -6,18 +6,18 @@ import lombok.Builder;
 
 @Builder
 public record StayDto(
-        String placeName,
-        String address,
-        LocalDateTime startAt,
-        LocalDateTime endAt
+    String placeName,
+    String address,
+    LocalDateTime startAt,
+    LocalDateTime endAt
 ) {
 
     public static StayDto from(Stay stay) {
         return StayDto.builder()
-                .placeName(stay.getPlaceName())
-                .address(stay.getAddress())
-                .startAt(stay.getStartAt())
-                .endAt(stay.getEndAt())
-                .build();
+            .placeName(stay.getPlaceName())
+            .address(stay.getAddress())
+            .startAt(stay.getStartAt())
+            .endAt(stay.getEndAt())
+            .build();
     }
 }

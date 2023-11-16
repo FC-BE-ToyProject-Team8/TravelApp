@@ -16,19 +16,19 @@ public final class MemberTestUtils {
 
     public static Member createMember() {
         return Member.builder()
-                .email(EMAIL)
-                .name(NAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
+            .email(EMAIL)
+            .name(NAME)
+            .nickname(NICKNAME)
+            .password(PASSWORD)
+            .build();
     }
 
     public static MemberSaveRequest createMemberSaveReqeust() {
         return new MemberSaveRequest(
-                EMAIL,
-                NAME,
-                NICKNAME,
-                PASSWORD
+            EMAIL,
+            NAME,
+            NICKNAME,
+            PASSWORD
         );
     }
 
