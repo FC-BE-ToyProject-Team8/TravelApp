@@ -30,6 +30,13 @@ public class TripService {
     private final TripRepository tripRepository;
     private final MemberService memberService;
 
+    public List<TripInfoDto> findAllTrips() {
+        List<Trip> trips = tripRepository.findAll();
+        return trips.stream()
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
+    }
+
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto, String memberEmail) {
         Member member = findMember(memberEmail);
@@ -37,27 +44,14 @@ public class TripService {
         return TripInfoDto.from(trip);
     }
 
+    private Member findMember(String memberEmail) {
+        return memberService.findByEmail(memberEmail);
+    }
+
     public TripItineraryInfoDto findTripItineraryById(Long id) {
         var trip = tripRepository.findFetchItineraryById(id)
             .orElseThrow(EntityNotFoundException::new);
         return TripItineraryInfoDto.from(trip);
-    }
-
-    public Trip findById(Long id) {
-        return tripRepository.findById(id)
-            .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public Trip findByIdForUpdate(Long id) {
-        return tripRepository.findWithOptimisticLockById(id)
-            .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public List<TripInfoDto> findAllTrips() {
-        List<Trip> trips = tripRepository.findAll();
-        return trips.stream()
-            .map(TripInfoDto::from)
-            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -80,6 +74,26 @@ public class TripService {
         tripRepository.delete(trip);
     }
 
+    public Page<TripInfoDto> findTripsByNickname(String nickname, Pageable pageable) {
+        Member member = findMemberByNickname(nickname);
+        Page<Trip> trips = tripRepository.findTripByMember(member, pageable);
+        return trips.map(TripInfoDto::from);
+    }
+
+    private Member findMemberByNickname(String nickname) {
+        return memberService.findByNickname(nickname);
+    }
+
+    public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
+        Page<Trip> trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
+        return trips.map(TripInfoDto::from);
+    }
+
+    public Trip findByIdForUpdate(Long id) {
+        return tripRepository.findWithOptimisticLockById(id)
+            .orElseThrow(EntityNotFoundException::new);
+    }
+
     @Transactional
     public List<ItineraryDto> addItineraries(
         Long id, List<ItinerarySaveDto> dto, String memberEmail
@@ -97,23 +111,8 @@ public class TripService {
         }
     }
 
-    @Transactional
-    public Page<TripInfoDto> findTripsByNickname(String nickname, Pageable pageable) {
-        Member member = findMemberByNickname(nickname);
-        Page<Trip> trips = tripRepository.findTripByMember(member, pageable);
-        return trips.map(TripInfoDto::from);
-    }
-
-    public Member findMemberByNickname(String nickname) {
-        return memberService.findByNickname(nickname);
-    }
-
-    private Member findMember(String memberEmail) {
-        return memberService.findByEmail(memberEmail);
-    }
-
-    public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
-        Page<Trip> trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
-        return trips.map(TripInfoDto::from);
+    public Trip findById(Long id) {
+        return tripRepository.findById(id)
+            .orElseThrow(EntityNotFoundException::new);
     }
 }
