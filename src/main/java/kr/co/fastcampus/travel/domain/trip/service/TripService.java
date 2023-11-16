@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -30,6 +28,13 @@ public class TripService {
     private final TripRepository tripRepository;
     private final MemberService memberService;
 
+    public List<TripInfoDto> findAllTrips() {
+        List<Trip> trips = tripRepository.findAll();
+        return trips.stream()
+            .map(TripInfoDto::from)
+            .collect(Collectors.toList());
+    }
+
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto, String memberEmail) {
         Member member = findMember(memberEmail);
@@ -37,27 +42,14 @@ public class TripService {
         return TripInfoDto.from(trip);
     }
 
+    private Member findMember(String memberEmail) {
+        return memberService.findByEmail(memberEmail);
+    }
+
     public TripItineraryInfoDto findTripItineraryById(Long id) {
         var trip = tripRepository.findFetchItineraryById(id)
             .orElseThrow(EntityNotFoundException::new);
         return TripItineraryInfoDto.from(trip);
-    }
-
-    public Trip findById(Long id) {
-        return tripRepository.findById(id)
-            .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public Trip findByIdForUpdate(Long id) {
-        return tripRepository.findWithOptimisticLockById(id)
-            .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public List<TripInfoDto> findAllTrips() {
-        List<Trip> trips = tripRepository.findAll();
-        return trips.stream()
-            .map(TripInfoDto::from)
-            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -80,40 +72,28 @@ public class TripService {
         tripRepository.delete(trip);
     }
 
-    @Transactional
-    public List<ItineraryDto> addItineraries(
-        Long id, List<ItinerarySaveDto> dto, String memberEmail
-    ) {
-        var trip = findById(id);
-        if (trip.getMember().getEmail().equals(memberEmail)) {
-            dto.stream()
-                .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
-                .forEach(trip::addItinerary);
-            return trip.getItineraries().stream()
-                .map(ItineraryDto::from)
-                .collect(Collectors.toList());
-        } else {
-            throw new MemberMismatchException();
-        }
-    }
-
-    @Transactional
     public Page<TripInfoDto> findTripsByNickname(String nickname, Pageable pageable) {
         Member member = findMemberByNickname(nickname);
         Page<Trip> trips = tripRepository.findTripByMember(member, pageable);
         return trips.map(TripInfoDto::from);
     }
 
-    public Member findMemberByNickname(String nickname) {
+    private Member findMemberByNickname(String nickname) {
         return memberService.findByNickname(nickname);
-    }
-
-    private Member findMember(String memberEmail) {
-        return memberService.findByEmail(memberEmail);
     }
 
     public Page<TripInfoDto> searchByTripName(String tripName, Pageable pageable) {
         Page<Trip> trips = tripRepository.findAllByNameContainingIgnoreCase(tripName, pageable);
         return trips.map(TripInfoDto::from);
+    }
+
+    public Trip findByIdForUpdate(Long id) {
+        return tripRepository.findWithOptimisticLockById(id)
+            .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public Trip findById(Long id) {
+        return tripRepository.findById(id)
+            .orElseThrow(EntityNotFoundException::new);
     }
 }
