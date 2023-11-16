@@ -116,144 +116,111 @@
 
 ## API 테스트
 
-### `POST /signup`
+### `POST /signup` 회원가입
 
-회원가입 (요청/응답 - 성공)
+- 회원가입 (요청/응답 - 성공)
 
 ![회원가입.png](resultimage/member/회원가입.png)
 ![회원가입db.JPG](resultimage/member/회원가입db.JPG)
 
-회원가입 (요청/응답 - 실패 *이미 존재하는 닉네임*)
+- 회원가입 (요청/응답 - 실패 *이미 존재하는 닉네임*)
 ![중복닉네임.png](resultimage/member/중복닉네임.png)
 
-회원가입 (요청/응답 - 실패 *이미 존재하는 이메일*)
+- 회원가입 (요청/응답 - 실패 *이미 존재하는 이메일*)
 ![중복닉네임.png](resultimage/member/중복이메일.png)
 
-### `POST /login`
+### `POST /login` 로그인
 
-로그인 (요청/응답 - 성공)
+- 로그인 (요청/응답 - 성공)
 
 ![로그인.png](resultimage/member/로그인.png)
 
-로그인 (요청/응답 - 실패 *잘못된 비밀번호*)
+- 로그인 (요청/응답 - 실패 *잘못된 비밀번호*)
 ![잘못된비밀번호.png](resultimage/member/잘못된비밀번호.png)
 
-로그인 (요청/응답 - 실패 *존재하지 않는 사용자*)
+- 로그인 (요청/응답 - 실패 *존재하지 않는 사용자*)
 ![존재하지않는사용자.png](resultimage/member/존재하지않는사용자.png)
 
-### `POST /trips`
-
-여행 등록 (요청/응답)
+### `POST /trips` 여행 등록
 
 ![여행등록.png](resultimage/trip/여행등록.png)
 ![여행등록db.JPG](resultimage/trip/여행등록db.JPG)
 
-### `POST /itineraries`
-
-여정 복수 추가 (요청/응답)
+### `POST /itineraries` 여정 복수 추가
 
 ![여정등록요청.png](resultimage/itinerary/여정등록요청.png)
 ![여정등록응답.png](resultimage/itinerary/여정등록응답.png)
 ![여정등록db.JPG](resultimage/itinerary/여정등록db.JPG)
 
-### `PUT /trips/{tripId}`
-
-여행 수정 (요청/응답)'
+### `PUT /trips/{tripId}` 여행 수정
 
 ![여행수정.png](resultimage/trip/여행수정.png)
 ![여행수정db.png](resultimage/trip/여행수정db.png)
 
-### `PUT /itineraries/{itineraryId}`
-
-여정 수정 (요청/응답)
+### `PUT /itineraries/{itineraryId}` 여정 수정
 
 ![여정수정요청.png](resultimage/itinerary/여정수정요청.png)
 ![여정수정응답.png](resultimage/itinerary/여정수정응답.png)
-여정 수정 (요청/응답)
 
-### `GET /trips`
-
-여행 목록 조회 (요청/응답)
+### `GET /trips` 여행 목록 조회
 
 ![여행목록.png](resultimage/trip/여행목록.png)
 
-### `GET /trips/{tripid}`
-
-여행+여정 조회 (요청/응답)
+### `GET /trips/{tripid}` 여행+여정 조회
 
 ![여행조회.png](resultimage/trip/여행조회.png)
 
-### `GET /trips/my-likes?page={page}`
+### `GET /trips/my-likes?page={page}` 좋아요 누른 여행 조회
 
-본인이 좋아요 누른 여행 조회 (요청/응답)
 ![좋아요여행리스트.png](resultimage/trip/좋아요여행리스트.png)
 
-### `DELETE /trips/{tripId}`
-
-여행 삭제 (요청/응답)
+### `DELETE /trips/{tripId}` 여행 삭제
 
 ![여행삭제이전db.png](resultimage/trip/여행삭제이전db.png)
 ![여행삭제.png](resultimage/trip/여행삭제.png)
 ![여행삭제이후db.png](resultimage/trip/여행삭제이후db.png)
 
-### `DELETE /itineraries/{itineraryId}`
-
-여정 삭제 (요청/응답)
+### `DELETE /itineraries/{itineraryId}` 여정 삭제
 
 ![여정삭제이전db.JPG](resultimage/itinerary/여정삭제이전db.JPG)
 ![여정삭제.png](resultimage/itinerary/여정삭제.png)
 ![여정삭제이후db.JPG](resultimage/itinerary/여정삭제이후db.JPG)
 
-### `POST /likes?tripId={tripId}`
-
-좋아요 등록 (요청/응답)
+### `POST /likes?tripId={tripId}` 좋아요 등록
 
 ![좋아요등록.png](resultimage/like/좋아요등록.png)
 ![좋아요결과.png](resultimage/like/좋아요결과.png)
 
-### `DELETE /likes?tripId={tripId}`
-
-좋아요 삭제 (요청/응답)
+### `DELETE /likes?tripId={tripId}` 좋아요 삭제
 
 ![좋아요삭제.png](resultimage/like/좋아요삭제.png)
 ![좋아요삭제결과.png](resultimage/search/좋아요삭제결과.png)
 
-### `POST /comments?tripId={tripId}`
-
-댓글 등록 (요청/응답)
+### `POST /comments?tripId={tripId}` 댓글 등록
 
 ![댓글 작성.png](resultimage/comment/댓글작성.png)
 
-### `PUT /comments/{commentId}`
-
-댓글 수정 (요청/응답)
+### `PUT /comments/{commentId}` 댓글 수정
 
 ![댓글 수정.png](resultimage/comment/댓글수정.png)
 
-### `DELETE /comments/{commentId}`
-
-댓글 삭제 (요청/응답)
+### `DELETE /comments/{commentId}` 댓글 삭제
 
 ![댓글삭제.png](resultimage/comment/댓글삭제.png)
 
-### `GET /trips/search-by-nickname?query={query}&page={page}`
-
-사용자 닉네임으로 여행 검색 (요청/응답)
+### `GET /trips/search-by-nickname?query={query}&page={page}` 사용자 닉네임으로 여행 검색
 
 ![닉네임찾기요청.png](resultimage/search/닉네임찾기요청.png)
 ![닉네임찾기응답.png](resultimage/search/닉네임찾기응답.png)
 
-### `GET /trips/search-by-trip-name?query={query}&page={page}`
-
-여행 이름으로 여행 검색 (요청/응답)
+### `GET /trips/search-by-trip-name?query={query}&page={page}` 여행 이름으로 여행 검색
 
 ![여행이름검색1.png](resultimage/trip/여행이름검색1.png)
 ![여행이름검색2.png](resultimage/trip/여행이름검색2.png)
 
-### `GET /search-place?query={query}&page={page}&size={size}`
+### `GET /search-place?query={query}&page={page}&size={size}` 장소 검색
 
-카카오 OpenApi를 이용한 키워드를 통한 장소 검색 (요청/응답)
-
+- 카카오 OpenApi를 이용한 키워드를 통한 장소 검색
 ![카카오장소검색.png](resultimage/search/카카오장소검색.png)
 ----
 
