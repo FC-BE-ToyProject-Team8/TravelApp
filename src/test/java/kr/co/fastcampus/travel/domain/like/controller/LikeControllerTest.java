@@ -40,7 +40,6 @@ public class LikeControllerTest extends ApiTest {
         ExtractableResponse<Response> response
             = RestAssuredUtils.restAssuredPostWithToken(url);
 
-
         //then
         Trip foundTrip = tripRepository.findById(tripId).orElseThrow();
 
@@ -66,7 +65,6 @@ public class LikeControllerTest extends ApiTest {
         RestAssuredUtils.restAssuredPostWithToken(url);
         ExtractableResponse<Response> response
             = RestAssuredUtils.restAssuredDeleteWithToken(url);
-
 
         //then
         Trip foundTrip = tripRepository.findById(tripId).orElseThrow();

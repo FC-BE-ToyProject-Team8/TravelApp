@@ -168,69 +168,10 @@ class TripServiceTest {
     }
 
     @Test
-    @DisplayName("여정 복수 등록")
-    void addItineraries() {
-        // given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        List<ItinerarySaveDto> requests = IntStream.range(0, 3)
-            .mapToObj(i -> TravelTestUtils.createItinerarySaveDto())
-            .toList();
-
-        given(tripRepository.findById(trip.getId()))
-            .willReturn(Optional.of(trip));
-
-        //when
-        List<ItineraryDto> returnedItineraries = tripService.addItineraries(
-            trip.getId(), requests, member.getEmail()
-        );
-
-        //then
-        assertThat(returnedItineraries).isNotNull();
-        assertThat(returnedItineraries.size()).isEqualTo(3);
-    }
-
-    @Test
-    @DisplayName("여정 복수 등록 실패_없는 여행")
-    void addItineraries_fail() {
-        // given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        List<ItinerarySaveDto> requests = List.of();
-
-        given(tripRepository.findById(trip.getId()))
-            .willReturn(Optional.empty());
-
-        //when
-        //then
-        assertThatThrownBy(() -> tripService.addItineraries(
-            trip.getId(), requests, member.getEmail()
-        )).isInstanceOf(EntityNotFoundException.class);
-    }
-
-    @Test
-    @DisplayName("여정 복수 등록 실패_작성자 불일치")
-    void addItineraries_fail_mismatchMember() {
-        // given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        List<ItinerarySaveDto> requests = List.of();
-
-        given(tripRepository.findById(trip.getId()))
-            .willReturn(Optional.of(trip));
-
-        //when
-        //then
-        assertThatThrownBy(() -> tripService.addItineraries(
-            trip.getId(), requests, "wrong_email"
-        )).isInstanceOf(MemberMismatchException.class);
-    }
-
-    @Test
     @DisplayName("여행 등록 시 종료일자가 시작일자보다 앞서면 예외")
     void addTrip_InvalidDatesequence() {
         Member member = createMember();
-  
+
         // given
         TripSaveDto tripSaveDto = TripSaveDto.builder()
             .name("이름")
@@ -298,81 +239,6 @@ class TripServiceTest {
         // when, then
         assertThatThrownBy(() -> tripService.editTrip(tripId, dto, "another@email.com"))
             .isInstanceOf(MemberMismatchException.class);
-    }
-
-    @Test
-    @DisplayName("여정 추가 시 Lodge 종료일시가 시작일시보다 앞서면 예외")
-    void addItinerary_Lodge_InvalidDateSequence() {
-        // given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        given(tripRepository.findById(trip.getId()))
-            .willReturn(Optional.of(trip));
-
-        LodgeSaveDto lodgeSaveDto = new LodgeSaveDto("이름",
-            "주소",
-            LocalDateTime.of(2010, 1, 2, 12, 0),
-            LocalDateTime.of(2010, 1, 1, 12, 0)
-        );
-        ItinerarySaveDto saveDto = ItinerarySaveDto.builder()
-            .lodge(lodgeSaveDto)
-            .build();
-
-        // when, then
-        assertThatThrownBy(() -> tripService.addItineraries(
-            trip.getId(), List.of(saveDto), member.getEmail()
-        )).isInstanceOf(InvalidDateSequenceException.class);
-    }
-
-    @Test
-    @DisplayName("여정 추가 시 Route 종료일시가 시작일시보다 앞서면 예외")
-    void addItinerary_Route_InvalidDateSequence() {
-        // given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        given(tripRepository.findById(trip.getId()))
-            .willReturn(Optional.of(trip));
-
-        RouteSaveDto routeSaveDto = new RouteSaveDto(Transportation.BUS,
-            "출발지 이름",
-            "출발지 주소",
-            "도착지 이름",
-            "도착지 주소",
-            LocalDateTime.of(2010, 1, 2, 12, 0),
-            LocalDateTime.of(2010, 1, 1, 12, 0)
-        );
-        ItinerarySaveDto saveDto = ItinerarySaveDto.builder()
-            .route(routeSaveDto)
-            .build();
-
-        // when, then
-        assertThatThrownBy(() -> tripService.addItineraries(
-            trip.getId(), List.of(saveDto), member.getEmail()
-        )).isInstanceOf(InvalidDateSequenceException.class);
-    }
-
-    @Test
-    @DisplayName("여정 추가 시 Stay 종료일시가 시작일시보다 앞서면 예외")
-    void addItinerary_Stay_InvalidDateSequence() {
-        // given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        given(tripRepository.findById(trip.getId()))
-            .willReturn(Optional.of(trip));
-
-        StaySaveDto staySaveDto = new StaySaveDto("이름",
-            "주소",
-            LocalDateTime.of(2010, 1, 2, 12, 0),
-            LocalDateTime.of(2010, 1, 1, 12, 0)
-        );
-        ItinerarySaveDto saveDto = ItinerarySaveDto.builder()
-            .stay(staySaveDto)
-            .build();
-
-        // when, then
-        assertThatThrownBy(() -> tripService.addItineraries(
-            trip.getId(), List.of(saveDto), member.getEmail()
-        )).isInstanceOf(InvalidDateSequenceException.class);
     }
 
     @Test

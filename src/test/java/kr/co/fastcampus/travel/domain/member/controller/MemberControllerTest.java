@@ -65,10 +65,10 @@ class MemberControllerTest extends ApiTest {
 
         String url = "/signup";
         MemberSaveRequest request = new MemberSaveRequest(
-                "otherEmail",
-                NAME,
-                NICKNAME,
-                PASSWORD
+            "otherEmail",
+            NAME,
+            NICKNAME,
+            PASSWORD
         );
 
         // when

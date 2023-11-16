@@ -24,9 +24,13 @@ public class SecurityFilter implements Filter {
 
     private final JwtProvider jwtProvider;
 
+    private static String getAuthorization(HttpServletRequest request) {
+        return request.getHeader(AUTHORIZATION_HEADER);
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = getAuthorization(httpServletRequest);
         String token = jwtProvider.resolveToken(authorization);
@@ -40,10 +44,6 @@ public class SecurityFilter implements Filter {
         }
 
         chain.doFilter(request, response);
-    }
-
-    private static String getAuthorization(HttpServletRequest request) {
-        return request.getHeader(AUTHORIZATION_HEADER);
     }
 
     private boolean isValidToken(String token) {

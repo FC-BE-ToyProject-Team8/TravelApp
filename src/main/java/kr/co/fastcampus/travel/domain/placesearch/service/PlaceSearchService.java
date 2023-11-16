@@ -30,15 +30,6 @@ public class PlaceSearchService {
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
 
-    public KakaoApiSearchResponse searchByKakaoApiKeyword(
-        String query,
-        Pageable pageable
-    ) {
-        HttpEntity<String> httpEntity = createKakaoHttpEntity();
-        String url = buildUrl(query, pageable, KAKAO_SEARCH_API_URL);
-        return getKakaoApiSearchResponse(url, httpEntity);
-    }
-
     private static String buildUrl(String query, Pageable pageable, String url) {
         UriComponents uriBuilder = UriComponentsBuilder
             .fromUriString(url)
@@ -47,6 +38,15 @@ public class PlaceSearchService {
             .queryParam("size", pageable.getPageSize())
             .build();
         return uriBuilder.toUriString();
+    }
+
+    public KakaoApiSearchResponse searchByKakaoApiKeyword(
+        String query,
+        Pageable pageable
+    ) {
+        HttpEntity<String> httpEntity = createKakaoHttpEntity();
+        String url = buildUrl(query, pageable, KAKAO_SEARCH_API_URL);
+        return getKakaoApiSearchResponse(url, httpEntity);
     }
 
     private KakaoApiSearchResponse getKakaoApiSearchResponse(

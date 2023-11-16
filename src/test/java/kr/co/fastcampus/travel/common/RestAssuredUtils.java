@@ -93,6 +93,17 @@ public final class RestAssuredUtils {
             .extract();
     }
 
+    public static ExtractableResponse<Response> restAssuredDeleteWithToken(
+        String url,
+        String accessToken
+    ) {
+        return restAssuredWithToken(accessToken)
+            .when()
+            .delete(url)
+            .then().log().all()
+            .extract();
+    }
+
     private static RequestSpecification restAssuredWithToken(String accessToken) {
         return restAssured()
             .header("Authorization", accessToken);

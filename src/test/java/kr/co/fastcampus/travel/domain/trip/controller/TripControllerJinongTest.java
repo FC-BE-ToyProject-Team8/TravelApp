@@ -38,10 +38,10 @@ public class TripControllerJinongTest extends ApiTest {
 
         String url = "/api/trips/1";
         TripUpdateRequest updateRequest = new TripUpdateRequest(
-                "이름2",
-                LocalDate.parse("2011-01-01"),
-                LocalDate.parse("2011-01-02"),
-                true
+            "이름2",
+            LocalDate.parse("2011-01-01"),
+            LocalDate.parse("2011-01-02"),
+            true
         );
 
         // when

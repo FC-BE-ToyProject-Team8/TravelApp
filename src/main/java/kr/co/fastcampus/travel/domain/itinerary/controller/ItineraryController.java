@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ItineraryController {
 
-    private final TripService tripService;
     private final ItineraryService itineraryService;
     private final ItineraryDtoMapper mapper;
 
@@ -38,7 +37,7 @@ public class ItineraryController {
         Principal principal
     ) {
         String memberEmail = principal.getName();
-        var response = tripService.addItineraries(
+        var response = itineraryService.addItineraries(
             request.tripId(), mapper.of(request), memberEmail
         );
         return ResponseBody.ok(mapper.of(response));
@@ -58,8 +57,12 @@ public class ItineraryController {
 
     @DeleteMapping("/{itineraryId}")
     @Operation(summary = "여정 삭제")
-    public ResponseBody<Void> deleteItinerary(@PathVariable Long itineraryId) {
-        itineraryService.deleteById(itineraryId);
+    public ResponseBody<Void> deleteItinerary(
+        @PathVariable Long itineraryId,
+        Principal principal
+    ) {
+        String memberEmail = principal.getName();
+        itineraryService.deleteById(itineraryId, memberEmail);
         return ResponseBody.ok();
     }
 }

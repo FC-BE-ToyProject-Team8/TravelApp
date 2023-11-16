@@ -6,18 +6,18 @@ import lombok.Builder;
 
 @Builder
 public record LodgeDto(
-        String placeName,
-        String address,
-        LocalDateTime checkInAt,
-        LocalDateTime checkOutAt
+    String placeName,
+    String address,
+    LocalDateTime checkInAt,
+    LocalDateTime checkOutAt
 ) {
 
     public static LodgeDto from(Lodge lodge) {
         return LodgeDto.builder()
-                .placeName(lodge.getPlaceName())
-                .address(lodge.getAddress())
-                .checkInAt(lodge.getCheckInAt())
-                .checkOutAt(lodge.getCheckOutAt())
-                .build();
+            .placeName(lodge.getPlaceName())
+            .address(lodge.getAddress())
+            .checkInAt(lodge.getCheckInAt())
+            .checkOutAt(lodge.getCheckOutAt())
+            .build();
     }
 }

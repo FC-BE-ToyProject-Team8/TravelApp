@@ -16,13 +16,13 @@ public record RouteUpdateDto(
 
     public Route toEntity() {
         return Route.builder()
-                .transportation(transportation())
-                .departurePlaceName(departurePlaceName())
-                .departureAddress(departureAddress())
-                .destinationPlaceName(destinationPlaceName())
-                .destinationAddress(destinationAddress())
-                .departureAt(departureAt())
-                .arriveAt(arriveAt())
-                .build();
+            .transportation(transportation())
+            .departurePlaceName(departurePlaceName())
+            .departureAddress(departureAddress())
+            .destinationPlaceName(destinationPlaceName())
+            .destinationAddress(destinationAddress())
+            .departureAt(departureAt())
+            .arriveAt(arriveAt())
+            .build();
     }
 }
