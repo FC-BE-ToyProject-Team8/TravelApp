@@ -1,4 +1,4 @@
-package kr.co.fastcampus.travel.common;
+package kr.co.fastcampus.travel.common.config;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
