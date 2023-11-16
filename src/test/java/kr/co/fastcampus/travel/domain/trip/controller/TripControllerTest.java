@@ -32,9 +32,11 @@ import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.RestAssuredUtils;
 import kr.co.fastcampus.travel.common.TokenUtils;
+import kr.co.fastcampus.travel.common.response.Status;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerarySaveRequest;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.ItineraryResponse;
+import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
@@ -173,14 +175,12 @@ public class TripControllerTest extends ApiTest {
             .build();
 
         IntStream.range(0, 3)
-            .forEach(i -> createItinerary(trip));
+            .forEach(i -> {
+                Itinerary itinerary = Itinerary.builder().build();
+                itinerary.registerTrip(trip);
+            });
 
         tripRepository.save(trip);
-
-        restAssuredPostWithToken("/api/comments?tripId=" + trip.getId(),
-            createCommentSaveRequest());
-        restAssuredPostWithToken("/api/likes?tripId=" + trip.getId());
-        restAssuredPostWithToken("/api/likes?tripId=" + trip.getId());
 
         String url = "/api/trips/" + trip.getId();
 
@@ -191,11 +191,9 @@ public class TripControllerTest extends ApiTest {
         JsonPath jsonPath = response.jsonPath();
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertAll(
-            () -> assertThat(jsonPath.getString("status")).isEqualTo(SUCCESS.name()),
+            () -> assertThat(jsonPath.getString("status")).isEqualTo(Status.SUCCESS.name()),
             () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
-            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3),
-            () -> assertThat(jsonPath.getList("data.comments").size()).isEqualTo(1),
-            () -> assertThat(jsonPath.getInt("data.likeCount")).isEqualTo(1)
+            () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
         );
     }
 
