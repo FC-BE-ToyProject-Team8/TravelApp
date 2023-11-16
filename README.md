@@ -136,10 +136,12 @@
 ![로그인.png](resultimage/member/로그인.png)
 
 - 로그인 (요청/응답 - 실패 *잘못된 비밀번호*)
-  ![잘못된비밀번호.png](resultimage/member/잘못된비밀번호.png)
+
+![잘못된비밀번호.png](resultimage/member/잘못된비밀번호.png)
 
 - 로그인 (요청/응답 - 실패 *존재하지 않는 사용자*)
-  ![존재하지않는사용자.png](resultimage/member/존재하지않는사용자.png)
+
+![존재하지않는사용자.png](resultimage/member/존재하지않는사용자.png)
 
 ### `POST /reissue` 토큰 재발급
 
