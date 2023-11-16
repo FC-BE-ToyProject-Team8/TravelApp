@@ -9,6 +9,8 @@ import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBod
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithToken;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithTokenLogin;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.API_TRIPS_ENDPOINT;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createCommentSaveRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTripSaveDto;
 import static kr.co.fastcampus.travel.common.response.Status.FAIL;
 import static kr.co.fastcampus.travel.common.response.Status.SUCCESS;
@@ -23,7 +25,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
-import kr.co.fastcampus.travel.domain.itinerary.entity.Itinerary;
+import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
+import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
+import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -38,6 +42,13 @@ class TripControllerGetTripTest extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Test
     @DisplayName("여행 목록 조회")
@@ -77,12 +88,13 @@ class TripControllerGetTripTest extends ApiTest {
                 .build();
 
         IntStream.range(0, 3)
-                .forEach(i -> {
-                    Itinerary itinerary = Itinerary.builder().build();
-                    itinerary.registerTrip(trip);
-                });
+                .forEach(i -> createItinerary(trip));
 
         tripRepository.save(trip);
+
+        restAssuredPostWithToken("/api/comments?tripId=" + trip.getId(), createCommentSaveRequest());
+        restAssuredPostWithToken("/api/likes?tripId=" + trip.getId());
+        restAssuredPostWithToken("/api/likes?tripId=" + trip.getId());
 
         String url = "/api/trips/" + trip.getId();
 
@@ -95,7 +107,9 @@ class TripControllerGetTripTest extends ApiTest {
         assertAll(
                 () -> assertThat(jsonPath.getString("status")).isEqualTo(SUCCESS.name()),
                 () -> assertThat(jsonPath.getLong("data.id")).isEqualTo(trip.getId()),
-                () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3)
+                () -> assertThat(jsonPath.getList("data.itineraries").size()).isEqualTo(3),
+                () -> assertThat(jsonPath.getList("data.comments").size()).isEqualTo(1),
+                () -> assertThat(jsonPath.getInt("data.likeCount")).isEqualTo(1)
         );
     }
 

@@ -14,7 +14,7 @@ public record TripItineraryInfoDto(
     LocalDate startDate,
     LocalDate endDate,
     boolean isForeign,
-    Long likeCount,
+    int likeCount,
     List<ItineraryResponse> itineraries
 ) {
 

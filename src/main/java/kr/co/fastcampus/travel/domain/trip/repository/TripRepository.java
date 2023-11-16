@@ -18,7 +18,7 @@ public interface TripRepository extends CrudRepository<Trip, Long> {
             + "LEFT JOIN FETCH t.itineraries i "
             + "WHERE t.id = :id"
     )
-    Optional<Trip> findFetchItineraryById(@Param("id") Long id);
+    Optional<Trip> findFetchDetailById(@Param("id") Long id);
 
     @Override
     List<Trip> findAll();

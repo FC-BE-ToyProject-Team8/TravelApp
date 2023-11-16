@@ -8,6 +8,7 @@ import kr.co.fastcampus.travel.common.response.ResponseBody;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.TripDtoMapper;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripUpdateRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripDetailResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripPageResponseDto;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
@@ -57,8 +58,8 @@ public class TripController {
 
     @GetMapping("/{tripId}")
     @Operation(summary = "여정을 포함한 여행 조회")
-    public ResponseBody<TripResponse> getTrip(@PathVariable Long tripId) {
-        var response = tripService.findTripItineraryById(tripId);
+    public ResponseBody<TripDetailResponse> getTrip(@PathVariable Long tripId) {
+        var response = tripService.findTripDetailById(tripId);
         return ResponseBody.ok(mapper.of(response));
     }
 

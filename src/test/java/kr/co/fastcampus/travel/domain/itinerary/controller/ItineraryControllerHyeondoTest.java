@@ -63,7 +63,7 @@ class ItineraryControllerHyeondoTest extends ApiTest {
         //then
         JsonPath jsonPath = response.jsonPath();
         String status = jsonPath.getString("status");
-        Trip findTrip = tripRepository.findFetchItineraryById(1L).get();
+        Trip findTrip = tripRepository.findFetchDetailById(1L).get();
         List<Itinerary> itineraries = findTrip.getItineraries();
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());

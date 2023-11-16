@@ -45,9 +45,8 @@ public class TravelTestUtils {
     private TravelTestUtils() {
     }
 
-    public static Comment createComment(Trip trip, Member member) {
+    public static Comment createComment(Member member) {
         return Comment.builder()
-                .trip(trip)
                 .member(member)
                 .content("test comment")
                 .build();
@@ -93,7 +92,6 @@ public class TravelTestUtils {
                 .endDate(LocalDate.now().plusDays(1))
                 .isForeign(true)
                 .member(member)
-                .likeCount(0L)
                 .build();
     }
 
@@ -103,7 +101,6 @@ public class TravelTestUtils {
                 .startDate(LocalDate.now())
                 .endDate(LocalDate.now().plusDays(1))
                 .isForeign(true)
-                .likeCount(0L)
                 .build();
     }
 
