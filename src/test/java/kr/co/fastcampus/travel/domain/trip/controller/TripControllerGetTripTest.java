@@ -25,9 +25,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
-import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
-import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
-import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -42,13 +39,6 @@ class TripControllerGetTripTest extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private LikeRepository likeRepository;
 
     @Test
     @DisplayName("여행 목록 조회")
@@ -92,7 +82,8 @@ class TripControllerGetTripTest extends ApiTest {
 
         tripRepository.save(trip);
 
-        restAssuredPostWithToken("/api/comments?tripId=" + trip.getId(), createCommentSaveRequest());
+        restAssuredPostWithToken("/api/comments?tripId=" + trip.getId(),
+                createCommentSaveRequest());
         restAssuredPostWithToken("/api/likes?tripId=" + trip.getId());
         restAssuredPostWithToken("/api/likes?tripId=" + trip.getId());
 
