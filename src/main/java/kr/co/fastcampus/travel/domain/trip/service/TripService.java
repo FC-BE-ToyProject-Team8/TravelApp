@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
-import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
