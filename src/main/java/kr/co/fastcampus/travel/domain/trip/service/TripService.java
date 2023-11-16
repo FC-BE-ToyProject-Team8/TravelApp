@@ -17,7 +17,6 @@ import kr.co.fastcampus.travel.domain.trip.service.dto.response.TripItineraryInf
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +30,6 @@ public class TripService {
     private final TripRepository tripRepository;
     private final MemberService memberService;
 
-    private final int pageSize = 5;
-
     @Transactional
     public TripInfoDto addTrip(TripSaveDto dto, String memberEmail) {
         Member member = findMember(memberEmail);
@@ -44,11 +41,6 @@ public class TripService {
         var trip = tripRepository.findFetchItineraryById(id)
             .orElseThrow(EntityNotFoundException::new);
         return TripItineraryInfoDto.from(trip);
-    }
-
-    public TripInfoDto findTripById(Long id) {
-        var trip = findById(id);
-        return TripInfoDto.from(trip);
     }
 
     public Trip findById(Long id) {

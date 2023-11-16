@@ -1,7 +1,6 @@
 package kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
