@@ -58,7 +58,7 @@ public class LikeService {
     }
 
     private Member findMember(String memberEmail) {
-        return memberService.findByEmail(memberEmail);
+        return memberService.findMemberByEmail(memberEmail);
     }
 
     private boolean isExisted(Trip trip, Member member) {

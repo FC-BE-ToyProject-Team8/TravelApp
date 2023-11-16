@@ -64,7 +64,7 @@ class LikeServiceTest {
         Trip trip = createTrip();
         given(tripService.findById(tripId)).willReturn(trip);
         Member member = createMember();
-        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+        given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
 
         //when
@@ -87,7 +87,7 @@ class LikeServiceTest {
             .isForeign(false)
             .likeCount(1L)
             .build();
-        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+        given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
         given(tripService.findById(tripId)).willReturn(trip);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
         likeService.deleteLike(tripId, member.getEmail());
@@ -105,7 +105,7 @@ class LikeServiceTest {
         Trip trip = createTrip();
         given(tripService.findById(tripId)).willReturn(trip);
         Member member = createMember();
-        given(memberService.findByEmail(member.getEmail())).willReturn(member);
+        given(memberService.findMemberByEmail(member.getEmail())).willReturn(member);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(false);
 
         //when
