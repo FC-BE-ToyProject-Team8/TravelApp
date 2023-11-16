@@ -43,7 +43,7 @@ public class TripService {
     }
 
     private Member findMember(String memberEmail) {
-        return memberService.findByEmail(memberEmail);
+        return memberService.findMemberByEmail(memberEmail);
     }
 
     public TripItineraryInfoDto findTripItineraryById(Long id) {
