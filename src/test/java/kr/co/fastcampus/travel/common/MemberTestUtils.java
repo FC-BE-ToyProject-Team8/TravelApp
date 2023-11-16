@@ -3,6 +3,7 @@ package kr.co.fastcampus.travel.common;
 import kr.co.fastcampus.travel.domain.member.controller.dto.request.MemberSaveRequest;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.dto.request.MemberSaveDto;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 
 public final class MemberTestUtils {
 
@@ -23,7 +24,7 @@ public final class MemberTestUtils {
             .build();
     }
 
-    public static MemberSaveRequest createMemberSaveReqeust() {
+    public static MemberSaveRequest createMemberSaveRequest() {
         return new MemberSaveRequest(
             EMAIL,
             NAME,
@@ -34,5 +35,9 @@ public final class MemberTestUtils {
 
     public static MemberSaveDto createMemberSaveDto() {
         return new MemberSaveDto(EMAIL, NAME, NICKNAME, PASSWORD);
+    }
+
+    public static LoginReqeust createLoginRequest() {
+        return new LoginReqeust(EMAIL, PASSWORD);
     }
 }

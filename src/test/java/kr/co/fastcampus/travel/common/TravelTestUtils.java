@@ -47,80 +47,80 @@ public class TravelTestUtils {
 
     public static Comment createComment(Trip trip, Member member) {
         return Comment.builder()
-            .trip(trip)
-            .member(member)
-            .content("test comment")
-            .build();
+                .trip(trip)
+                .member(member)
+                .content("test comment")
+                .build();
     }
 
     public static CommentSaveRequest createCommentSaveRequest() {
         return CommentSaveRequest.builder()
-            .content("test comment")
-            .build();
+                .content("test comment")
+                .build();
     }
 
     public static CommentUpdateRequest createCommentUpdateRequest() {
         return CommentUpdateRequest.builder()
-            .content("update comment")
-            .build();
+                .content("update comment")
+                .build();
     }
 
     public static CommentSaveDto createCommentSaveDto() {
         return CommentSaveDto.builder()
-            .content("test comment")
-            .build();
+                .content("test comment")
+                .build();
     }
 
     public static CommentUpdateDto createCommentUpdateDto() {
         return CommentUpdateDto.builder()
-            .content("update comment")
-            .build();
+                .content("update comment")
+                .build();
     }
 
     public static Member createMember() {
         return Member.builder()
-            .email("test@email.com")
-            .name("tester")
-            .nickname("testNick")
-            .password("123")
-            .build();
+                .email("test@email.com")
+                .name("tester")
+                .nickname("testNick")
+                .password("123")
+                .build();
     }
 
     public static Trip createTripWithMember(Member member) {
         return Trip.builder()
-            .name("tripName")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(1))
-            .isForeign(true)
-            .member(member)
-            .likeCount(0L)
-            .build();
+                .name("tripName")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .isForeign(true)
+                .member(member)
+                .likeCount(0L)
+                .build();
     }
 
     public static Trip createTrip() {
         return Trip.builder()
-            .name("tripName")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(1))
-            .isForeign(true)
-            .likeCount(0L)
-            .build();
+                .name("tripName")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .isForeign(true)
+                .likeCount(0L)
+                .build();
     }
 
     public static Like createLike(Trip trip, Member member) {
         return Like.builder()
-            .trip(trip)
-            .member(member)
-            .build();
+                .trip(trip)
+                .member(member)
+                .build();
     }
 
     public static TripSaveDto createTripSaveDto() {
         return TripSaveDto.builder()
-            .name("tripName")
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(1))
-            .isForeign(true)
-            .build();
+                .name("tripName")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .isForeign(true)
+                .build();
     }
 
     public static ItinerarySaveDto createItinerarySaveDto() {
@@ -128,9 +128,9 @@ public class TravelTestUtils {
     }
 
     public static ItinerarySaveDto createItinerarySaveDto(
-        RouteSaveDto route,
-        LodgeSaveDto lodge,
-        StaySaveDto stay
+            RouteSaveDto route,
+            LodgeSaveDto lodge,
+            StaySaveDto stay
     ) {
         return new ItinerarySaveDto(route, lodge, stay);
     }
@@ -140,9 +140,9 @@ public class TravelTestUtils {
     }
 
     public static ItineraryUpdateDto createItineraryUpdateDto(
-        RouteUpdateDto route,
-        LodgeUpdateDto lodge,
-        StayUpdateDto stay
+            RouteUpdateDto route,
+            LodgeUpdateDto lodge,
+            StayUpdateDto stay
     ) {
         return new ItineraryUpdateDto(route, lodge, stay);
     }
@@ -152,9 +152,9 @@ public class TravelTestUtils {
     }
 
     public static ItinerarySaveRequest createItinerarySaveRequest(
-        RouteSaveRequest route,
-        LodgeSaveRequest lodge,
-        StaySaveRequest stay
+            RouteSaveRequest route,
+            LodgeSaveRequest lodge,
+            StaySaveRequest stay
     ) {
         return new ItinerarySaveRequest(route, lodge, stay);
     }
@@ -164,9 +164,9 @@ public class TravelTestUtils {
     }
 
     public static ItineraryUpdateRequest createItineraryUpdateRequest(
-        RouteUpdateRequest route,
-        LodgeUpdateRequest lodge,
-        StayUpdateRequest stay
+            RouteUpdateRequest route,
+            LodgeUpdateRequest lodge,
+            StayUpdateRequest stay
     ) {
         return new ItineraryUpdateRequest(route, lodge, stay);
     }
@@ -177,189 +177,189 @@ public class TravelTestUtils {
         Stay stay = createStay();
 
         Itinerary itinerary = Itinerary.builder()
-            .route(route)
-            .lodge(lodge)
-            .stay(stay)
-            .build();
+                .route(route)
+                .lodge(lodge)
+                .stay(stay)
+                .build();
         itinerary.registerTrip(trip);
         return itinerary;
     }
 
     public static Itinerary createItinerary(Trip trip, Route route, Lodge lodge, Stay stay) {
         Itinerary itinerary = Itinerary.builder()
-            .route(route)
-            .lodge(lodge)
-            .stay(stay)
-            .build();
+                .route(route)
+                .lodge(lodge)
+                .stay(stay)
+                .build();
         itinerary.registerTrip(trip);
         return itinerary;
     }
 
     public static Route createRoute() {
         return Route.builder()
-            .transportation(Transportation.BUS)
-            .departurePlaceName("우리집")
-            .departureAddress("서울")
-            .destinationPlaceName("해운대")
-            .destinationAddress("부산")
-            .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 30, 40))
-            .build();
+                .transportation(Transportation.BUS)
+                .departurePlaceName("우리집")
+                .departureAddress("서울")
+                .destinationPlaceName("해운대")
+                .destinationAddress("부산")
+                .departureAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+                .arriveAt(LocalDateTime.of(2023, 1, 1, 11, 30, 40))
+                .build();
     }
 
     public static Lodge createLodge() {
         return Lodge.builder()
-            .placeName("호텔")
-            .address("부산 @@@")
-            .checkInAt(LocalDateTime.of(2023, 1, 1, 11, 0))
-            .checkOutAt(LocalDateTime.of(2023, 1, 2, 15, 0))
-            .build();
+                .placeName("호텔")
+                .address("부산 @@@")
+                .checkInAt(LocalDateTime.of(2023, 1, 1, 11, 0))
+                .checkOutAt(LocalDateTime.of(2023, 1, 2, 15, 0))
+                .build();
     }
 
     public static Stay createStay() {
         return Stay.builder()
-            .placeName("한국")
-            .address("대한민국")
-            .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
-            .build();
+                .placeName("한국")
+                .address("대한민국")
+                .startAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+                .endAt(LocalDateTime.of(2023, 1, 1, 11, 30, 30))
+                .build();
     }
 
     public static RouteSaveDto createRouteSaveDto() {
         return new RouteSaveDto(
-            Transportation.BUS,
-            "우리집",
-            "서울",
-            "해운대",
-            "부산",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.BUS,
+                "우리집",
+                "서울",
+                "해운대",
+                "부산",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static LodgeSaveDto createLodgeSaveDto() {
         return new LodgeSaveDto(
-            "호텔",
-            "부산 @@@",
-            LocalDateTime.of(2023, 1, 1, 15, 0),
-            LocalDateTime.of(2023, 1, 2, 11, 0)
+                "호텔",
+                "부산 @@@",
+                LocalDateTime.of(2023, 1, 1, 15, 0),
+                LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StaySaveDto createStaySaveDto() {
         return new StaySaveDto(
-            "한국",
-            "대한민국",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                "한국",
+                "대한민국",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static RouteUpdateDto createRouteUpdateDto() {
         return new RouteUpdateDto(
-            Transportation.SUBWAY,
-            "출발지 업데이트",
-            "출발 주소 업데이트",
-            "목적지 업데이트",
-            "목적지 주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.SUBWAY,
+                "출발지 업데이트",
+                "출발 주소 업데이트",
+                "목적지 업데이트",
+                "목적지 주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static LodgeUpdateDto createLodgeUpdateDto() {
         return new LodgeUpdateDto(
-            "장소 업데이트",
-            "주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 15, 0),
-            LocalDateTime.of(2023, 1, 2, 11, 0)
+                "장소 업데이트",
+                "주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 15, 0),
+                LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StayUpdateDto createStayUpdateDto() {
         return new StayUpdateDto(
-            "장소 업데이트",
-            "주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                "장소 업데이트",
+                "주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static RouteSaveRequest createRouteSaveRequest() {
         return new RouteSaveRequest(
-            Transportation.BUS,
-            "우리집",
-            "서울",
-            "해운대",
-            "부산",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.BUS,
+                "우리집",
+                "서울",
+                "해운대",
+                "부산",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static LodgeSaveRequest createLodgeSaveRequest() {
         return new LodgeSaveRequest(
-            "호텔",
-            "부산 @@@",
-            LocalDateTime.of(2023, 1, 1, 15, 0),
-            LocalDateTime.of(2023, 1, 2, 11, 0)
+                "호텔",
+                "부산 @@@",
+                LocalDateTime.of(2023, 1, 1, 15, 0),
+                LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StaySaveRequest createStaySaveRequest() {
         return new StaySaveRequest(
-            "한국",
-            "대한민국",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                "한국",
+                "대한민국",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static RouteUpdateRequest createRouteUpdateRequest() {
         return new RouteUpdateRequest(
-            Transportation.SUBWAY,
-            "출발지 업데이트",
-            "출발 주소 업데이트",
-            "목적지 업데이트",
-            "목적지 주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                Transportation.SUBWAY,
+                "출발지 업데이트",
+                "출발 주소 업데이트",
+                "목적지 업데이트",
+                "목적지 주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static LodgeUpdateRequest createLodgeUpdateRequest() {
         return new LodgeUpdateRequest(
-            "장소 업데이트",
-            "주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 15, 0),
-            LocalDateTime.of(2023, 1, 2, 11, 0)
+                "장소 업데이트",
+                "주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 15, 0),
+                LocalDateTime.of(2023, 1, 2, 11, 0)
         );
     }
 
     public static StayUpdateRequest createStayUpdateRequest() {
         return new StayUpdateRequest(
-            "장소 업데이트",
-            "주소 업데이트",
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30),
-            LocalDateTime.of(2023, 1, 1, 11, 30, 30)
+                "장소 업데이트",
+                "주소 업데이트",
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30),
+                LocalDateTime.of(2023, 1, 1, 11, 30, 30)
         );
     }
 
     public static ExtractableResponse<Response> requestFindAllTripApi() {
         return RestAssured
-            .given().log().all()
-            .when().get(API_TRIPS_ENDPOINT)
-            .then().log().all()
-            .extract();
+                .given().log().all()
+                .when().get(API_TRIPS_ENDPOINT)
+                .then().log().all()
+                .extract();
 
     }
 
     public static ExtractableResponse<Response> requestDeleteApi(String url) {
         return RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().delete(url)
-            .then().log().all()
-            .extract();
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete(url)
+                .then().log().all()
+                .extract();
     }
 }

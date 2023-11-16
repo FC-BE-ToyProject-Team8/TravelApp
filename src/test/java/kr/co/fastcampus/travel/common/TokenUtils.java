@@ -2,7 +2,7 @@ package kr.co.fastcampus.travel.common;
 
 import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
-import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveRequest;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 
 import kr.co.fastcampus.travel.domain.member.controller.dto.request.MemberSaveRequest;
@@ -24,17 +24,16 @@ public final class TokenUtils {
             .getString("data.accessToken");
     }
 
-    public static String getAccessToken(MemberSaveRequest member) {
+    public static String getAccessToken(LoginReqeust request) {
         String url = "/api/login";
-        LoginReqeust request = new LoginReqeust(member.email(), member.password());
         return GRANT_TYPE + restAssuredPostBody(url, request)
-            .jsonPath()
-            .getString("data.accessToken");
+                .jsonPath()
+                .getString("data.accessToken");
     }
 
     private static void createMember() {
         String url = "/api/signup";
-        MemberSaveRequest request = createMemberSaveReqeust();
+        MemberSaveRequest request = createMemberSaveRequest();
         restAssuredPostBody(url, request);
     }
 }
