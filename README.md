@@ -15,7 +15,7 @@
 
 - **언어**: Java 17
 - **개발 환경**: IntelliJ, Gradle, Spring Boot 3
-- **라이브러리**: Spring Web, Spring Security, JPA, JUnit5, Lombok, MapStruct, JWT
+- **라이브러리**: Spring Web, Spring Security, JPA, JUnit5, Lombok, MapStruct, JWT, Redis
 - **CI**: GitHub Actions
 - **API 명세** : Swagger
 
@@ -124,10 +124,10 @@
 ![회원가입db.JPG](resultimage/member/회원가입db.JPG)
 
 - 회원가입 (요청/응답 - 실패 *이미 존재하는 닉네임*)
-![중복닉네임.png](resultimage/member/중복닉네임.png)
+  ![중복닉네임.png](resultimage/member/중복닉네임.png)
 
 - 회원가입 (요청/응답 - 실패 *이미 존재하는 이메일*)
-![중복닉네임.png](resultimage/member/중복이메일.png)
+  ![중복닉네임.png](resultimage/member/중복이메일.png)
 
 ### `POST /login` 로그인
 
@@ -136,10 +136,14 @@
 ![로그인.png](resultimage/member/로그인.png)
 
 - 로그인 (요청/응답 - 실패 *잘못된 비밀번호*)
-![잘못된비밀번호.png](resultimage/member/잘못된비밀번호.png)
+  ![잘못된비밀번호.png](resultimage/member/잘못된비밀번호.png)
 
 - 로그인 (요청/응답 - 실패 *존재하지 않는 사용자*)
-![존재하지않는사용자.png](resultimage/member/존재하지않는사용자.png)
+  ![존재하지않는사용자.png](resultimage/member/존재하지않는사용자.png)
+
+### `POST /reissue` 토큰 재발급
+
+![토큰재발급.png](resultimage/member/토큰재발급.png)
 
 ### `POST /trips` 여행 등록
 
@@ -199,8 +203,9 @@
 ### `POST /comments?tripId={tripId}` 댓글 등록
 
 ![댓글 작성.png](resultimage/comment/댓글작성.png)
+
 - 타인의 여행 정보에 댓글 작성 확인
-![타인여행댓글.png](resultimage/trip/타인여행댓글.png)
+  ![타인여행댓글.png](resultimage/trip/타인여행댓글.png)
 
 ### `PUT /comments/{commentId}` 댓글 수정
 
@@ -223,7 +228,8 @@
 ### `GET /search-place?query={query}&page={page}&size={size}` 장소 검색
 
 - 카카오 OpenApi를 이용한 키워드를 통한 장소 검색
-![카카오장소검색.png](resultimage/search/카카오장소검색.png)
+  ![카카오장소검색.png](resultimage/search/카카오장소검색.png)
+
 ----
 
 ## 🖥 평가항목 별 커멘트
