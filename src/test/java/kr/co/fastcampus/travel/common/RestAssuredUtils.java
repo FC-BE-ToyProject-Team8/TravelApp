@@ -1,5 +1,7 @@
 package kr.co.fastcampus.travel.common;
 
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createLoginRequest;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -163,6 +165,32 @@ public final class RestAssuredUtils {
             LoginReqeust member
     ) {
         String accessToken = TokenUtils.getAccessToken(member);
+
+        return restAssuredWithToken(accessToken)
+                .body(request)
+                .when()
+                .post(url)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPostWithTokenLogin(
+            String url
+    ) {
+        String accessToken = TokenUtils.getAccessToken(createLoginRequest());
+
+        return restAssuredWithToken(accessToken)
+                .when()
+                .post(url)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPostWithTokenLogin(
+            String url,
+            Object request
+    ) {
+        String accessToken = TokenUtils.getAccessToken(createLoginRequest());
 
         return restAssuredWithToken(accessToken)
                 .body(request)

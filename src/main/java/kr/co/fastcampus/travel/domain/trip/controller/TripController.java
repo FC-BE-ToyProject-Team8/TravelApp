@@ -101,7 +101,7 @@ public class TripController {
         return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
     }
 
-    @GetMapping("/search-by-like")
+    @GetMapping("/my-likes")
     @Operation(summary = "좋아요 누른 여행 검색")
     public ResponseBody<List<TripSummaryResponse>> searchByLike(
             Principal principal,

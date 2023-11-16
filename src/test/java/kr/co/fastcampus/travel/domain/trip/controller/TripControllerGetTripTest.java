@@ -1,10 +1,10 @@
 package kr.co.fastcampus.travel.domain.trip.controller;
 
-import static kr.co.fastcampus.travel.common.MemberTestUtils.createLoginRequest;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveRequest;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredGetWithToken;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithToken;
+import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithTokenLogin;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.API_TRIPS_ENDPOINT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.ApiTest;
-import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
@@ -63,7 +62,6 @@ class TripControllerGetTripTest extends ApiTest {
         // given
         restAssuredPostBody("/signup", createMemberSaveRequest());
 
-        LoginReqeust login = createLoginRequest();
         TripSaveRequest request = new TripSaveRequest(
                 "name",
                 LocalDate.now(),
@@ -71,10 +69,10 @@ class TripControllerGetTripTest extends ApiTest {
                 false
         );
         IntStream.range(0, 3)
-                .forEach(i -> restAssuredPostWithToken(API_TRIPS_ENDPOINT, request, login));
+                .forEach(i -> restAssuredPostWithTokenLogin(API_TRIPS_ENDPOINT, request));
 
         IntStream.range(1, 3)
-                .forEach(i -> restAssuredPostWithToken("/api/likes?tripId=" + i, login));
+                .forEach(i -> restAssuredPostWithTokenLogin("/api/likes?tripId=" + i));
 
         String url = API_TRIPS_ENDPOINT + "/search-by-like";
 
