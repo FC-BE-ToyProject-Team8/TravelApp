@@ -71,7 +71,7 @@ class TripControllerGetTripTest extends ApiTest {
                 false
         );
         IntStream.range(0, 3)
-                .forEach(i -> restAssuredPostWithToken(API_TRIPS_ENDPOINT, request,login));
+                .forEach(i -> restAssuredPostWithToken(API_TRIPS_ENDPOINT, request, login));
 
         IntStream.range(1, 3)
                 .forEach(i -> restAssuredPostWithToken("/api/likes?tripId=" + i, login));

@@ -47,8 +47,8 @@ public class TripController {
     @PostMapping
     @Operation(summary = "여행 등록")
     public ResponseBody<TripSummaryResponse> addTrip(
-        @Valid @RequestBody TripSaveRequest request,
-        Principal principal
+            @Valid @RequestBody TripSaveRequest request,
+            Principal principal
     ) {
         String memberEmail = principal.getName();
         var response = tripService.addTrip(mapper.of(request), memberEmail);
@@ -65,9 +65,9 @@ public class TripController {
     @PutMapping("/{tripId}")
     @Operation(summary = "여행 수정")
     public ResponseBody<TripSummaryResponse> editTrip(
-        @PathVariable Long tripId,
-        Principal principal,
-        @Valid @RequestBody TripUpdateRequest request
+            @PathVariable Long tripId,
+            Principal principal,
+            @Valid @RequestBody TripUpdateRequest request
     ) {
         String memberEmail = principal.getName();
         var response = tripService.editTrip(tripId, mapper.of(request), memberEmail);
@@ -84,8 +84,8 @@ public class TripController {
     @GetMapping("/search-by-nickname")
     @Operation(summary = "사용자 닉네임으로 여행 검색")
     public ResponseBody<TripPageResponseDto> searchByNickname(
-        @RequestParam String query,
-        @PageableDefault(size = 5) Pageable pageable
+            @RequestParam String query,
+            @PageableDefault(size = 5) Pageable pageable
     ) {
         Page<TripInfoDto> response = tripService.findTripsByNickname(query, pageable);
         return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
@@ -94,8 +94,8 @@ public class TripController {
     @GetMapping("/search-by-trip-name")
     @Operation(summary = "여행 이름으로 검색")
     public ResponseBody<TripPageResponseDto> searchByTripName(
-        @RequestParam String query,
-        @PageableDefault(size = 5) Pageable pageable
+            @RequestParam String query,
+            @PageableDefault(size = 5) Pageable pageable
     ) {
         Page<TripInfoDto> response = tripService.searchByTripName(query, pageable);
         return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));

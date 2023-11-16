@@ -48,10 +48,10 @@ class TripRepositoryTest {
         Trip trip = createTrip();
 
         IntStream.range(0, 3)
-            .forEach(i -> {
-                Itinerary itinerary = createItinerary(trip);
-                itinerary.registerTrip(trip);
-            });
+                .forEach(i -> {
+                    Itinerary itinerary = createItinerary(trip);
+                    itinerary.registerTrip(trip);
+                });
 
         tripRepository.save(trip);
 
@@ -86,8 +86,8 @@ class TripRepositoryTest {
     void findAll() {
         // given
         List<Trip> saveTrips = IntStream.range(0, 2)
-            .mapToObj(i -> saveTrip())
-            .toList();
+                .mapToObj(i -> saveTrip())
+                .toList();
 
         // when
         List<Trip> trips = tripRepository.findAll();

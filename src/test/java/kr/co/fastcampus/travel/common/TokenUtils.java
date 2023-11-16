@@ -28,8 +28,8 @@ public final class TokenUtils {
         String url = "/api/login";
         LoginReqeust request = new LoginReqeust(member.email(), member.password());
         return GRANT_TYPE + restAssuredPostBody(url, request)
-            .jsonPath()
-            .getString("data.accessToken");
+                .jsonPath()
+                .getString("data.accessToken");
     }
 
     private static void createMember() {
