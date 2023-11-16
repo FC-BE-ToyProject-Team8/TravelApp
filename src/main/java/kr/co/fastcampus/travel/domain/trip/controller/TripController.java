@@ -66,9 +66,11 @@ public class TripController {
     @Operation(summary = "여행 수정")
     public ResponseBody<TripSummaryResponse> editTrip(
         @PathVariable Long tripId,
+        Principal principal,
         @Valid @RequestBody TripUpdateRequest request
     ) {
-        var response = tripService.editTrip(tripId, mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = tripService.editTrip(tripId, mapper.of(request), memberEmail);
         return ResponseBody.ok(mapper.of(response));
     }
 
@@ -81,12 +83,12 @@ public class TripController {
 
     @GetMapping("/search-by-nickname")
     @Operation(summary = "사용자 닉네임으로 여행 검색")
-    public ResponseBody<List<TripSummaryResponse>> searchByNickname(
-        @RequestParam("query") String query,
-        @RequestParam(required = false, defaultValue = "1", value = "page") int page,
-        Pageable pageable) {
-        var response = tripService.findTripsByNickname(query, page, pageable);
-        return ResponseBody.ok(mapper.of(response));
+    public ResponseBody<TripPageResponseDto> searchByNickname(
+        @RequestParam String query,
+        @PageableDefault(size = 5) Pageable pageable
+    ) {
+        Page<TripInfoDto> response = tripService.findTripsByNickname(query, pageable);
+        return ResponseBody.ok(TripPageResponseDto.from(mapper.of(response)));
     }
 
     @GetMapping("/search-by-trip-name")

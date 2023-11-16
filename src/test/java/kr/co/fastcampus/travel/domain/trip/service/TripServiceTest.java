@@ -18,6 +18,8 @@ import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.TravelTestUtils;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
 import kr.co.fastcampus.travel.common.exception.InvalidDateSequenceException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
+import kr.co.fastcampus.travel.common.exception.MemberNotFoundException;
 import kr.co.fastcampus.travel.domain.itinerary.entity.Transportation;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.LodgeSaveDto;
@@ -111,8 +113,10 @@ class TripServiceTest {
     void editTrip() {
         // given
         Long tripId = 1L;
+        Member givenMember = createMember();
         Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
             .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .member(givenMember)
             .build();
 
         given(tripRepository.findById(tripId))
@@ -122,12 +126,11 @@ class TripServiceTest {
             "이름2",
             LocalDate.parse("2011-01-01"),
             LocalDate.parse("2011-01-02"),
-            true,
-            0L
+            true
         );
 
         // when
-        TripInfoDto result = tripService.editTrip(tripId, dto);
+        TripInfoDto result = tripService.editTrip(tripId, dto, givenMember.getEmail());
 
         // then
         assertThat(result.name()).isEqualTo("이름2");
@@ -148,12 +151,11 @@ class TripServiceTest {
             null,
             null,
             null,
-            true,
-            0L
+            true
         );
 
         // when, then
-        assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request))
+        assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request, null))
             .isInstanceOf(EntityNotFoundException.class);
     }
 
@@ -174,7 +176,8 @@ class TripServiceTest {
     @DisplayName("여정 복수 등록")
     void addItineraries() {
         // given
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         List<ItinerarySaveDto> requests = IntStream.range(0, 3)
             .mapToObj(i -> TravelTestUtils.createItinerarySaveDto())
             .toList();
@@ -183,7 +186,9 @@ class TripServiceTest {
             .willReturn(Optional.of(trip));
 
         //when
-        List<ItineraryDto> returnedItineraries = tripService.addItineraries(trip.getId(), requests);
+        List<ItineraryDto> returnedItineraries = tripService.addItineraries(
+            trip.getId(), requests, member.getEmail()
+        );
 
         //then
         assertThat(returnedItineraries).isNotNull();
@@ -191,10 +196,11 @@ class TripServiceTest {
     }
 
     @Test
-    @DisplayName("여정 복수 등록 실패")
+    @DisplayName("여정 복수 등록 실패_없는 여행")
     void addItineraries_fail() {
         // given
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         List<ItinerarySaveDto> requests = List.of();
 
         given(tripRepository.findById(trip.getId()))
@@ -202,8 +208,27 @@ class TripServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), requests))
-            .isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> tripService.addItineraries(
+            trip.getId(), requests, member.getEmail()
+        )).isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("여정 복수 등록 실패_작성자 불일치")
+    void addItineraries_fail_mismatchMember() {
+        // given
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
+        List<ItinerarySaveDto> requests = List.of();
+
+        given(tripRepository.findById(trip.getId()))
+            .willReturn(Optional.of(trip));
+
+        //when
+        //then
+        assertThatThrownBy(() -> tripService.addItineraries(
+            trip.getId(), requests, "wrong_email"
+        )).isInstanceOf(MemberMismatchException.class);
     }
 
     @Test
@@ -230,9 +255,12 @@ class TripServiceTest {
     @DisplayName("여행 수정 시 종료일자가 시작일자보다 앞서면 예외")
     void editTrip_InvalidDatesequence() {
         // given
+        Member member = createMember();
+
         Long tripId = 1L;
         Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
             .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .member(member)
             .build();
 
         given(tripRepository.findById(tripId))
@@ -242,20 +270,47 @@ class TripServiceTest {
             "이름2",
             LocalDate.parse("2011-01-02"),
             LocalDate.parse("2011-01-01"),
-            true,
-            0L
+            true
         );
 
         // when, then
-        assertThatThrownBy(() -> tripService.editTrip(tripId, dto))
+        assertThatThrownBy(() -> tripService.editTrip(tripId, dto, member.getEmail()))
             .isInstanceOf(InvalidDateSequenceException.class);
+    }
+
+    @Test
+    @DisplayName("여행 수정 시 작성자 본인이 아니라면 예외")
+    void editTrip_NoPermission() {
+        // given
+        Member member = createMember();
+
+        Long tripId = 1L;
+        Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
+            .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .member(member)
+            .build();
+
+        given(tripRepository.findById(tripId))
+            .willReturn(Optional.of(givenTrip));
+
+        TripUpdateDto dto = new TripUpdateDto(
+            "이름2",
+            LocalDate.parse("2011-01-02"),
+            LocalDate.parse("2011-01-01"),
+            true
+        );
+
+        // when, then
+        assertThatThrownBy(() -> tripService.editTrip(tripId, dto, "another@email.com"))
+            .isInstanceOf(MemberMismatchException.class);
     }
 
     @Test
     @DisplayName("여정 추가 시 Lodge 종료일시가 시작일시보다 앞서면 예외")
     void addItinerary_Lodge_InvalidDateSequence() {
         // given
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         given(tripRepository.findById(trip.getId()))
             .willReturn(Optional.of(trip));
 
@@ -269,15 +324,17 @@ class TripServiceTest {
             .build();
 
         // when, then
-        assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), List.of(saveDto)))
-            .isInstanceOf(InvalidDateSequenceException.class);
+        assertThatThrownBy(() -> tripService.addItineraries(
+            trip.getId(), List.of(saveDto), member.getEmail()
+        )).isInstanceOf(InvalidDateSequenceException.class);
     }
 
     @Test
     @DisplayName("여정 추가 시 Route 종료일시가 시작일시보다 앞서면 예외")
     void addItinerary_Route_InvalidDateSequence() {
         // given
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         given(tripRepository.findById(trip.getId()))
             .willReturn(Optional.of(trip));
 
@@ -294,15 +351,17 @@ class TripServiceTest {
             .build();
 
         // when, then
-        assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), List.of(saveDto)))
-            .isInstanceOf(InvalidDateSequenceException.class);
+        assertThatThrownBy(() -> tripService.addItineraries(
+            trip.getId(), List.of(saveDto), member.getEmail()
+        )).isInstanceOf(InvalidDateSequenceException.class);
     }
 
     @Test
     @DisplayName("여정 추가 시 Stay 종료일시가 시작일시보다 앞서면 예외")
     void addItinerary_Stay_InvalidDateSequence() {
         // given
-        Trip trip = createTrip();
+        Member member = createMember();
+        Trip trip = createTripWithMember(member);
         given(tripRepository.findById(trip.getId()))
             .willReturn(Optional.of(trip));
 
@@ -316,8 +375,9 @@ class TripServiceTest {
             .build();
 
         // when, then
-        assertThatThrownBy(() -> tripService.addItineraries(trip.getId(), List.of(saveDto)))
-            .isInstanceOf(InvalidDateSequenceException.class);
+        assertThatThrownBy(() -> tripService.addItineraries(
+            trip.getId(), List.of(saveDto), member.getEmail()
+        )).isInstanceOf(InvalidDateSequenceException.class);
     }
 
     @Test
@@ -325,27 +385,27 @@ class TripServiceTest {
     void findTripsByNickname() {
         //given
         Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        List<Trip> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(trip);
-        }
-        int page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 5);
-        given(memberService.findByNickname(trip.getMember().getNickname()))
-            .willReturn(member);
-        Page<Trip> fakePage = new PageImpl<>(list, pageable, list.size());
-        given(tripRepository.findTripByMember(trip.getMember(), pageable))
-            .willReturn(fakePage);
+        String query = member.getNickname();
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Trip> trips = IntStream.range(0, 10)
+            .mapToObj(i -> createTripWithMember(member))
+            .toList();
+        List<TripInfoDto> tripInfos = trips.stream()
+            .map(TripInfoDto::from)
+            .toList();
 
-        //when
-        List<TripInfoDto> findTrips =
-            tripService.findTripsByNickname(member.getNickname(), page, pageable);
+        when(tripRepository.findAllByNameContainingIgnoreCase(query, pageable))
+            .thenReturn(new PageImpl<>(trips, pageable, trips.size()));
 
-        //then
+        // When
+        Page<TripInfoDto> result = tripService.searchByTripName(query, pageable);
+
+        // Then
         assertSoftly(softly -> {
-            softly.assertThat(findTrips.size()).isEqualTo(5);
-            softly.assertThat(findTrips).contains(TripInfoDto.from(trip));
+            softly.assertThat(result.getNumber()).isEqualTo(0);
+            softly.assertThat(result.getSize()).isEqualTo(3);
+            softly.assertThat(result.getTotalElements()).isEqualTo(tripInfos.size());
+            softly.assertThat(result.getContent()).isEqualTo(tripInfos);
         });
     }
 
@@ -353,27 +413,16 @@ class TripServiceTest {
     @DisplayName("사용자 닉네임으로 여행 검색 실패")
     void findTripsByNickname_fail() {
         //given
-        Member member = createMember();
-        Trip trip = createTripWithMember(member);
-        List<Trip> list = new ArrayList<>();
+        String query = "findTripsByNickname_fail";
+        Pageable pageable = PageRequest.of(0, 3);
+        when(tripRepository.findAllByNameContainingIgnoreCase(query, pageable))
+            .thenReturn(Page.empty());
 
-        int page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 5);
-        given(memberService.findByNickname(trip.getMember().getNickname()))
-            .willReturn(member);
-        Page<Trip> fakePage = new PageImpl<>(list, pageable, list.size());
-        given(tripRepository.findTripByMember(trip.getMember(), pageable))
-            .willReturn(fakePage);
+        // when
+        Page<TripInfoDto> actualResult = tripService.searchByTripName(query, pageable);
 
-        //when
-        List<TripInfoDto> findTrips =
-            tripService.findTripsByNickname(member.getNickname(), page, pageable);
-
-        //then
-        assertSoftly(softly -> {
-            softly.assertThat(findTrips.size()).isEqualTo(0);
-            softly.assertThat(TripInfoDto.from(trip)).isNotIn(findTrips);
-        });
+        // then
+        assertThat(actualResult.isEmpty()).isEqualTo(true);
     }
 
     @Test

@@ -60,6 +60,15 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/api/trips/search-by-trip-name",
                         HttpMethod.GET.name())
                 ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/swagger-ui.html")
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/swagger-ui/**")
+                ).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/v3/api-docs/**")
+                ).permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated())
         ;

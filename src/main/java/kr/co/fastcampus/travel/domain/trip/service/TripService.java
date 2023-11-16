@@ -3,6 +3,7 @@ package kr.co.fastcampus.travel.domain.trip.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.request.save.ItinerarySaveDto;
 import kr.co.fastcampus.travel.domain.itinerary.service.dto.response.ItineraryDto;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
@@ -68,8 +69,14 @@ public class TripService {
     }
 
     @Transactional
-    public TripInfoDto editTrip(Long tripId, TripUpdateDto dto) {
+    public TripInfoDto editTrip(Long tripId, TripUpdateDto dto, String memberEmail) {
         var trip = findById(tripId);
+
+        boolean isWriter = memberEmail.equals(trip.getMember().getEmail());
+        if (!isWriter) {
+            throw new MemberMismatchException();
+        }
+
         Trip updateTrip = dto.toEntity();
         trip.update(updateTrip);
         return TripInfoDto.from(trip);
@@ -82,24 +89,27 @@ public class TripService {
     }
 
     @Transactional
-    public List<ItineraryDto> addItineraries(Long id, List<ItinerarySaveDto> dto) {
+    public List<ItineraryDto> addItineraries(
+        Long id, List<ItinerarySaveDto> dto, String memberEmail
+    ) {
         var trip = findById(id);
-        dto.stream()
-            .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
-            .forEach(trip::addItinerary);
-        return trip.getItineraries().stream()
-            .map(ItineraryDto::from)
-            .collect(Collectors.toList());
+        if (trip.getMember().getEmail().equals(memberEmail)) {
+            dto.stream()
+                .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
+                .forEach(trip::addItinerary);
+            return trip.getItineraries().stream()
+                .map(ItineraryDto::from)
+                .collect(Collectors.toList());
+        } else {
+            throw new MemberMismatchException();
+        }
     }
 
     @Transactional
-    public List<TripInfoDto> findTripsByNickname(String nickname, int page, Pageable pageable) {
+    public Page<TripInfoDto> findTripsByNickname(String nickname, Pageable pageable) {
         Member member = findMemberByNickname(nickname);
-        pageable = PageRequest.of(page - 1, pageSize);
-        var trips = tripRepository.findTripByMember(member, pageable);
-        return trips.stream()
-            .map(TripInfoDto::from)
-            .collect(Collectors.toList());
+        Page<Trip> trips = tripRepository.findTripByMember(member, pageable);
+        return trips.map(TripInfoDto::from);
     }
 
     public Member findMemberByNickname(String nickname) {
