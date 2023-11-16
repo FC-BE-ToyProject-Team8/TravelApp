@@ -4,7 +4,7 @@ import static kr.co.fastcampus.travel.common.MemberTestUtils.NAME;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.NICKNAME;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
-import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveReqeust;
+import static kr.co.fastcampus.travel.common.MemberTestUtils.createMemberSaveRequest;
 import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostBody;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +30,7 @@ class MemberControllerTest extends ApiTest {
     void save() {
         // given
         String url = "/api/signup";
-        MemberSaveRequest request = createMemberSaveReqeust();
+        MemberSaveRequest request = createMemberSaveRequest();
 
         // when
         ExtractableResponse<Response> response = restAssuredPostBody(url, request);
@@ -48,7 +48,7 @@ class MemberControllerTest extends ApiTest {
         saveMember(createMember());
 
         String url = "/api/signup";
-        MemberSaveRequest request = createMemberSaveReqeust();
+        MemberSaveRequest request = createMemberSaveRequest();
 
         // when
         ExtractableResponse<Response> response = restAssuredPostBody(url, request);

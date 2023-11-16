@@ -60,7 +60,7 @@ class TripControllerGetTripTest extends ApiTest {
     @DisplayName("좋아요로 여행 목록 검색")
     void searchByLike() {
         // given
-        restAssuredPostBody("/signup", createMemberSaveRequest());
+        restAssuredPostBody("/api/signup", createMemberSaveRequest());
 
         TripSaveRequest request = new TripSaveRequest(
                 "name",
