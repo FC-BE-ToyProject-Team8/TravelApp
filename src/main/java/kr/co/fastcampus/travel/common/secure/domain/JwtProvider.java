@@ -68,6 +68,7 @@ public class JwtProvider {
 
         return Token.builder()
             .email(email)
+            .role(role)
             .grantType(grantType)
             .accessToken(accessToken)
             .refreshToken(refreshToken)

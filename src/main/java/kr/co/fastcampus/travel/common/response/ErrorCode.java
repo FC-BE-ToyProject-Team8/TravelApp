@@ -15,7 +15,8 @@ public enum ErrorCode {
     MEMBER_MISMATCH("작성자가 아니므로 해당 권한이 없습니다."),
     INVALID_LIKE_CANCEL("이미 취소되었거나, 잘못된 좋아요 취소입니다."),
     API_REQUEST_FAILED("API 요청에 실패하였습니다."),
-    API_UNAUTHORIZED("API 인증에 실패하였습니다. API 키를 다시 확인해주세요.");
+    API_UNAUTHORIZED("API 인증에 실패하였습니다. API 키를 다시 확인해주세요."),
+    INVALID_AUTHENTICATION("잘못된 인증정보입니다.");
 
     private final String errorMsg;
 

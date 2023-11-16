@@ -1,8 +1,10 @@
 package kr.co.fastcampus.travel.domain.secure.controller.dto;
 
 import kr.co.fastcampus.travel.domain.secure.controller.dto.request.LoginReqeust;
+import kr.co.fastcampus.travel.domain.secure.controller.dto.request.ReissueRequest;
 import kr.co.fastcampus.travel.domain.secure.controller.dto.response.LoginResponse;
 import kr.co.fastcampus.travel.domain.secure.service.reqeust.LoginDto;
+import kr.co.fastcampus.travel.domain.secure.service.reqeust.ReissueDto;
 import kr.co.fastcampus.travel.domain.secure.service.response.TokenDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -17,6 +19,8 @@ public interface SecurityDtoMapper {
 
     // request
     LoginDto of(LoginReqeust reqeust);
+
+    ReissueDto of(ReissueRequest request);
 
     // response
     LoginResponse of(TokenDto dto);
