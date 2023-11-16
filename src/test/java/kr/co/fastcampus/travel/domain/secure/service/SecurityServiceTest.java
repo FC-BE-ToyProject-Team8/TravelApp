@@ -5,6 +5,7 @@ import static kr.co.fastcampus.travel.common.MemberTestUtils.PASSWORD;
 import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import kr.co.fastcampus.travel.common.exception.InvalidArgumentException;
@@ -12,6 +13,7 @@ import kr.co.fastcampus.travel.common.secure.domain.JwtProvider;
 import kr.co.fastcampus.travel.common.secure.domain.Token;
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
+import kr.co.fastcampus.travel.domain.secure.repository.TokenRedisRepository;
 import kr.co.fastcampus.travel.domain.secure.service.reqeust.LoginDto;
 import kr.co.fastcampus.travel.domain.secure.service.response.TokenDto;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +35,9 @@ class SecurityServiceTest {
 
     @Mock
     private JwtProvider jwtProvider;
+
+    @Mock
+    private TokenRedisRepository tokenRedisRepository;
 
     @InjectMocks
     private SecurityService securityService;
@@ -68,6 +73,8 @@ class SecurityServiceTest {
             .willReturn(true);
         given(jwtProvider.generateToken(member.getEmail(), member.getRole().name()))
             .willReturn(Token.builder().build());
+        given(tokenRedisRepository.save(any(Token.class)))
+                .willReturn(Token.builder().build());
 
         // when
         TokenDto result = securityService.login(dto);
