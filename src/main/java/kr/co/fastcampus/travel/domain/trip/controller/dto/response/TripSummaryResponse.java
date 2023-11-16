@@ -26,6 +26,7 @@ public record TripSummaryResponse(
             .startDate(trip.getStartDate())
             .endDate(trip.getEndDate())
             .isForeign(trip.isForeign())
+            .likeCount(trip.getLikeCount())
             .build();
     }
 }
