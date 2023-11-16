@@ -51,14 +51,16 @@ public class CommentServiceTest {
     @DisplayName("댓글 달기 - 성공")
     void addComment() {
         // given
+        Long tripId = -1L;
         Trip trip = createTrip();
         Member member = createMember();
         Comment comment = createComment(trip, member);
         given(commentRepository.save(any(Comment.class))).willReturn(comment);
         CommentSaveDto request = createCommentSaveDto();
+        given(tripService.findById(tripId)).willReturn(trip);
 
         // When
-        CommentInfoDto result = commentService.addComment(trip.getId(), member.getEmail(), request);
+        CommentInfoDto result = commentService.addComment(tripId, member.getEmail(), request);
 
         // then
         assertThat(result).isNotNull();
