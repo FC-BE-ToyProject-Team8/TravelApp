@@ -27,8 +27,9 @@ public class ItineraryService {
         return ItineraryDto.from(itinerary);
     }
 
-    public ItineraryDto editItinerary(Long id, ItineraryUpdateDto dto) {
+    public ItineraryDto editItinerary(Long id, String memberEmail, ItineraryUpdateDto dto) {
         var itinerary = findById(id);
+        validateMemberMatch(memberEmail, itinerary);
         Itinerary updateItinerary = dto.toEntity();
         itinerary.update(updateItinerary);
         return ItineraryDto.from(itinerary);
@@ -45,6 +46,12 @@ public class ItineraryService {
 
     private Itinerary findById(Long id) {
         return itineraryRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(EntityNotFoundException::new);
+    }
+
+    private void validateMemberMatch(String memberEmail, Itinerary itinerary) {
+        if (!itinerary.getTrip().getMember().getEmail().equals(memberEmail)) {
+            throw new MemberMismatchException();
+        }
     }
 }

@@ -13,21 +13,21 @@ public final class RestAssuredUtils {
 
     public static ExtractableResponse<Response> restAssuredPostBody(String url, Object request) {
         return restAssured()
-                .body(request)
-                .when()
-                .post(url)
-                .then().log().all()
-                .extract();
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
     }
 
     public static ExtractableResponse<Response> restAssuredGetWithToken(String url) {
         String accessToken = TokenUtils.getAccessToken();
 
         return restAssuredWithToken(accessToken)
-                .when()
-                .get(url)
-                .then().log().all()
-                .extract();
+            .when()
+            .get(url)
+            .then().log().all()
+            .extract();
     }
 
     public static ExtractableResponse<Response> restAssuredGetWithToken(
@@ -43,17 +43,30 @@ public final class RestAssuredUtils {
 
 
     public static ExtractableResponse<Response> restAssuredPostWithToken(
-            String url,
-            Object request
+        String url,
+        Object request
     ) {
         String accessToken = TokenUtils.getAccessToken();
 
         return restAssuredWithToken(accessToken)
-                .body(request)
-                .when()
-                .post(url)
-                .then().log().all()
-                .extract();
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPostWithToken(
+        String url,
+        Object request,
+        String accessToken
+    ) {
+        return restAssuredWithToken(accessToken)
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
     }
 
     public static ExtractableResponse<Response> restAssuredPostWithToken(
@@ -106,12 +119,39 @@ public final class RestAssuredUtils {
 
     private static RequestSpecification restAssuredWithToken(String accessToken) {
         return restAssured()
-                .header("Authorization", accessToken);
+            .header("Authorization", accessToken);
     }
 
     private static RequestSpecification restAssured() {
         return RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE);
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    public static ExtractableResponse<Response> restAssuredPutWithToken(
+        String url,
+        Object request
+    ) {
+        String accessToken = TokenUtils.getAccessToken();
+
+        return restAssuredWithToken(accessToken)
+            .body(request)
+            .when()
+            .put(url)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPutWithToken(
+        String url,
+        Object request,
+        String accessToken
+    ) {
+        return restAssuredWithToken(accessToken)
+            .body(request)
+            .when()
+            .put(url)
+            .then().log().all()
+            .extract();
     }
 }
