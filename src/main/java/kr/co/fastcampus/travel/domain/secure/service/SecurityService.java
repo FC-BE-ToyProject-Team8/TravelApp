@@ -2,9 +2,13 @@ package kr.co.fastcampus.travel.domain.secure.service;
 
 import java.util.List;
 import kr.co.fastcampus.travel.common.exception.InvalidArgumentException;
+import kr.co.fastcampus.travel.common.exception.InvalidAuthenticationException;
 import kr.co.fastcampus.travel.common.secure.domain.JwtProvider;
 import kr.co.fastcampus.travel.common.secure.domain.PrincipalDetails;
+import kr.co.fastcampus.travel.common.secure.domain.Token;
 import kr.co.fastcampus.travel.domain.member.service.MemberService;
+import kr.co.fastcampus.travel.domain.secure.repository.TokenRedisRepository;
+import kr.co.fastcampus.travel.domain.secure.service.reqeust.ReissueDto;
 import kr.co.fastcampus.travel.domain.secure.service.reqeust.LoginDto;
 import kr.co.fastcampus.travel.domain.secure.service.response.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +30,23 @@ public class SecurityService implements UserDetailsService {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final TokenRedisRepository tokenRedisRepository;
 
     public TokenDto login(LoginDto dto) {
         var member = memberService.findMemberByEmail(dto.email());
         matchingPassword(dto.password(), member.getPassword());
-        var token = jwtProvider.generateToken(member.getEmail(), member.getRole().name());
+        Token token = createToken(member.getEmail(), member.getRole().name());
         return TokenDto.from(token);
+    }
+
+    public TokenDto reissue(ReissueDto dto) {
+        Token findToken = tokenRedisRepository.findById(dto.email())
+                .orElseThrow(InvalidAuthenticationException::new);
+        if (!findToken.getRefreshToken().equals(dto.refreshToken())) {
+            throw new InvalidAuthenticationException();
+        }
+        Token newToken = createToken(dto.email(), findToken.getRole());
+        return TokenDto.from(newToken);
     }
 
     @Override
@@ -50,5 +65,11 @@ public class SecurityService implements UserDetailsService {
 
     private boolean isMatchingPassword(String password, String encodePassword) {
         return passwordEncoder.matches(password, encodePassword);
+    }
+
+    private Token createToken(String email, String role) {
+        var token = jwtProvider.generateToken(email, role);
+        tokenRedisRepository.save(token);
+        return token;
     }
 }
