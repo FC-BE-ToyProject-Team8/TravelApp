@@ -3,8 +3,10 @@ package kr.co.fastcampus.travel.common.config;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
@@ -21,17 +23,19 @@ public class EmbeddedRedisConfig {
     @PostConstruct
     public void startRedis() throws IOException {
         int port = isRedisRunning() ? findAvailablePort() : redisPort;
-        redisServer = RedisServer.builder()
-                .port(port)
-                .build();
+        if (isArmArchitecture()) {
+            redisServer = new RedisServer(Objects.requireNonNull(getRedisServerExecutable()), port);
+        } else {
+            redisServer = RedisServer.builder()
+                    .port(port)
+                    .build();
+        }
         redisServer.start();
     }
 
     @PreDestroy
     public void stopRedis() {
-        if (redisServer != null) {
-            redisServer.stop();
-        }
+        redisServer.stop();
     }
 
     private boolean isRedisRunning() throws IOException {
@@ -75,5 +79,17 @@ public class EmbeddedRedisConfig {
         }
 
         return StringUtils.hasText(pidInfo.toString());
+    }
+
+    private File getRedisServerExecutable() {
+        try {
+            return new File("src/main/resources/binary/redis/redis-server-7.0.3-mac-arm64");
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    private boolean isArmArchitecture() {
+        return System.getProperty("os.arch").contains("aarch64");
     }
 }
