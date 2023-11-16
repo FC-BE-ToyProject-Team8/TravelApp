@@ -10,18 +10,18 @@ import lombok.Builder;
 
 @Builder
 public record ItinerarySaveDto(
-        RouteSaveDto route,
-        LodgeSaveDto lodge,
-        StaySaveDto stay
+    RouteSaveDto route,
+    LodgeSaveDto lodge,
+    StaySaveDto stay
 ) {
 
     public Itinerary toEntity(Trip trip) {
         return Itinerary.builder()
-                .trip(trip)
-                .route(getRoute())
-                .lodge(getLodge())
-                .stay(getStay())
-                .build();
+            .trip(trip)
+            .route(getRoute())
+            .lodge(getLodge())
+            .stay(getStay())
+            .build();
     }
 
     private Route getRoute() {

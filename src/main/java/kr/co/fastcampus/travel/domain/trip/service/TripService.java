@@ -61,7 +61,7 @@ public class TripService {
     }
 
     public List<TripInfoDto> findAllTrips() {
-        var trips = tripRepository.findAll();
+        List<Trip> trips = tripRepository.findAll();
         return trips.stream()
             .map(TripInfoDto::from)
             .collect(Collectors.toList());
