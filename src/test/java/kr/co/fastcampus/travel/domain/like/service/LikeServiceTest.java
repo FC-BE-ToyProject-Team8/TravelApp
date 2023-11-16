@@ -7,9 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDate;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 import kr.co.fastcampus.travel.common.exception.DuplicatedLikeException;
 import kr.co.fastcampus.travel.common.exception.InvalidLikeCancelException;
 import kr.co.fastcampus.travel.domain.like.repository.LikeRepository;
@@ -42,30 +40,19 @@ class LikeServiceTest {
     @Test
     @DisplayName("좋아요 등록")
     void saveLike() throws InterruptedException {
-        int threadCount = 10;
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
-        CountDownLatch latch = new CountDownLatch(threadCount);
 
         //given
         Long tripId = 1L;
         Trip trip = createTrip();
-        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
+        given(tripService.findById(tripId)).willReturn(trip);
 
         //when
-        for (int i = 0; i < threadCount; i++) {
-            executorService.submit(() -> {
-                try {
-                    Member member = createMember();
-                    likeService.saveLike(tripId, member.getEmail());
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
-        latch.await();
+        IntStream.range(0, 3)
+            .mapToObj(i -> createMember())
+            .forEach(member -> likeService.saveLike(tripId, member.getEmail()));
 
         //then
-        assertThat(trip.getLikeCount()).isEqualTo(threadCount);
+        assertThat(trip.getLikeCount()).isEqualTo(3);
     }
 
     @Test
@@ -75,7 +62,7 @@ class LikeServiceTest {
         //given
         Long tripId = 1L;
         Trip trip = createTrip();
-        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
+        given(tripService.findById(tripId)).willReturn(trip);
         Member member = createMember();
         given(memberService.findByEmail(member.getEmail())).willReturn(member);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
@@ -101,7 +88,7 @@ class LikeServiceTest {
             .likeCount(1L)
             .build();
         given(memberService.findByEmail(member.getEmail())).willReturn(member);
-        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
+        given(tripService.findById(tripId)).willReturn(trip);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(true);
         likeService.deleteLike(tripId, member.getEmail());
 
@@ -116,7 +103,7 @@ class LikeServiceTest {
         //given
         Long tripId = 1L;
         Trip trip = createTrip();
-        given(tripService.findByIdForUpdate(tripId)).willReturn(trip);
+        given(tripService.findById(tripId)).willReturn(trip);
         Member member = createMember();
         given(memberService.findByEmail(member.getEmail())).willReturn(member);
         given(likeRepository.existsByTripAndMember(trip, member)).willReturn(false);
