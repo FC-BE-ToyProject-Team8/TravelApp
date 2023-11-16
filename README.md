@@ -14,12 +14,13 @@
 ### 기술 스택
 
 - **언어**: Java 17
-- **개발 환경**: IntelliJ, Gradle, Spring Boot
-- **라이브러리**: Spring web, Spring Security, JPA, JUnit5, Lombok, MapStruct
+- **개발 환경**: IntelliJ, Gradle, Spring Boot 3
+- **라이브러리**: Spring Web, Spring Security, JPA, JUnit5, Lombok, MapStruct, JWT
 - **CI**: GitHub Actions
 - **API 명세** : Swagger
 
 ### API 명세
+
 ![api명세1.png](resultimage/api명세1.png)
 ![api명세2.png](resultimage/api명세2.png)
 
@@ -106,6 +107,7 @@
 ## ERD
 
 ![img.png](resultimage/ERD.JPG)
+
 - `create_at`/`update_at` 컬럼은 자동으로 값을 넣어주기 위해`JPA Auditing` 기능을 사용하였습니다.
 
 ## 초기 실행 화면
@@ -113,7 +115,9 @@
 ![img.png](resultimage/스프링부트초기실행화면.png)
 
 ## API 테스트
+
 ### `POST /signup`
+
 회원가입 (요청/응답 - 성공)
 
 ![회원가입.png](resultimage/member/회원가입.png)
@@ -126,6 +130,7 @@
 ![중복닉네임.png](resultimage/member/중복이메일.png)
 
 ### `POST /login`
+
 로그인 (요청/응답 - 성공)
 
 ![로그인.png](resultimage/member/로그인.png)
@@ -135,53 +140,64 @@
 
 로그인 (요청/응답 - 실패 *존재하지 않는 사용자*)
 ![존재하지않는사용자.png](resultimage/member/존재하지않는사용자.png)
-### `POST /trips` 
+
+### `POST /trips`
+
 여행 등록 (요청/응답)
 
 ![여행등록.png](resultimage/trip/여행등록.png)
 ![여행등록db.JPG](resultimage/trip/여행등록db.JPG)
 
-### `POST /itineraries` 
+### `POST /itineraries`
+
 여정 복수 추가 (요청/응답)
 
 ![여정등록요청.png](resultimage/itinerary/여정등록요청.png)
 ![여정등록응답.png](resultimage/itinerary/여정등록응답.png)
 ![여정등록db.JPG](resultimage/itinerary/여정등록db.JPG)
 
-### `PUT /trips/{tripId}` 
+### `PUT /trips/{tripId}`
+
 여행 수정 (요청/응답)'
 
 ![여행수정.png](resultimage/trip/여행수정.png)
 ![여행수정db.png](resultimage/trip/여행수정db.png)
-### `PUT /itineraries/{itineraryId}` 
+
+### `PUT /itineraries/{itineraryId}`
+
 여정 수정 (요청/응답)
 
 ![여정수정요청.png](resultimage/itinerary/여정수정요청.png)
 ![여정수정응답.png](resultimage/itinerary/여정수정응답.png)
 여정 수정 (요청/응답)
 
-### `GET /trips` 
+### `GET /trips`
+
 여행 목록 조회 (요청/응답)
 
 ![여행목록.png](resultimage/trip/여행목록.png)
 
-### `GET /trips/{tripid}` 
+### `GET /trips/{tripid}`
+
 여행+여정 조회 (요청/응답)
 
 ![여행조회.png](resultimage/trip/여행조회.png)
 
 ### `GET /trips/my-likes?page={page}`
+
 본인이 좋아요 누른 여행 조회 (요청/응답)
 ![좋아요여행리스트.png](resultimage/trip/좋아요여행리스트.png)
 
-### `DELETE /trips/{tripId}` 
+### `DELETE /trips/{tripId}`
+
 여행 삭제 (요청/응답)
 
 ![여행삭제이전db.png](resultimage/trip/여행삭제이전db.png)
 ![여행삭제.png](resultimage/trip/여행삭제.png)
 ![여행삭제이후db.png](resultimage/trip/여행삭제이후db.png)
 
-### `DELETE /itineraries/{itineraryId}` 
+### `DELETE /itineraries/{itineraryId}`
+
 여정 삭제 (요청/응답)
 
 ![여정삭제이전db.JPG](resultimage/itinerary/여정삭제이전db.JPG)
@@ -189,45 +205,53 @@
 ![여정삭제이후db.JPG](resultimage/itinerary/여정삭제이후db.JPG)
 
 ### `POST /likes?tripId={tripId}`
+
 좋아요 등록 (요청/응답)
 
 ![좋아요등록.png](resultimage/like/좋아요등록.png)
 ![좋아요결과.png](resultimage/like/좋아요결과.png)
 
 ### `DELETE /likes?tripId={tripId}`
+
 좋아요 삭제 (요청/응답)
 
 ![좋아요삭제.png](resultimage/like/좋아요삭제.png)
 ![좋아요삭제결과.png](resultimage/search/좋아요삭제결과.png)
 
 ### `POST /comments?tripId={tripId}`
+
 댓글 등록 (요청/응답)
 
 ![댓글 작성.png](resultimage/comment/댓글작성.png)
 
 ### `PUT /comments/{commentId}`
+
 댓글 수정 (요청/응답)
 
 ![댓글 수정.png](resultimage/comment/댓글수정.png)
 
-### `DELETE /comments/{commentId}` 
+### `DELETE /comments/{commentId}`
+
 댓글 삭제 (요청/응답)
 
 ![댓글삭제.png](resultimage/comment/댓글삭제.png)
 
-### `GET /trips/search-by-nickname?query={query}&page={page}` 
+### `GET /trips/search-by-nickname?query={query}&page={page}`
+
 사용자 닉네임으로 여행 검색 (요청/응답)
 
 ![닉네임찾기요청.png](resultimage/search/닉네임찾기요청.png)
 ![닉네임찾기응답.png](resultimage/search/닉네임찾기응답.png)
 
-### `GET /trips/search-by-trip-name?query={query}&page={page}` 
+### `GET /trips/search-by-trip-name?query={query}&page={page}`
+
 여행 이름으로 여행 검색 (요청/응답)
 
 ![여행이름검색1.png](resultimage/trip/여행이름검색1.png)
 ![여행이름검색2.png](resultimage/trip/여행이름검색2.png)
 
-### `GET /search-place?query={query}&page={page}&size={size}` 
+### `GET /search-place?query={query}&page={page}&size={size}`
+
 카카오 OpenApi를 이용한 키워드를 통한 장소 검색 (요청/응답)
 
 ![카카오장소검색.png](resultimage/search/카카오장소검색.png)
@@ -237,41 +261,41 @@
 
 ---
 
-| 구분       | 내용                                                                                                                                                                                                                |
-|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| API 설계   | REST API URL 설계 규칙에 어긋나지 않게 URL이 잘 구현되었는가.                                                                                                                                                                        |
-|          | -> 네, 리소스에 대한 표현은 현업 컨벤션과 맞게 복수형 명사로 구성하였고, 추가 사항으로 프론트 구현도 생각에 두어 모든 API앞에 `/api`를 붙여주었습니다.                                                                                                                      |
-|          | 적절한 HTTP method를 사용했는가                                                                                                                                                                                            |
-|          | -> 데이터 조회 시 `GET`, 추가 시 `POST`, 삭제 시 `DELETE`를 사용했고, 업데이트 시 `PATCH`가 아닌 `PUT`을 사용하여 클라이언트로부터 모든 필드의 정보를 받아 기존 리소스를 완전히 대체하는 방식으로 구현하였습니다.                                                                         |
-| ERD 설계   | 각 테이블의 모든 컬럼들이 적절한 자료형을 사용했는가                                                                                                                                                                                     |
-|          | ->  자바 자료형에 맞는 MySQL자료형을 사용하였습니다.                                                                                                                                                                                 |
-|          | 테이블 간 연관관계를 적절히 설정하였는가                                                                                                                                                                                            |
-|          | -> 테이블을 여행, 여정 총 2가지로 두었고, 여행을 여정이 1:n으로 참조하는 방식을 사용하였습니다. 여기서 route, lodeg, stay 테이블을 따로 만들지 않고 하나의 여정에 담은 이유는 여정 테이블에서 모든 컬럼을 생성해 만들어도 컬럼의 수가 충분히 많지 않고 개발 부분에서도 편의성을 얻을 수 있다 생각하여 여정 테이블 하나에 모든 데이터를 담게 되었습니다. |
-| 프로젝트 구조  | Controller - Service - Repository를 각 계층에 맞게 사용했는가                                                                                                                                                                 |
-|          | -> Controller는 사용자의 요청을 받아 Service를 호출하고, Service의 응답값을 Response DTO로 변환하여 반환해주는 역할, Service는 Repository 호출 및 트랜잭션 등 비즈니스 로직을 수행하는 역할, Repository는 DB를 접근하는 역할로 각 계층에 맞게 사용하였습니다.                                 |
-|          | Entity와 DTO를 적절히 사용했는가                                                                                                                                                                                            |
-|          | -> 클라이언트에게 데이터를 받을 땐 Reqeust DTO를 생성하여 받아주었고, 로직을 처리한 후 응답을 줄 땐 Response DTO를 사용하였습니다.                                                                                                                            |
-|          | 일시에 대한 공통 유틸리티 클래스를 생성하여 활용했는가                                                                                                                                                                                    |
-|          | -> 일시를 처리 뿐만 아니라, Dto↔Entity 변환해주는 `TravelDtoConverter`라는 공통 유틸리티 클래스를 생성하여 활용하였습니다.                                                                                                                              |
-| 기능 확인    | 하나의 여행을 저장하는 기능이 구현되었는가                                                                                                                                                                                           |
-|          | -> `POST / api/trips` , (이름, 시작일, 종료일, 해외/국내) 정보를 받아 저장하도록 하였습니다.                                                                                                                                                 |
-|          | 여행 일정에 장소에 대한 정보도 추가하여 구현되었는가                                                                                                                                                                                     |
-|          | -> 여정의 숙박, 이동, 체류에서 장소명과 주소를 받도록 하여 구현되었습니다.                                                                                                                                                                      |
-|          | 특정 여행에 여러 개의 여정을 기록하는 기능이 구현되었는가                                                                                                                                                                                  |
-|          | -> `POST /api/trips/{tripId}/itineraries` , 한 개의 여정부터 복수 개의 여정까지 기록이 가능하도록 여정 정보를 List로 받아 처리하였습니다.                                                                                                               |
-|          | 전체 여행 리스트를 조회하는 기능이 구현되었는가                                                                                                                                                                                        |
-|          | -> `GET /api/trips` , 여행 목록 조회로, 여정을 제외한 여행 정보만 볼 수 있는 조회 기능을 만들었습니다.                                                                                                                                             |
-|          | 특정 여행(에 포함된 여정 리스트도) 상세 정보를 조회하는 기능이 구현되었는가                                                                                                                                                                       |
-|          | -> `GET /api/trips/{tripId}` , 여행 id를 받아 특정 여행을 선택하고 해당 여행 id로부터 여행 정보를 DB에서 찾아오고, 이 때 fetch join 을 통해 여정에 대한 엔티티도 함께 로드되도록 구현하였습니다.                                                                              |
-|          | 특정 여행(에 포함된 여정 리스트는 제외하고)의 정보를 수정할 수 있는 기능이 구현되었는가                                                                                                                                                                |
-|          | -> `PUT /api/trips/{tripId}` , 여행의 id를 통해 DB에서 특정 여행을 찾고 클라이언트로 부터 받은 정보로 수정할 수 있도록 구현하였습니다.                                                                                                                      |
-|          | 특정 여정의 상세 정보를 수정할 수 있는 기능이 구현되었는가                                                                                                                                                                                 |
-|          | -> `PUT /api/itineraries/{itineraryId}` , 여정의 id또한 고유하기 때문에 여행의 id없이 여정의 id만으로 DB에서 여정을 찾고, 수정할 수 있도록 구현하였습니다.                                                                                                    |
-| 프로젝트 완성도 | API 문서에 모든 기능을 포함하고, Request/Response에 대해 명확히 설명하였는가                                                                                                                                                              |
-|          | -> 네. Swagger에 명확히 설명되어 있습니다.                                                                                                                                                                                     |
-|          | 여행 등록 컬럼에 맞지 않는 데이터 등록 시도 시 오류 메세지를 출력하는가                                                                                                                                                                         |
-|          | -> 성공은 200, 바인딩 및 클라이언트 에러는 400, 그 외 서버 에러는 500으로 컨벤션을 정하였습니다. 날짜에 대한 검증은 자바에서 기본으로 제공해주는 LocalDateTime을 사용하였고, 잘못된 값이 들어왔을 땐 400 에러와 함께 에러 메세지를 보내는데, 에러 메시지를 커스텀하는 대신 개발자가 보기 쉽도록 에러 메세지를 그대로 return하게 해주었습니다.  |
-|          | 여행 조회 및 수정 시 없는 데이터라면 오류 메세지를 출력하는가                                                                                                                                                                               |
-|          | -> 성공은 200, 바인딩 및 클라이언트 에러는 400, 그 외 서버 에러는 500으로 컨벤션을 정하였습니다. 날짜에 대한 검증은 자바에서 기본으로 제공해주는 LocalDateTime을 사용하였고, 잘못된 값이 들어왔을 땐 400 에러와 함께 에러 메세지를 보내는데, 에러 메시지를 커스텀하는 대신 개발자가 보기 쉽도록 에러 메세지를 그대로 return하게 해주었습니다.  |
-|          | 모든 기능이 정상적으로 동작하는가                                                                                                                                                                                                |
-|          | -> 네. 테스트를 모두 마쳤으며 모든 기능이 잘 작동합니다.                                                                                                                                                                                |
+| 구분       | 내용                                                                                                                                                                                                                            |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| API 설계   | **REST API URL 설계 규칙에 어긋나지 않게 URL이 잘 구현되었는가.**                                                                                                                                                                                |
+|          | -> 네, 리소스에 대한 표현은 현업 컨벤션과 맞게 복수형 명사로 구성하였고, 추가 사항으로 프론트 구현도 생각에 두어 모든 API앞에 /api를 붙여주었습니다.                                                                                                                                    |
+|          | **적절한 HTTP method를 사용했는가**                                                                                                                                                                                                    |
+|          | -> 데이터 조회 시 GET, 추가 시 POST, 삭제 시 DELETE를 사용했고, 업데이트 시 PATCH가 아닌 PUT을 사용하여 클라이언트로부터 모든 필드의 정보를 받아 기존 리소스를 완전히 대체하는 방식으로 구현하였습니다.                                                                                               |
+| ERD 설계   | **각 테이블의 모든 컬럼들이 적절한 자료형을 사용했는가**                                                                                                                                                                                             |
+|          | -> 자바 자료형에 맞는 MySQL자료형을 사용하였습니다.                                                                                                                                                                                              |
+|          | **테이블 간 연관관계를 적절히 설정하였는가**                                                                                                                                                                                                    |
+|          | -> 네, 기존 설정된 관계에 추가로 Like, Member, Comment 테이블을 추가하였습니다.Member 의 경우 Trip , Like , Comment 테이블과 각각 1:N으로 관계를 가지고, Like , Comment 의 경우 다시 Trip 과 N:1 관계를 가지게 구성하였습니다. 그리하여 Itinerary테이블을 제외한 모든 테이블은 하나의 Member 를 가지게 되는 구성입니다. |
+| 프로젝트 구조  | **Controller - Service - Repository를 각 계층에 맞게 사용했는가**                                                                                                                                                                         |
+|          | -> Service와 Controller단에 DTO를 각각 두어 서로 간에 의존성이 더 분리될 수 있게 하였습니다. 이 때 Service Dto 와 Controller에 사용되는 dto끼리의 converter는 https://mapstruct.org/documentation/installation/를 사용해 인터페이스만 작성하면 구현체는 해당 라이브러리가 만들어주도록 하였습니다.         |
+|          | **Spring Security 의 인증/인가를 활용하여 회원가입/로그인 기능을 구현하였는가**                                                                                                                                                                         ||
+|          | → 네. Spring Security를 이용해서 회원가입과 로그인 기능을 구현하였습니다. 회원가입을 할 때는 PasswordEncoder를 이용해서 회원 비밀번호를 암호화해주었고, 로그인을 할 때는 JWT를 이용해 토큰을 넘겨주도록 구현하였습니다. 또 PrincipalDetails클래스를 만들어 인증된 사용자의 정보를 저장해놓도록 구현했습니다.                             |
+| 기능 확인    | **이메일,비밀번호,이름을 포함한 정보로 회원 가입 기능이 구현되었는가**                                                                                                                                                                                     |
+|          | -> 네, 회원가입 할 경우 위 데이터들을 받고 password는 바로 암호화 하여 회원 정보를 저장하도록 하였습니다.                                                                                                                                                            |
+|          | **이메일과 비밀번호로 로그인 기능이 구현되었는가**                                                                                                                                                                                                 |
+|          | -> 로그인시 입력된 이메일을 통해 회원과 회원의 비밀번호를 조회해서 비교하고 로그인에 성공하게 되면, JWT 토큰을 생성하고 토큰을 응답에 담아 보내줍니다.                                                                                                                                      |
+|          | **회원은 본인을 포함한 타인의 여행 정보에 '좋아요'를 표시할 수 있는가**                                                                                                                                                                                   |
+|          | → 네 . POST /likes?tripId={tripId} 로 여행의 id를 받아와서 해당 여행에 좋아요를 누를 수 있도록 구현했습니다. 이 때, 이미 좋아요를 누른 여행에 또 다시 좋아요 요청을 보내게 되는 상황에서 커스텀 예외 처리를 해주었습니다.                                                                                 |
+|          | **본인이 '좋아요'를 누른 여행 리스트를 조회할 수 있는가**                                                                                                                                                                                           |
+|          | → 네. GET /my-likes?page={page} 로 본인이 좋아요를 누른 여행을 검색하고 리스트를 조회할 수 있는 기능을 만들었습니다.                                                                                                                                               |
+|          | **각 여행 정보에 댓글을 달 수 있는 기능이 구현되었는가**                                                                                                                                                                                            |
+|          | → 네. POST /comments?tripId={tripId} 로 여행의 id를 받아 해당 여행에 댓글을 달 수 있는 기능을 구현했습니다.                                                                                                                                                |
+|          | **각 여행 정보에 '좋아요' 개수와 댓글 리스트가 추가되었는가**                                                                                                                                                                                         |
+|          | → 네. GET /api/trips 로 여행 목록을 조회할 때는 여행 정보와 좋아요 개수를 보여주고, GET /api/trips/{tripId} 로 여행 상세 조회를 하면 댓글 리스트까지 볼 수 있도록 만들었습니다.                                                                                                      |
+|          | **각 레이어별 단위 테스트가 각 1 개 이상씩 구현되었는가**                                                                                                                                                                                           |
+|          | → 네. Controller, Service, Repository 각각의 레이어에서 테스트를 구현하였고, Controller 레이어에서는 RestAssured 를 사용하여 REST API를 효율적으로 테스트하도록 구현했습니다.                                                                                                |
+|          | **Open API 를 활용하여 위치 정보를 고도화하였는가**                                                                                                                                                                                            |
+|          | → 네. 저희는 카카오 OpenApi를 사용하여 위치 검색 기능을 구현하였고, 사용자가 이 정보를 이용하여 위치 정보를 고도화할 수 있도록 만들었습니다. 또한, 이 기능은 회원이 아니어도 사용할 수 있도록 구현했습니다.                                                                                                    |
+| 프로젝트 완성도 | **API 문서에 모든 기능을 포함하고, Req/Res 에 대해 명확히 설명하였는가**                                                                                                                                                                              |
+|          | → 네. https://github.com/FC-BE-ToyProject-Team8/TravelApp/wiki/API-%EC%84%A4%EA%B3%84 해당 링크에 각 기능들의 요청과 응답 예시, 요청 파라미터들에 대한 상세한 설명까지 입력해놓았습니다.                                                                                 |
+|          | **회원 가입 시 이메일 형식이 잘못되면 오류 메세지를 출력하는가**                                                                                                                                                                                        |
+|          | → 네. @Email 을 사용하여 이메일 형식으로 입력받을 수 있도록 처리하였고, 이메일 형식으로 입력받지 않았다면 그에 맞는 예외 메시지를 보내도록 만들었습니다.                                                                                                                                   |
+|          | **로그인 실패 시 오류 메세지를 출력하는가**                                                                                                                                                                                                    |
+|          | → 네. 존재하지 않는 사용자일 때, 비밀번호가 잘못됐을 때 각각 그에 맞는 예외 메시지를 보내도록 만들었습니다.                                                                                                                                                               |
+|          | **모든 기능이 정상적으로 동작하는가**                                                                                                                                                                                                        |
+|          | → 네. 테스트를 모두 마쳤으며 모든 기능이 잘 작동합니다.                                                                                                                                                                                             |
