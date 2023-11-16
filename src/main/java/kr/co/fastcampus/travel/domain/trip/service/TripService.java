@@ -94,23 +94,6 @@ public class TripService {
             .orElseThrow(EntityNotFoundException::new);
     }
 
-    @Transactional
-    public List<ItineraryDto> addItineraries(
-        Long id, List<ItinerarySaveDto> dto, String memberEmail
-    ) {
-        var trip = findById(id);
-        if (trip.getMember().getEmail().equals(memberEmail)) {
-            dto.stream()
-                .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
-                .forEach(trip::addItinerary);
-            return trip.getItineraries().stream()
-                .map(ItineraryDto::from)
-                .collect(Collectors.toList());
-        } else {
-            throw new MemberMismatchException();
-        }
-    }
-
     public Trip findById(Long id) {
         return tripRepository.findById(id)
             .orElseThrow(EntityNotFoundException::new);
