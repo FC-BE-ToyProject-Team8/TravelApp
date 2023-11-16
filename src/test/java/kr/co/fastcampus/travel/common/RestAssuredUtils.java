@@ -20,6 +20,14 @@ public final class RestAssuredUtils {
             .extract();
     }
 
+    public static ExtractableResponse<Response> restAssuredGet(String url) {
+        return restAssured()
+            .when()
+            .get(url)
+            .then().log().all()
+            .extract();
+    }
+
     public static ExtractableResponse<Response> restAssuredGetWithToken(String url) {
         String accessToken = TokenUtils.getAccessToken();
 
