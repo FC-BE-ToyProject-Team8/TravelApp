@@ -199,6 +199,8 @@
 ### `POST /comments?tripId={tripId}` 댓글 등록
 
 ![댓글 작성.png](resultimage/comment/댓글작성.png)
+- 타인의 여행 정보에 댓글 작성 확인
+![타인여행댓글.png](resultimage/trip/타인여행댓글.png)
 
 ### `PUT /comments/{commentId}` 댓글 수정
 
