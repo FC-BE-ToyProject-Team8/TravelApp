@@ -4,26 +4,11 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.update.ItineraryUpdateRequest;
 import org.springframework.http.MediaType;
 
 public final class RestAssuredUtils {
 
     private RestAssuredUtils() {
-    }
-
-    public static ExtractableResponse<Response> restAssuredPutWithToken(
-        String url,
-        Object request
-    ) {
-        String accessToken = TokenUtils.getAccessToken();
-
-        return restAssuredWithToken(accessToken)
-            .body(request)
-            .when()
-            .put(url)
-            .then().log().all()
-            .extract();
     }
 
     public static ExtractableResponse<Response> restAssuredPostBody(String url, Object request) {
@@ -72,6 +57,19 @@ public final class RestAssuredUtils {
     }
 
     public static ExtractableResponse<Response> restAssuredPostWithToken(
+        String url,
+        Object request,
+        String accessToken
+    ) {
+        return restAssuredWithToken(accessToken)
+            .body(request)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPostWithToken(
         String url
     ) {
         String accessToken = TokenUtils.getAccessToken();
@@ -104,5 +102,32 @@ public final class RestAssuredUtils {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    public static ExtractableResponse<Response> restAssuredPutWithToken(
+        String url,
+        Object request
+    ) {
+        String accessToken = TokenUtils.getAccessToken();
+
+        return restAssuredWithToken(accessToken)
+            .body(request)
+            .when()
+            .put(url)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> restAssuredPutWithToken(
+        String url,
+        Object request,
+        String accessToken
+    ) {
+        return restAssuredWithToken(accessToken)
+            .body(request)
+            .when()
+            .put(url)
+            .then().log().all()
+            .extract();
     }
 }
