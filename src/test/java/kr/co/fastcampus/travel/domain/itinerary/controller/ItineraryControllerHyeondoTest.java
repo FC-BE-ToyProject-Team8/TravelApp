@@ -7,7 +7,9 @@ import static kr.co.fastcampus.travel.common.TokenUtils.getAccessToken;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.API_ITINERARIES_ENDPOINT;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.API_TRIPS_ENDPOINT;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
-import static org.assertj.core.api.Assertions.assertThat;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeSaveRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteSaveRequest;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.createStaySaveRequest;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import io.restassured.path.json.JsonPath;
@@ -43,9 +45,15 @@ class ItineraryControllerHyeondoTest extends ApiTest {
             false
         );
         restAssuredPostWithToken(API_TRIPS_ENDPOINT, tripRequest, accessToken);
-        ItinerarySaveRequest itinerarySaveRequest = createItinerarySaveRequest();
-        ItinerariesSaveRequest request =
-            new ItinerariesSaveRequest(1L, List.of(itinerarySaveRequest));
+        ItinerarySaveRequest itinerary =
+            createItinerarySaveRequest(
+                createRouteSaveRequest(),
+                createLodgeSaveRequest(),
+                createStaySaveRequest()
+            );
+        ItinerariesSaveRequest request = new ItinerariesSaveRequest(1L, List.of(itinerary));
+
+        restAssuredPostWithToken(API_ITINERARIES_ENDPOINT, request, accessToken);
         restAssuredPostWithToken(API_ITINERARIES_ENDPOINT, request, accessToken);
 
         //when
@@ -63,6 +71,5 @@ class ItineraryControllerHyeondoTest extends ApiTest {
             softly.assertThat(itineraries.size()).isEqualTo(1);
             softly.assertThat(findTrip.getMember().getEmail()).isEqualTo(EMAIL);
         });
-        assertThat(itineraries.size()).isEqualTo(1);
     }
 }

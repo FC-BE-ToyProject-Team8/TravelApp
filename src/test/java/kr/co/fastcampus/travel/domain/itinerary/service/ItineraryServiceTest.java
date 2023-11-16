@@ -4,7 +4,6 @@ import static kr.co.fastcampus.travel.common.MemberTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerary;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItineraryUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createLodgeUpdateDto;
-import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRoute;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createRouteUpdateDto;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createStayUpdateDto;
@@ -44,9 +43,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ItineraryServiceTest {
-
-    @Mock
-    private MemberService memberService;
 
     @Mock
     private ItineraryRepository itineraryRepository;
@@ -159,7 +155,7 @@ class ItineraryServiceTest {
         when(itineraryRepository.findById(any())).thenReturn(Optional.of(itinerary));
 
         //when
-        itineraryService.deleteById(itinerary.getId(), "test@email.com");
+        itineraryService.deleteById(itinerary.getId(), "email@email.com");
 
         //then
         verify(itineraryRepository).delete(itinerary);
