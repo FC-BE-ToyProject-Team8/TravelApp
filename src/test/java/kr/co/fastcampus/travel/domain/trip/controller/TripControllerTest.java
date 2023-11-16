@@ -4,19 +4,18 @@ import static kr.co.fastcampus.travel.common.MemberTestUtils.EMAIL;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createItinerarySaveRequest;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createMember;
 import static kr.co.fastcampus.travel.common.TravelTestUtils.createTripWithMember;
-//import static kr.co.fastcampus.travel.common.TravelTestUtils.createTripSummaryResponse;
+import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredGetWithToken;
+import static kr.co.fastcampus.travel.common.RestAssuredUtils.restAssuredPostWithToken;
+import static kr.co.fastcampus.travel.common.TravelTestUtils.API_TRIPS_ENDPOINT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
-
 import kr.co.fastcampus.travel.common.ApiTest;
 import kr.co.fastcampus.travel.common.RestAssuredUtils;
 import kr.co.fastcampus.travel.domain.itinerary.controller.dto.request.save.ItinerariesSaveRequest;
@@ -25,6 +24,7 @@ import kr.co.fastcampus.travel.domain.itinerary.controller.dto.response.Itinerar
 import kr.co.fastcampus.travel.domain.member.entity.Member;
 import kr.co.fastcampus.travel.domain.member.repository.MemberRepository;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.request.TripSaveRequest;
+import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripPageResponseDto;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripResponse;
 import kr.co.fastcampus.travel.domain.trip.controller.dto.response.TripSummaryResponse;
 import kr.co.fastcampus.travel.domain.trip.entity.Trip;
@@ -32,16 +32,17 @@ import kr.co.fastcampus.travel.domain.trip.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
-public class TripControllerTest extends ApiTest {
+class TripControllerTest extends ApiTest {
 
     @Autowired
     private TripRepository tripRepository;
 
     @Autowired
     private MemberRepository memberRepository;
-
 
     @Test
     @DisplayName("여행 등록")
@@ -56,7 +57,7 @@ public class TripControllerTest extends ApiTest {
 
         // when
         ExtractableResponse<Response> response
-            = RestAssuredUtils.restAssuredPostWithToken(url, request);
+            = restAssuredPostWithToken(url, request);
 
         // then
         JsonPath jsonPath = response.jsonPath();
@@ -77,6 +78,7 @@ public class TripControllerTest extends ApiTest {
             ).isEqualTo(EMAIL);
         });
     }
+
 
     //    @Test
 //    @DisplayName("여정 없는 여행 조회")
@@ -257,10 +259,12 @@ public class TripControllerTest extends ApiTest {
         // given
         String saveUrl = "/api/trips";
         TripSaveRequest tripSaveRequest = new TripSaveRequest(
+
             "이름",
             LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
             false
         );
+
         RestAssuredUtils.restAssuredPostWithToken(saveUrl, tripSaveRequest);
 
         String url = "/api/itineraries?tripId=1";
@@ -308,13 +312,54 @@ public class TripControllerTest extends ApiTest {
             jsonPath.getList("data.content", TripSummaryResponse.class);
         int totalPages = jsonPath.getInt("data.totalPages");
         int totalElements = jsonPath.getInt("data.totalElements");
-
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             softly.assertThat(status).isEqualTo("SUCCESS");
             softly.assertThat(content.size()).isEqualTo(5);
             softly.assertThat(totalPages).isEqualTo(2);
             softly.assertThat(totalElements).isEqualTo(10);
+        });
+    }
+
+    @Test
+    @DisplayName("여행 이름으로 여행 검색")
+    void searchByTripName() {
+        //given
+        TripSaveRequest request1 = new TripSaveRequest(
+
+            "이름",
+            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
+            false
+        );
+        TripSaveRequest request2 = new TripSaveRequest(
+            "테스트",
+            LocalDate.parse("2010-01-01"), LocalDate.parse("2010-01-02"),
+            false
+        );
+        restAssuredPostWithToken(API_TRIPS_ENDPOINT, request1);
+        restAssuredPostWithToken(API_TRIPS_ENDPOINT, request1);
+        restAssuredPostWithToken(API_TRIPS_ENDPOINT, request2);
+
+        String query = "이름";
+        Pageable pageable = PageRequest.of(0, 3);
+        String url = API_TRIPS_ENDPOINT
+            + String.format("/search-by-trip-name?query=%s&page=%d&size=%d",
+            query, pageable.getPageNumber(), pageable.getPageSize());
+
+        //when
+        ExtractableResponse<Response> response = restAssuredGetWithToken(url);
+
+        // then
+        JsonPath jsonPath = response.jsonPath();
+        String status = jsonPath.getString("status");
+        TripPageResponseDto data = jsonPath.getObject("data", TripPageResponseDto.class);
+        List<TripSummaryResponse> content = data.content();
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            softly.assertThat(status).isEqualTo("SUCCESS");
+            softly.assertThat(data.pageNum()).isEqualTo(1);
+            softly.assertThat(data.pageSize()).isEqualTo(3);
+            softly.assertThat(data.totalElements()).isEqualTo(2);
         });
     }
 

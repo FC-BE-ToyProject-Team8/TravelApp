@@ -48,9 +48,11 @@ public class ItineraryController {
     @Operation(summary = "여정 수정")
     public ResponseBody<ItineraryResponse> editItinerary(
         @PathVariable Long itineraryId,
-        @Valid @RequestBody ItineraryUpdateRequest request
+        @Valid @RequestBody ItineraryUpdateRequest request,
+        Principal principal
     ) {
-        var response = itineraryService.editItinerary(itineraryId, mapper.of(request));
+        String memberEmail = principal.getName();
+        var response = itineraryService.editItinerary(itineraryId, memberEmail, mapper.of(request));
         return ResponseBody.ok(mapper.of(response));
     }
 

@@ -113,8 +113,10 @@ class TripServiceTest {
     void editTrip() {
         // given
         Long tripId = 1L;
+        Member givenMember = createMember();
         Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
             .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .member(givenMember)
             .build();
 
         given(tripRepository.findById(tripId))
@@ -124,12 +126,11 @@ class TripServiceTest {
             "이름2",
             LocalDate.parse("2011-01-01"),
             LocalDate.parse("2011-01-02"),
-            true,
-            0L
+            true
         );
 
         // when
-        TripInfoDto result = tripService.editTrip(tripId, dto);
+        TripInfoDto result = tripService.editTrip(tripId, dto, givenMember.getEmail());
 
         // then
         assertThat(result.name()).isEqualTo("이름2");
@@ -150,12 +151,11 @@ class TripServiceTest {
             null,
             null,
             null,
-            true,
-            0L
+            true
         );
 
         // when, then
-        assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request))
+        assertThatThrownBy(() -> tripService.editTrip(notExistingTripId, request, null))
             .isInstanceOf(EntityNotFoundException.class);
     }
 
@@ -255,9 +255,12 @@ class TripServiceTest {
     @DisplayName("여행 수정 시 종료일자가 시작일자보다 앞서면 예외")
     void editTrip_InvalidDatesequence() {
         // given
+        Member member = createMember();
+
         Long tripId = 1L;
         Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
             .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .member(member)
             .build();
 
         given(tripRepository.findById(tripId))
@@ -267,13 +270,39 @@ class TripServiceTest {
             "이름2",
             LocalDate.parse("2011-01-02"),
             LocalDate.parse("2011-01-01"),
-            true,
-            0L
+            true
         );
 
         // when, then
-        assertThatThrownBy(() -> tripService.editTrip(tripId, dto))
+        assertThatThrownBy(() -> tripService.editTrip(tripId, dto, member.getEmail()))
             .isInstanceOf(InvalidDateSequenceException.class);
+    }
+
+    @Test
+    @DisplayName("여행 수정 시 작성자 본인이 아니라면 예외")
+    void editTrip_NoPermission() {
+        // given
+        Member member = createMember();
+
+        Long tripId = 1L;
+        Trip givenTrip = Trip.builder().name("이름").startDate(LocalDate.of(2010, 1, 1))
+            .endDate(LocalDate.of(2010, 1, 2)).isForeign(false)
+            .member(member)
+            .build();
+
+        given(tripRepository.findById(tripId))
+            .willReturn(Optional.of(givenTrip));
+
+        TripUpdateDto dto = new TripUpdateDto(
+            "이름2",
+            LocalDate.parse("2011-01-02"),
+            LocalDate.parse("2011-01-01"),
+            true
+        );
+
+        // when, then
+        assertThatThrownBy(() -> tripService.editTrip(tripId, dto, "another@email.com"))
+            .isInstanceOf(MemberMismatchException.class);
     }
 
     @Test

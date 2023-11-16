@@ -62,15 +62,21 @@ public class TripService {
     }
 
     public List<TripInfoDto> findAllTrips() {
-        var trips = tripRepository.findAll();
+        List<Trip> trips = tripRepository.findAll();
         return trips.stream()
             .map(TripInfoDto::from)
             .collect(Collectors.toList());
     }
 
     @Transactional
-    public TripInfoDto editTrip(Long tripId, TripUpdateDto dto) {
+    public TripInfoDto editTrip(Long tripId, TripUpdateDto dto, String memberEmail) {
         var trip = findById(tripId);
+
+        boolean isWriter = memberEmail.equals(trip.getMember().getEmail());
+        if (!isWriter) {
+            throw new MemberMismatchException();
+        }
+
         Trip updateTrip = dto.toEntity();
         trip.update(updateTrip);
         return TripInfoDto.from(trip);
@@ -89,7 +95,7 @@ public class TripService {
         var trip = findById(id);
         if (trip.getMember().getEmail().equals(memberEmail)) {
             dto.stream()
-                .map(ItinerarySaveDto::toEntity)
+                .map(itinerarySaveDto -> itinerarySaveDto.toEntity(trip))
                 .forEach(trip::addItinerary);
             return trip.getItineraries().stream()
                 .map(ItineraryDto::from)

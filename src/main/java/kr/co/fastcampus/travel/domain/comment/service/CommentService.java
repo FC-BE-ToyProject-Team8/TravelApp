@@ -1,7 +1,7 @@
 package kr.co.fastcampus.travel.domain.comment.service;
 
-import kr.co.fastcampus.travel.common.exception.CommentMemberMismatchException;
 import kr.co.fastcampus.travel.common.exception.EntityNotFoundException;
+import kr.co.fastcampus.travel.common.exception.MemberMismatchException;
 import kr.co.fastcampus.travel.domain.comment.entity.Comment;
 import kr.co.fastcampus.travel.domain.comment.repository.CommentRepository;
 import kr.co.fastcampus.travel.domain.comment.service.dto.request.CommentSaveDto;
@@ -61,7 +61,7 @@ public class CommentService {
 
     private void validateMemberMatch(String memberEmail, Comment comment) {
         if (!comment.getMember().getEmail().equals(memberEmail)) {
-            throw new CommentMemberMismatchException();
+            throw new MemberMismatchException();
         }
     }
 }
