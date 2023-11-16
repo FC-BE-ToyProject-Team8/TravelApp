@@ -15,7 +15,6 @@ spring:
     hibernate:
       ddl-auto: create
 
-
 jwt:
   secret: SpringSecurity Java Web Token Secret Key
   grand-type: Bearer
@@ -24,3 +23,7 @@ jwt:
 kakao:
   api:
     key: dd0c848e81e9871630e66d93e2e51d64
+
+redis:
+  host: localhost
+  port: 6379
